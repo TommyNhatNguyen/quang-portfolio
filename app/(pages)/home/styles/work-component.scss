@@ -64,3 +64,47 @@
     }
   }
 }
+
+.work-list {
+  overflow: hidden;
+  position: absolute;
+  bottom: -64px;
+  width: 100%;
+  left: 0;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  justify-content: flex-end;
+  justify-items: flex-end;
+  &__item {
+    height: 137px;
+    width: 100%;
+    position: relative;
+    padding-left: 32px;
+    padding-right: 32px;
+    padding-top: 4px;
+    padding-bottom: 24px;
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-position: center;
+    }
+    &-info {
+      height: 100%;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: var(--gap);
+      z-index: 1;
+      position: relative;
+      bottom: 26px;
+      .title {
+        font-size: var(--mono-heading3-desktop);
+        color: var(--greyscale-900);
+      }
+    }
+  }
+}

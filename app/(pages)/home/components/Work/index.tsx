@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import "../../styles/work-component.scss";
 
 const WorkComponent = () => {
@@ -32,7 +33,34 @@ const WorkComponent = () => {
         </div>
       </div>
       <div className="work-list">
-        <div className="work-list__item"></div>
+        {Array.from({ length: 5 }).map((_, index) => {
+          return (
+            <Link
+              key={index}
+              href={`/work/${index + 1}`}
+              className="work-list__item"
+              style={{
+                position: "relative",
+                top: index != 0 ? `-${index * 28}px` : 0,
+              }}
+            >
+              <Image
+                src={`/images/frame-${index + 1}.png`}
+                alt="work-1"
+                width={1500}
+                height={130}
+              />
+              <div className="work-list__item-info">
+                <h2 className="title">Title</h2>
+                <div className="description">
+                  <span className="description__text">Defi_Interface</span>
+                  <span className="description__separator"> | </span>
+                  <span className="description__text">2024</span>
+                </div>
+              </div>
+            </Link>
+          );
+        })}
       </div>
     </div>
   );

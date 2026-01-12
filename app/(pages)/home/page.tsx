@@ -1,5 +1,9 @@
 "use client";
 import { useState } from "react";
+import AboutComponent from "./components/about";
+import BlogComponent from "./components/blog";
+import LabComponent from "./components/lab";
+import WorkComponent from "./components/work";
 import "./styles/work-page.scss";
 
 const LABEL_MAX_WIDTH = 217;
@@ -11,40 +15,43 @@ const folderData = [
     color: "#FFFFFF",
     textColor: "var(--greyscale-900)",
     content: <div>Hello</div>,
+    component: <BlogComponent />,
   },
   {
     label: "Lab",
     id: "lab",
     color: "#EBE7DC",
     textColor: "var(--greyscale-900)",
-    content: <div>Hello</div>,
+    content: <LabComponent />,
   },
   {
     label: "About",
     id: "about",
     color: "#657043",
     textColor: "var(--greyscale-0)",
-    content: <div>Hello</div>,
+    content: <AboutComponent />,
   },
   {
     label: "Work",
     id: "work",
     color: "#BC403C",
     textColor: "var(--greyscale-0)",
-    content: <div>Hello</div>,
+    content: <WorkComponent />,
   },
 ];
 
 export default function HomePage() {
+  const [activeTabIndex, setActiveTabIndex] = useState(3);
   const [activeTab, setActiveTab] = useState("work");
   const [isMouseHover, setIsMouseHover] = useState(false);
   const [activeHoverTab, setActiveHoverTab] = useState<string>("");
   const _onChangeTab = (tab: string) => {
     setActiveTab(tab);
   };
-  const _onHover = (tab: string) => {
+  const _onHover = (tab: string, index: number) => {
     setIsMouseHover((prev) => !prev);
     setActiveHoverTab(tab);
+    setActiveTabIndex(index);
   };
   return (
     <div className="folder-container">
@@ -64,35 +71,42 @@ export default function HomePage() {
               activeHoverTab == folder.id && isMouseHover
                 ? `-${10}px`
                 : `${0}px`,
-            zIndex: activeHoverTab == folder.id && isMouseHover ? 2 : 0,
+            zIndex: activeHoverTab == folder.id && isMouseHover ? 7 : 0,
           }}
           onClick={() => _onChangeTab(folder.id)}
-          onMouseEnter={() => _onHover(folder.id)}
-          onMouseLeave={() => _onHover(folder.id)}
+          onMouseEnter={() => _onHover(folder.id, index)}
+          onMouseLeave={() => _onHover(folder.id, index)}
         >
           {folder.label}
         </button>
       ))}
-      {folderData.map((folder, index) => (
-        <div
-          key={folder.label}
-          className="folder-content"
-          style={{
-            backgroundColor: folder.color,
-            position: "absolute",
-            top:
-              activeHoverTab == folder.id && isMouseHover
-                ? `${LABEL_HEIGHT - 15}px`
-                : `${LABEL_HEIGHT}px`,
-            zIndex: activeTab == folder.id ? 1 : 0,
-            boxShadow: isMouseHover
-              ? "-4px 0px 4px 0px var(--color-drop-shadow)"
-              : "none",
-          }}
-        >
-          {folder.content}
-        </div>
-      ))}
+      {folderData.map((folder, index) => {
+        return (
+          <div
+            key={folder.label}
+            className="folder-content"
+            style={{
+              backgroundColor: folder.color,
+              position: "absolute",
+              top:
+                activeHoverTab == folder.id && isMouseHover
+                  ? `${LABEL_HEIGHT - 15}px`
+                  : `${LABEL_HEIGHT}px`,
+              zIndex:
+                activeTab == folder.id
+                  ? 6
+                  : activeTabIndex + 1 == index
+                  ? 3
+                  : 0,
+              boxShadow: isMouseHover
+                ? "-4px 0px 4px 0px var(--color-drop-shadow)"
+                : "none",
+            }}
+          >
+            {folder.content}
+          </div>
+        );
+      })}
     </div>
   );
 }

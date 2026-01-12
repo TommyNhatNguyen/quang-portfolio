@@ -1,0 +1,24 @@
+html {
+  font-size: 62.5%;
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-family: var(--font-google-sans-code);
+  font-weight: normal;
+  color: var(--color-body);
+  background-color: var(--color-bg);
+  max-width: 1500px;
+  margin: 0 auto;
+  height: 100%;
+  width: 100%;
+}
+
+main {
+  height: 100%;
+  width: 100%;
+  margin: 0 auto;
+}

@@ -37,8 +37,14 @@ const folderData = [
 
 export default function HomePage() {
   const [activeTab, setActiveTab] = useState("work");
+  const [isMouseHover, setIsMouseHover] = useState(false);
+  const [activeHoverTab, setActiveHoverTab] = useState<string>("");
   const _onChangeTab = (tab: string) => {
     setActiveTab(tab);
+  };
+  const _onHover = (tab: string) => {
+    setIsMouseHover((prev) => !prev);
+    setActiveHoverTab(tab);
   };
   return (
     <div className="folder-container">
@@ -54,8 +60,15 @@ export default function HomePage() {
                 : "22px",
             color: folder.textColor,
             height: `${LABEL_HEIGHT}px`,
+            top:
+              activeHoverTab == folder.id && isMouseHover
+                ? `-${10}px`
+                : `${0}px`,
+            zIndex: activeHoverTab == folder.id && isMouseHover ? 2 : 0,
           }}
           onClick={() => _onChangeTab(folder.id)}
+          onMouseEnter={() => _onHover(folder.id)}
+          onMouseLeave={() => _onHover(folder.id)}
         >
           {folder.label}
         </button>
@@ -67,8 +80,14 @@ export default function HomePage() {
           style={{
             backgroundColor: folder.color,
             position: "absolute",
-            top: `${LABEL_HEIGHT}px`,
-            zIndex: activeTab == folder.id ? 4 : index,
+            top:
+              activeHoverTab == folder.id && isMouseHover
+                ? `${LABEL_HEIGHT - 15}px`
+                : `${LABEL_HEIGHT}px`,
+            zIndex: activeTab == folder.id ? 1 : 0,
+            boxShadow: isMouseHover
+              ? "-4px 0px 4px 0px var(--color-drop-shadow)"
+              : "none",
           }}
         >
           {folder.content}

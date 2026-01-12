@@ -2,4 +2,65 @@
   padding-top: 40px;
   padding-left: 120px;
   padding-right: 120px;
+  width: 100%;
+  height: 100%;
+}
+
+.work-content {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  &__bg-paper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    color: initial;
+  }
+  &__info {
+    position: relative;
+    z-index: 1;
+    padding-top: 72px;
+    padding-left: 80px;
+    padding-right: 80px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--gap);
+    &-title {
+      font-size: var(--mono-l-regular);
+      line-height: var(--lh-l-regular);
+      font-weight: normal;
+      font-size: var(--greyscale-900);
+      max-width: 410px;
+    }
+    &-tags {
+      .offer {
+        font-size: var(--mono-l-regular);
+        &__text {
+          color: rgba(10, 10, 10, 0.6);
+        }
+        &__value {
+          color: var(--greyscale-0);
+          background-color: var(--greyscale-900);
+          padding-left: 6px;
+          padding-right: 6px;
+        }
+      }
+      .progress {
+        margin-top: 8px;
+        width: 100%;
+        height: 8px;
+        background-color: rgba(10, 10, 10, 0.2);
+        &__bar {
+          height: 100%;
+          width: 70%;
+          background-color: rgba(10, 10, 10, 0.8);
+        }
+      }
+    }
+  }
 }

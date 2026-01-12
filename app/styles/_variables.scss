@@ -51,13 +51,17 @@
   --lh-body: var(--mono-l-regular-lh);
   --fw-body: var(--mono-l-regular-fw);
 
+  --fs-footer: var(--mono-s-regular);
+
   --fs-folder-button: var(--mono-heading5-desktop);
   --lh-folder-button: var(--mono-heading5-desktop-lh);
 
   --color-body: var(--greyscale-900);
   --color-body-contrast: var(--greyscale-0);
   --color-bg: var(--greyscale-1000);
+  --color-footer: var(--color-red-100);
   --color-red: #bc403c;
+  --color-red-100: #9b3531;
   --color-drop-shadow: rgba(0, 0, 0, 0.3);
 
   --mono-l-regular-lh: 130%;

@@ -1,0 +1,19 @@
+.btn {
+  padding: 4px;
+  color: var(--greyscale-0);
+  text-transform: uppercase;
+  background-color: var(--greyscale-1000);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-wrap: nowrap;
+  width: fit-content;
+  cursor: pointer;
+  font-family: var(--ff-gm);
+  font-weight: 500;
+  font-size: var(--mono-s-medium);
+  .btn-icon {
+    width: 24px;
+    height: 24px;
+  }
+}

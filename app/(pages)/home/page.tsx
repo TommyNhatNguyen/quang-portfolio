@@ -1,10 +1,12 @@
 "use client";
+import ButtonComponent from "@/app/components/button";
+import DownLoad2Line from "@/app/components/icons/download-2-line";
 import { useState } from "react";
 import AboutComponent from "./components/about";
 import BlogComponent from "./components/blog";
 import LabComponent from "./components/lab";
-import WorkComponent from "./components/work";
-import "./styles/work-page.scss";
+import WorkComponent from "./components/Work";
+import "./styles/home-page.scss";
 
 const LABEL_MAX_WIDTH = 217;
 const LABEL_HEIGHT = 64;
@@ -107,6 +109,18 @@ export default function HomePage() {
           </div>
         );
       })}
+      <div
+        className="folder-footer"
+        style={{
+          bottom: `-${LABEL_HEIGHT}px`,
+        }}
+      >
+        <p className="folder-footer__text">CONTENT BY © QUANG LAAM</p>
+        <ButtonComponent className="folder-footer__button">
+          <span className="folder-footer__button-text">DOWNLOAD CV</span>
+          <DownLoad2Line className="folder-footer__button-icon btn-icon" />
+        </ButtonComponent>
+      </div>
     </div>
   );
 }

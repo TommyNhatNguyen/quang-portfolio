@@ -1,6 +1,10 @@
 "use client";
+import AvatarCard from "@/app/components/avatar-card";
 import ButtonComponent from "@/app/components/button";
 import DownLoad2Line from "@/app/components/icons/download-2-line";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { Draggable, InertiaPlugin } from "gsap/all";
 import { useState } from "react";
 import AboutComponent from "./components/about";
 import BlogComponent from "./components/blog";
@@ -8,8 +12,8 @@ import LabComponent from "./components/lab";
 import WorkComponent from "./components/Work";
 import "./styles/home-page.scss";
 
-const LABEL_MAX_WIDTH = 217;
-const LABEL_HEIGHT = 64;
+export const LABEL_HEIGHT = 64;
+export const LABEL_MAX_WIDTH = 217;
 const folderData = [
   {
     label: "Blog",
@@ -42,7 +46,12 @@ const folderData = [
   },
 ];
 
+gsap.registerPlugin(useGSAP);
+gsap.registerPlugin(Draggable);
+gsap.registerPlugin(InertiaPlugin);
+
 export default function HomePage() {
+
   const [activeTabIndex, setActiveTabIndex] = useState(3);
   const [activeTab, setActiveTab] = useState("work");
   const [isMouseHover, setIsMouseHover] = useState(false);
@@ -121,6 +130,8 @@ export default function HomePage() {
           <DownLoad2Line className="folder-footer__button-icon btn-icon" />
         </ButtonComponent>
       </div>
+      {/* Avatar card */}
+      <AvatarCard />
     </div>
   );
 }

@@ -1,0 +1,93 @@
+.avatar-card {
+  position: absolute;
+  right: 0;
+  z-index: 100;
+  width: 207px;
+  aspect-ratio: 207 / 310;
+  transform: rotateZ(5deg);
+  box-shadow: 8px 12 8px -5px rgba(0, 0, 0, 0.15);
+  -webkit-box-shadow: 8px 12 8px -5px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 8px 12 8px -5px rgba(0, 0, 0, 0.15);
+  padding: 8px;
+  background-color: var(--greyscale-0);
+  &__image {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+  &__content {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding-right: 8px;
+    padding-bottom: 8px;
+    color: var(--greyscale-0);
+    &-bg {
+      z-index: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background-image: url("/images/bg-gradient.png");
+      background-position: center 8em;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    &-name {
+      z-index: 1;
+      font-size: var(--body-s-medium);
+      font-family: var(--ff-gs);
+      font-weight: 500;
+      line-height: normal;
+    }
+    &-title {
+      z-index: 1;
+      font-size: var(--mono-xxs-light);
+      font-weight: lighter;
+      line-height: normal;
+    }
+  }
+  &__sticker {
+    height: 30px;
+    width: 62px;
+    position: absolute;
+    top: -14px;
+    right: -20px;
+    background: linear-gradient(
+      155deg,
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(255, 255, 255, 0) 40%,
+      rgba(255, 255, 255, 0) 60%,
+      rgba(255, 255, 255, 0.1) 100%
+    );
+    box-shadow: 0px 2 4px 0px rgba(0, 0, 0, 0.15);
+    -webkit-box-shadow: 0px 2 4px 0px rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: 0px 2 4px 0px rgba(0, 0, 0, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    z-index: 101;
+    transform: rotateZ(19deg);
+    .blur {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.25);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      filter: blur(1.92);
+    }
+  }
+}

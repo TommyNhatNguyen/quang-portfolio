@@ -3,20 +3,20 @@ import { Geist, Geist_Mono, Google_Sans_Code } from "next/font/google";
 import "./styles/index.scss";
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
+  variable: "--ff-gs",
   subsets: ["latin"],
   preload: true,
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+  variable: "--ff-gm",
   subsets: ["latin"],
   fallback: ["sans-serif"],
   preload: true,
 });
 
 const googleSansCode = Google_Sans_Code({
-  variable: "--font-google-sans-code",
+  variable: "--ff-gc",
   subsets: ["latin"],
   fallback: ["sans-serif"],
   preload: true,

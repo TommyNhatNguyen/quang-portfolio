@@ -6,11 +6,11 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { Draggable, InertiaPlugin } from "gsap/all";
 import { useState } from "react";
-import AboutComponent from "./components/about";
 import BlogComponent from "./components/blog";
 import LabComponent from "./components/lab";
 import WorkComponent from "./components/Work";
 import "./styles/home-page.scss";
+import AboutComponent from "./components/About";
 
 export const LABEL_HEIGHT = 64;
 export const LABEL_MAX_WIDTH = 217;

@@ -5,6 +5,13 @@
   padding-left: min(calc(30vw / 2), 250px);
   padding-right: min(calc(30vw / 2), 250px);
   padding-bottom: 64px;
+  position: relative;
+}
+
+.disc-player {
+  position: absolute;
+  bottom: calc(64px + 72px);
+  right: 0;
 }
 
 .content-wrapper {

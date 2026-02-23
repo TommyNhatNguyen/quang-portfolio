@@ -1,4 +1,5 @@
 import ButtonComponent from "@/app/components/button";
+import DiscPlayerComponent from "@/app/components/disc-player";
 import DownLoad2Line from "@/app/components/icons/download-2-line";
 import Image from "next/image";
 import "../../styles/about-component.scss";
@@ -170,6 +171,9 @@ const AboutComponent = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div className="disc-player">
+        <DiscPlayerComponent />
       </div>
     </div>
   );

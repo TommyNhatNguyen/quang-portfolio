@@ -1,0 +1,53 @@
+@keyframes spin {
+  from {
+    transform: translateY(-50%) rotate(0deg);
+  }
+  to {
+    transform: translateY(-50%) rotate(360deg);
+  }
+}
+
+@keyframes disc-needle-idle {
+  0%,
+  100% {
+    transform: translateY(-50%) rotateZ(28deg);
+  }
+  0% {
+    transform: translateY(-50%) rotateZ(0deg);
+  }
+}
+
+.disc-container {
+  position: relative;
+  .disc-needle {
+    z-index: 1;
+    position: absolute;
+    top: 0%;
+    right: 0;
+  }
+  .disc {
+    position: absolute;
+    top: 45%;
+    left: 15%;
+
+    width: 500px;
+    height: 500px;
+
+    transform: translate(-50%, -50%);
+
+    &__name {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: var(--body-xxs-regular);
+      font-weight: 400;
+      font-family: var(--ff-gm);
+      color: var(--greyscale-0);
+      line-height: normal;
+      max-width: 73px;
+      text-wrap: wrap;
+      text-align: center;
+    }
+  }
+}

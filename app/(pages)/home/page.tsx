@@ -6,11 +6,11 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { Draggable, InertiaPlugin } from "gsap/all";
 import { useState } from "react";
+import AboutComponent from "./components/About";
 import BlogComponent from "./components/blog";
-import LabComponent from "./components/lab";
+import LabComponent from "./components/Lab";
 import WorkComponent from "./components/Work";
 import "./styles/home-page.scss";
-import AboutComponent from "./components/About";
 
 export const LABEL_HEIGHT = 64;
 export const LABEL_MAX_WIDTH = 217;
@@ -51,9 +51,8 @@ gsap.registerPlugin(Draggable);
 gsap.registerPlugin(InertiaPlugin);
 
 export default function HomePage() {
-
   const [activeTabIndex, setActiveTabIndex] = useState(3);
-  const [activeTab, setActiveTab] = useState("work");
+  const [activeTab, setActiveTab] = useState("lab");
   const [isMouseHover, setIsMouseHover] = useState(false);
   const [activeHoverTab, setActiveHoverTab] = useState<string>("");
   const _onChangeTab = (tab: string) => {
@@ -107,8 +106,8 @@ export default function HomePage() {
                 activeTab == folder.id
                   ? 6
                   : activeTabIndex + 1 == index
-                  ? 3
-                  : 0,
+                    ? 3
+                    : 0,
               boxShadow: isMouseHover
                 ? "-4px 0px 4px 0px var(--color-drop-shadow)"
                 : "none",

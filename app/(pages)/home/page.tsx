@@ -7,7 +7,7 @@ import gsap from "gsap";
 import { Draggable, InertiaPlugin } from "gsap/all";
 import { useState } from "react";
 import AboutComponent from "./components/About";
-import BlogComponent from "./components/blog";
+import BlogComponent from "./components/Blog";
 import LabComponent from "./components/Lab";
 import WorkComponent from "./components/Work";
 import "./styles/home-page.scss";
@@ -20,8 +20,7 @@ const folderData = [
     id: "blog",
     color: "#FFFFFF",
     textColor: "var(--greyscale-900)",
-    content: <div>Hello</div>,
-    component: <BlogComponent />,
+    content: <BlogComponent />,
   },
   {
     label: "Lab",

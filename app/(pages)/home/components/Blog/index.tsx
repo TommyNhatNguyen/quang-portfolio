@@ -2,7 +2,7 @@
 import ArrowDownFilled from "@/app/components/icons/arrow-down-filled";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import "../../styles/blog-component.scss";
 import BlogDetailPage from "./blog-detail";
 
@@ -24,7 +24,7 @@ const FILTERS = [
   },
 ];
 
-const BlogComponent = () => {
+const BlogComponentInner = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -200,6 +200,14 @@ const BlogComponent = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const BlogComponent = () => {
+  return (
+    <Suspense>
+      <BlogComponentInner />
+    </Suspense>
   );
 };
 

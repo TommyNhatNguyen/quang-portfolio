@@ -56,6 +56,11 @@
     align-items: center;
     justify-content: space-between;
     gap: 8px;
+    &-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
     &-title {
       text-transform: uppercase;
       font-family: var(--ff-gm);
@@ -63,6 +68,18 @@
       font-weight: 500;
       line-height: normal;
       color: var(--greyscale-900);
+    }
+    &-clear {
+      border: none;
+      background: none;
+      padding: 4px 8px;
+      text-transform: uppercase;
+      font-family: var(--ff-gm);
+      font-size: var(--mono-xs-medium);
+      font-weight: 500;
+      line-height: normal;
+      color: var(--greyscale-400);
+      cursor: pointer;
     }
     &-options {
       display: flex;
@@ -125,6 +142,10 @@
             transition: all 1s cubic-bezier(0.23, 1, 0.32, 1);
             transform-origin: bottom;
             padding: 0px 24px;
+            &.--active {
+              background-color: var(--greyscale-900);
+              color: var(--greyscale-0);
+            }
           }
         }
       }
@@ -140,6 +161,7 @@
 
 .card {
   border: 1px solid var(--greyscale-900);
+  cursor: pointer;
   &__header {
     padding: 12px;
     border-bottom: 1px solid var(--greyscale-900);

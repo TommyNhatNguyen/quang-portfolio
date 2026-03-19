@@ -17,3 +17,77 @@
     height: 24px;
   }
 }
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+
+  li {
+    font-family: var(--ff-gm);
+    font-size: var(--mono-xs-medium);
+    font-weight: 500;
+    line-height: normal;
+    color: var(--greyscale-400);
+
+    a,
+    button {
+      color: inherit;
+      cursor: pointer;
+      font: inherit;
+
+      &:hover {
+        color: var(--greyscale-900);
+      }
+    }
+
+    a {
+      display: inline;
+      width: auto;
+      text-decoration: none;
+    }
+
+    &:last-child {
+      color: var(--greyscale-900);
+    }
+  }
+
+  li + li::before {
+    content: ">";
+    margin-right: 8px;
+    color: var(--greyscale-400);
+  }
+}
+
+/* Toast / react-toastify overrides */
+.Toastify__toast-container {
+  inset: 24px auto auto 50% !important;
+  transform: translateX(-50%);
+  padding: 0;
+}
+
+.Toastify__toast {
+  min-width: 320px;
+  max-width: 420px;
+  border-radius: 12px;
+  background-color: var(--greyscale-0);
+  color: var(--greyscale-900);
+  font-family: var(--ff-gm);
+  font-size: var(--mono-xs-medium);
+  line-height: 1.4;
+  box-shadow: -4px 0px 4px 0px var(--color-drop-shadow);
+}
+
+.Toastify__toast-body {
+  margin: 0;
+  padding: 12px 16px;
+}
+
+.Toastify__close-button {
+  color: var(--greyscale-400);
+}
+
+.Toastify__progress-bar {
+  background: transparent;
+}

@@ -129,7 +129,7 @@ export default function HomePage() {
         </ButtonComponent>
       </div>
       {/* Avatar card */}
-      <AvatarCard />
+      {(activeTab === "work" || activeTab === "about") && <AvatarCard />}
     </div>
   );
 }

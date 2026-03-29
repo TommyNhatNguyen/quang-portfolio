@@ -1,10 +1,11 @@
 "use client";
+
 import ArrowDownFilled from "@/app/components/icons/arrow-down-filled";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
-import "../../styles/blog-component.scss";
-import BlogDetailPage from "./blog-detail";
+import "@/app/styles/blog-component.scss";
 
 const FILTERS = [
   {
@@ -24,7 +25,7 @@ const FILTERS = [
   },
 ];
 
-const BlogComponentInner = () => {
+const BlogPageInner = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -38,11 +39,6 @@ const BlogComponentInner = () => {
         {} as Record<string, boolean>,
       ),
   );
-  const [selectedBlog, setSelectedBlog] = useState<number | null>(null);
-
-  if (selectedBlog !== null) {
-    return <BlogDetailPage onBack={() => setSelectedBlog(null)} />;
-  }
 
   const hasActiveFilter = FILTERS.some(
     (filter) => searchParams.get(filter.id) !== null,
@@ -129,7 +125,9 @@ const BlogComponentInner = () => {
                             }
                             router.push(
                               `${pathname}${
-                                params.toString() ? `?${params.toString()}` : ""
+                                params.toString()
+                                  ? `?${params.toString()}`
+                                  : ""
                               }`,
                             );
                           }}
@@ -147,7 +145,7 @@ const BlogComponentInner = () => {
             {Array.from({ length: 9 }).map((_, index) => {
               return (
                 <li key={index} className="blog-content__list-item">
-                  <div className="card" onClick={() => setSelectedBlog(index)}>
+                  <Link href={`/blog/${index}`} className="card">
                     <div className="card__header">
                       <span className="card__header-title">CASE_STUDY</span>
                     </div>
@@ -192,7 +190,7 @@ const BlogComponentInner = () => {
                         </p>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 </li>
               );
             })}
@@ -203,12 +201,12 @@ const BlogComponentInner = () => {
   );
 };
 
-const BlogComponent = () => {
+const BlogPage = () => {
   return (
     <Suspense>
-      <BlogComponentInner />
+      <BlogPageInner />
     </Suspense>
   );
 };
 
-export default BlogComponent;
+export default BlogPage;

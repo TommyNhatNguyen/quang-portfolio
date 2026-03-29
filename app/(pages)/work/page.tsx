@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import "../../styles/work-component.scss";
+import "@/app/styles/work-component.scss";
 
-const WorkComponent = () => {
+const WorkPage = () => {
   return (
     <div className="work-container">
       <div className="work-content">
@@ -66,4 +66,4 @@ const WorkComponent = () => {
   );
 };
 
-export default WorkComponent;
+export default WorkPage;

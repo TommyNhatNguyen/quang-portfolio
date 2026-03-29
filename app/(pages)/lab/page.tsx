@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { Fragment } from "react/jsx-runtime";
-import "../../styles/lab-component.scss";
+import "@/app/styles/lab-component.scss";
 
-const LabComponent = () => {
+const LabPage = () => {
   return (
     <div className="lab-container">
       <div className="lab-scroll">
@@ -174,4 +174,4 @@ const LabComponent = () => {
   );
 };
 
-export default LabComponent;
+export default LabPage;

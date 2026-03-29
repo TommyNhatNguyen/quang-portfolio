@@ -2,9 +2,9 @@ import ButtonComponent from "@/app/components/button";
 import DiscPlayerComponent from "@/app/components/disc-player";
 import DownLoad2Line from "@/app/components/icons/download-2-line";
 import Image from "next/image";
-import "../../styles/about-component.scss";
+import "@/app/styles/about-component.scss";
 
-const AboutComponent = () => {
+const AboutPage = () => {
   return (
     <div className="about-container">
       <div className="content-wrapper">
@@ -24,7 +24,7 @@ const AboutComponent = () => {
               <h2 className="content__title">
                 As a responsible Product Designer, I focus on user-centric
                 experiences, balancing compelling design with business outcomes.
-                I’m eager to join a collaborative team fostering growth and
+                I'm eager to join a collaborative team fostering growth and
                 impactful results.
               </h2>
               <ButtonComponent className="content__download-btn">
@@ -94,7 +94,7 @@ const AboutComponent = () => {
                         <div className="desc">Unicloud</div>
                         <div className="line">|</div>
                         <div className="desc">
-                          Senior Graphic & UX/UI designer 
+                          Senior Graphic & UX/UI designer
                         </div>
                       </li>
                     </ul>
@@ -179,4 +179,4 @@ const AboutComponent = () => {
   );
 };
 
-export default AboutComponent;
+export default AboutPage;

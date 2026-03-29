@@ -4,13 +4,9 @@ import Breadcrumbs from "@/app/components/breadcrumbs";
 import FileCopyLine from "@/app/components/icons/file-copy-line";
 import StackShare from "@/app/components/icons/stackshare";
 import { toast } from "react-toastify";
-import "../../styles/blog-page-detail.scss";
+import "@/app/styles/blog-page-detail.scss";
 
-interface BlogDetailPageProps {
-  onBack: () => void;
-}
-
-const BlogDetailPage = ({ onBack }: BlogDetailPageProps) => {
+const BlogDetailPage = () => {
   const articleTitle = "Crafting Digital Experiences That Matter";
 
   const handleShare = async () => {
@@ -44,7 +40,7 @@ const BlogDetailPage = ({ onBack }: BlogDetailPageProps) => {
         <header>
           <Breadcrumbs
             items={[
-              { label: "Blog", onClick: onBack },
+              { label: "Blog", href: "/blog" },
               { label: "Case Study" },
               { label: "Crafting Digital Experiences That Matter" },
             ]}

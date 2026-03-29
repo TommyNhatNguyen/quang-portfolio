@@ -1,7 +1,5 @@
 "use client";
 import AvatarCard from "@/app/components/avatar-card";
-import ButtonComponent from "@/app/components/button";
-import DownLoad2Line from "@/app/components/icons/download-2-line";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { Draggable, InertiaPlugin } from "gsap/all";
@@ -116,7 +114,7 @@ export default function HomePage() {
           </div>
         );
       })}
-      <div
+      {/* <div
         className="folder-footer"
         style={{
           bottom: `-${LABEL_HEIGHT}px`,
@@ -127,7 +125,7 @@ export default function HomePage() {
           <span className="folder-footer__button-text">DOWNLOAD CV</span>
           <DownLoad2Line className="folder-footer__button-icon btn-icon" />
         </ButtonComponent>
-      </div>
+      </div> */}
       {/* Avatar card */}
       {(activeTab === "work" || activeTab === "about") && <AvatarCard />}
     </div>

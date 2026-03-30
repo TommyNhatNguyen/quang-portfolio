@@ -1,15 +1,9 @@
 import ButtonComponent from "@/app/components/button";
 import DownLoad2Line from "@/app/components/icons/download-2-line";
-// import { LABEL_HEIGHT } from "@/app/constants/folder";
 
 const FolderFooter = () => {
   return (
-    <div
-      className="folder-footer"
-      // style={{
-      //   bottom: `-${LABEL_HEIGHT}px`,
-      // }}
-    >
+    <div className="folder-footer">
       <p className="folder-footer__text">CONTENT BY © QUANG LAAM</p>
       <ButtonComponent className="folder-footer__button">
         <span className="folder-footer__button-text">DOWNLOAD CV</span>

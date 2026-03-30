@@ -1,8 +1,21 @@
+"use client";
+
+import "@/app/styles/work-component.scss";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 import Image from "next/image";
 import Link from "next/link";
-import "@/app/styles/work-component.scss";
 
 const WorkPage = () => {
+  useGSAP(() => {
+    gsap.from(".work-list__item", {
+      y: "100vh",
+      duration: 1.5,
+      ease: "power3.out",
+      stagger: 0.025,
+    });
+  });
+
   return (
     <div className="work-container">
       <div className="work-content">
@@ -41,7 +54,7 @@ const WorkPage = () => {
               className="work-list__item"
               style={{
                 position: "relative",
-                top: index != 0 ? `-${index * 28}px` : 0,
+                top: index != 0 ? `-${index * 35}px` : 0,
               }}
             >
               <Image

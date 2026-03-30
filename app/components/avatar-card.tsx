@@ -10,23 +10,17 @@ const AvatarCard = (props: Props) => {
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const tagElemnent = document.querySelector(".work-content__info-tags");
-    const cardWidth = cardRef?.current?.offsetWidth || 0;
-    if (cardRef.current) {
+    const updatePosition = () => {
+      const tagElement = document.querySelector(".work-content__info-tags");
+      if (!cardRef.current || !tagElement) return;
+      const cardWidth = cardRef.current.offsetWidth || 0;
       cardRef.current.style.left =
-        (tagElemnent?.getBoundingClientRect().left || 0) -
-        cardWidth -
-        20 +
-        "px";
-    }
-    window.addEventListener("resize", () => {
-      if (!cardRef.current) return;
-      cardRef.current.style.left =
-        (tagElemnent?.getBoundingClientRect().left || 0) -
-        cardWidth -
-        20 +
-        "px";
-    });
+        tagElement.getBoundingClientRect().left - cardWidth - 20 + "px";
+    };
+
+    updatePosition();
+    window.addEventListener("resize", updatePosition);
+    return () => window.removeEventListener("resize", updatePosition);
   }, []);
 
   useGSAP(() => {

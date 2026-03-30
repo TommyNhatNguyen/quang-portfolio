@@ -1,8 +1,8 @@
+import { LABEL_HEIGHT } from "@/app/constants/folder";
 import { useGSAP } from "@gsap/react";
 import { Draggable } from "gsap/all";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-import { LABEL_HEIGHT } from "@/app/constants/folder";
 import "./styles/avatar-card.scss";
 type Props = {};
 

@@ -1,16 +1,14 @@
 "use client";
 
+import { FOLDER_TABS, LABEL_HEIGHT } from "@/app/constants/folder";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { FOLDER_TABS, LABEL_HEIGHT, LABEL_MAX_WIDTH } from "@/app/constants/folder";
 
 interface FolderTabsProps {
   onHoverChange?: (tabId: string | null) => void;
 }
 
 const FolderTabs = ({ onHoverChange }: FolderTabsProps) => {
-  const pathname = usePathname();
   const [isMouseHover, setIsMouseHover] = useState(false);
   const [activeHoverTab, setActiveHoverTab] = useState<string>("");
 
@@ -27,30 +25,41 @@ const FolderTabs = ({ onHoverChange }: FolderTabsProps) => {
   };
 
   return (
-    <>
+    <div className="folder-tabs">
       {FOLDER_TABS.map((folder, index) => (
-        <Link
-          key={folder.label}
-          href={folder.path}
-          className="folder-button"
-          style={{
-            backgroundColor: folder.color,
-            left: `${22 + LABEL_MAX_WIDTH * (FOLDER_TABS.length - index - 1)}px`,
-            color: folder.textColor,
-            height: `${LABEL_HEIGHT}px`,
-            top:
-              activeHoverTab === folder.id && isMouseHover
-                ? `-${10}px`
-                : `${0}px`,
-            zIndex: activeHoverTab === folder.id && isMouseHover ? 7 : 0,
-          }}
-          onMouseEnter={() => _onHover(folder.id)}
-          onMouseLeave={() => _onHoverEnd(folder.id)}
-        >
-          {folder.label}
-        </Link>
+        <div key={folder.label} className="folder-tab">
+          <Link
+            href={folder.path}
+            className="folder-button"
+            style={{
+              backgroundColor: folder.color,
+              color: folder.textColor,
+              height: `${LABEL_HEIGHT}px`,
+              transform:
+                activeHoverTab === folder.id && isMouseHover
+                  ? "translateY(-10px)"
+                  : "translateY(0px)",
+              zIndex: index,
+            }}
+            onMouseEnter={() => _onHover(folder.id)}
+            onMouseLeave={() => _onHoverEnd(folder.id)}
+          >
+            {folder.label}
+          </Link>
+          <div
+            className="folder-body"
+            style={{
+              backgroundColor: folder.color,
+              transform:
+                activeHoverTab === folder.id && isMouseHover
+                  ? "translateY(-12px)"
+                  : "translateY(0px)",
+              zIndex: index,
+            }}
+          ></div>
+        </div>
       ))}
-    </>
+    </div>
   );
 };
 

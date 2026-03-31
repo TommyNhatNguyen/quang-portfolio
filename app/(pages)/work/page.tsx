@@ -3,17 +3,69 @@
 import "@/app/styles/work-component.scss";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { TextPlugin } from "gsap/TextPlugin";
 import Image from "next/image";
 import Link from "next/link";
 
+gsap.registerPlugin(TextPlugin);
+
+const TITLE_TEXT =
+  "Translating complex protocols into functional interfaces. Focused on utility, structure, and user autonomy.";
+
+let hasAnimated = false;
+
 const WorkPage = () => {
   useGSAP(() => {
-    gsap.from(".work-list__item", {
+    gsap.set(".work-container", { visibility: "visible" });
+    if (hasAnimated) {
+      gsap.set(".work-content__info-title", { text: TITLE_TEXT });
+      // gsap.set(".avatar-card", { opacity: 1 });
+      return;
+    }
+    hasAnimated = true;
+
+    const tl = gsap.timeline({});
+    tl.from(".work-list__item", {
       y: "100vh",
-      duration: 1.5,
+      duration: 1.8,
       ease: "power3.out",
       stagger: 0.025,
-    });
+    })
+      .to(
+        ".work-content__info-title",
+        {
+          text: TITLE_TEXT,
+          duration: 1.8,
+          ease: "none",
+        },
+        "<0.1",
+      )
+      .from(".progress", {
+        width: "0%",
+        minWidth: "0",
+        duration: 0.6,
+        ease: "power2.out",
+      })
+      .from(".progress__bar", {
+        width: "0%",
+        duration: 0.8,
+        ease: "power2.out",
+      })
+      .from(
+        ".offer",
+        {
+          opacity: 0,
+        },
+        "-=0.2",
+      );
+    // .to(
+    //   ".avatar-card",
+    //   {
+    //     opacity: 1,
+    //     duration: 0.5,
+    //   },
+    //   "<",
+    // );
   });
 
   return (
@@ -28,10 +80,7 @@ const WorkPage = () => {
           height={1200}
         />
         <div className="work-content__info">
-          <h1 className="work-content__info-title">
-            Translating complex protocols into functional interfaces. Focused on
-            utility, structure, and user autonomy.
-          </h1>
+          <h1 className="work-content__info-title">&nbsp;</h1>
           <div className="work-content__info-tags">
             <div className="offer">
               <span className="offer__text">OPEN TO:</span>
@@ -54,7 +103,7 @@ const WorkPage = () => {
               className="work-list__item"
               style={{
                 position: "relative",
-                top: index != 0 ? `-${index * 35}px` : 0,
+                top: index != 0 ? `-${index * 30}px` : 0,
               }}
             >
               <Image

@@ -1,5 +1,6 @@
 import { LABEL_HEIGHT } from "@/app/constants/folder";
 import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 import { Draggable } from "gsap/all";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
@@ -24,6 +25,8 @@ const AvatarCard = (props: Props) => {
   }, []);
 
   useGSAP(() => {
+    gsap.set(".avatar-card", { visibility: "visible" });
+    gsap.from(".avatar-card", { opacity: 0 });
     Draggable.create(".avatar-card", {
       type: "x,y",
       inertia: true,

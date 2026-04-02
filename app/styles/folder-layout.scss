@@ -60,6 +60,7 @@
   -webkit-box-shadow: -4px 0px 4px 0px var(--color-drop-shadow);
   -moz-box-shadow: -4px 0px 4px 0px var(--color-drop-shadow);
   overflow-y: auto;
+  overscroll-behavior: none;
 }
 
 .folder-footer {

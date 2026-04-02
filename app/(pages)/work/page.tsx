@@ -60,7 +60,7 @@ const WorkPage = () => {
             start: "top top",
             end: `+=${scrollDistance}`,
             pin: true,
-            scrub: true,
+            scrub: 1.5,
             markers: true,
           },
         });

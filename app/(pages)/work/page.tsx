@@ -17,55 +17,55 @@ let hasAnimated = false;
 const WorkPage = () => {
   useGSAP(() => {
     gsap.set(".work-container", { visibility: "visible" });
-    if (hasAnimated) {
-      gsap.set(".work-content__info-title", { text: TITLE_TEXT });
-      // gsap.set(".avatar-card", { opacity: 1 });
-      return;
-    }
-    hasAnimated = true;
+    gsap.set(".work-list", { top: "100%" });
 
-    const tl = gsap.timeline({});
-    tl.from(".work-list__item", {
-      y: "100vh",
+    const containerHeight = document
+      .querySelector(".work-container")!
+      .getBoundingClientRect().height;
+    const listEl = document.querySelector(".work-list") as HTMLElement;
+    const fifthItem = document.querySelectorAll(".work-list__item")[4];
+    const fiveItemsHeight =
+      fifthItem.getBoundingClientRect().bottom -
+      listEl.getBoundingClientRect().top;
+    const targetTop = containerHeight - 64 - fiveItemsHeight;
+
+    gsap.to(".work-list", {
+      top: targetTop,
       duration: 1.8,
       ease: "power3.out",
-      stagger: 0.025,
-    })
-      .to(
-        ".work-content__info-title",
-        {
-          text: TITLE_TEXT,
-          duration: 1.8,
+      onComplete: setupScroll,
+    });
+
+    function setupScroll() {
+      const container = document.querySelector(
+        ".work-container",
+      ) as HTMLElement;
+      const lastItem = document.querySelector(
+        ".work-list__item:last-child",
+      ) as HTMLElement;
+
+      if (container && lastItem) {
+        const lastItemRect = lastItem.getBoundingClientRect();
+        const footerTop = document
+          .querySelector(".folder-footer")!
+          .getBoundingClientRect().top;
+        const scrollDistance = lastItemRect.bottom - footerTop - 10;
+
+        gsap.to(".work-list", {
+          y: -scrollDistance,
           ease: "none",
-        },
-        "<0.1",
-      )
-      .from(".progress", {
-        width: "0%",
-        minWidth: "0",
-        duration: 0.6,
-        ease: "power2.out",
-      })
-      .from(".progress__bar", {
-        width: "0%",
-        duration: 0.8,
-        ease: "power2.out",
-      })
-      .from(
-        ".offer",
-        {
-          opacity: 0,
-        },
-        "-=0.2",
-      );
-    // .to(
-    //   ".avatar-card",
-    //   {
-    //     opacity: 1,
-    //     duration: 0.5,
-    //   },
-    //   "<",
-    // );
+          scrollTrigger: {
+            trigger: ".work-container",
+            scroller: ".folder-content",
+            start: "top top",
+            end: `+=${scrollDistance}`,
+            pin: true,
+            scrub: true,
+            markers: true,
+          },
+        });
+      }
+    }
   });
 
   return (
@@ -95,7 +95,7 @@ const WorkPage = () => {
         </div>
       </div>
       <div className="work-list">
-        {Array.from({ length: 5 }).map((_, index) => {
+        {Array.from({ length: 30 }).map((_, index) => {
           return (
             <Link
               key={index}
@@ -107,7 +107,7 @@ const WorkPage = () => {
               }}
             >
               <Image
-                src={`/images/frame-${index + 1}.png`}
+                src={`/images/frame-${(index % 5) + 1}.png`}
                 alt="work-1"
                 width={1500}
                 height={130}

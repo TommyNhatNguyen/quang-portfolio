@@ -5,6 +5,8 @@
   width: 100%;
   height: 100%;
   visibility: hidden;
+  position: relative;
+  overflow: hidden;
 }
 
 .work-content {
@@ -71,9 +73,7 @@
 }
 
 .work-list {
-  overflow: hidden;
   position: absolute;
-  bottom: -64px;
   width: 100%;
   left: 0;
   display: flex;
@@ -82,6 +82,7 @@
   justify-content: flex-end;
   justify-items: flex-end;
   &__item {
+    flex-shrink: 0;
     height: 137px;
     width: 100%;
     position: relative;

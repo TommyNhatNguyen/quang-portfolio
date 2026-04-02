@@ -7,13 +7,14 @@ import { FOLDER_TABS, LABEL_HEIGHT } from "@/app/constants/folder";
 import "@/app/styles/folder-layout.scss";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { Draggable, InertiaPlugin } from "gsap/all";
+import { Draggable, InertiaPlugin, ScrollTrigger } from "gsap/all";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 gsap.registerPlugin(useGSAP);
 gsap.registerPlugin(Draggable);
 gsap.registerPlugin(InertiaPlugin);
+gsap.registerPlugin(ScrollTrigger);
 
 export default function PagesLayout({
   children,

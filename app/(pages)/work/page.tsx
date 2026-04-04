@@ -82,6 +82,45 @@ const WorkPage = () => {
         }
       }
 
+      // Type "OPEN TO:" into offer text
+      const offerTextEl = document.querySelector(".offer__text") as HTMLElement;
+      let offerText = "";
+      for (const char of "OPEN TO:") {
+        const next = offerText + char;
+        tl.call(
+          () => {
+            offerTextEl.textContent = next;
+          },
+          undefined,
+          `+=${CHAR_TYPE_SPEED}`,
+        );
+        offerText = next;
+      }
+
+      tl.to({}, { duration: 0.3 });
+
+      // Type "OFFERS" into offer value (before the blinker)
+      const offerValueEl = document.querySelector(
+        ".offer__value",
+      ) as HTMLElement;
+      const offerBlinker = offerValueEl.querySelector(
+        ".offer__value-blinker",
+      ) as HTMLElement;
+      const offerTextNode = document.createTextNode("");
+      offerValueEl.insertBefore(offerTextNode, offerBlinker);
+
+      let offersText = "";
+      for (const char of "OFFERS") {
+        const next = offersText + char;
+        tl.call(
+          () => {
+            offerTextNode.textContent = next;
+          },
+          undefined,
+          `+=${CHAR_TYPE_SPEED}`,
+        );
+        offersText = next;
+      }
 
       return tl;
     }
@@ -155,7 +194,7 @@ const WorkPage = () => {
             <div className="offer">
               <span className="offer__text"></span>
               <span className="offer__value">
-                OFFERS<span className="offer__value-blinker">_</span>
+                <span className="offer__value-blinker">_</span>
               </span>
             </div>
             <div className="progress">

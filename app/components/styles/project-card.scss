@@ -1,5 +1,6 @@
 .project-card {
   position: absolute;
+  pointer-events: none;
   width: 200px;
   aspect-ratio: 200 / 180;
   padding: 8px;

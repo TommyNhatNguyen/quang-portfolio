@@ -37,19 +37,31 @@ const CHAR_DELETE_SPEED = 0.015;
 
 const WorkPage = () => {
   useGSAP(() => {
-    gsap.set(".work-container", { visibility: "visible" });
+    gsap.set(".work-container", { opacity: 0, visibility: "visible" });
     gsap.set(".work-list", { top: "100%" });
+    gsap.set(".work-content__info-title", { opacity: 0 });
+    gsap.set(".avatar-card", { visibility: "visible", opacity: 0 });
+    gsap.set(".work-content__info-tags", { opacity: 0 });
 
-    // Typing animation
-    const titleEl = document.querySelector(
-      ".work-content__info-title",
-    ) as HTMLElement;
-    const cursorEl = titleEl.querySelector(".cursor") as HTMLElement;
+    // --- Measurements ---
+    const containerHeight = document
+      .querySelector(".work-container")!
+      .getBoundingClientRect().height;
+    const listEl = document.querySelector(".work-list") as HTMLElement;
+    const fifthItem = document.querySelectorAll(".work-list__item")[4];
+    const fiveItemsHeight =
+      fifthItem.getBoundingClientRect().bottom -
+      listEl.getBoundingClientRect().top;
+    const targetTop = containerHeight - 64 - fiveItemsHeight;
 
-    function buildTypingTimeline() {
+    // --- Title typing builder ---
+    function buildTitleTyping() {
+      const titleEl = document.querySelector(
+        ".work-content__info-title",
+      ) as HTMLElement;
+      const cursorEl = titleEl.querySelector(".cursor") as HTMLElement;
       const tl = gsap.timeline();
       let currentText = "";
-      // Insert a text node before the cursor
       const textNode = document.createTextNode("");
       titleEl.insertBefore(textNode, cursorEl);
 
@@ -58,21 +70,13 @@ const WorkPage = () => {
       }
 
       for (const step of TYPING_SEQUENCE) {
-        // Type characters one by one
         for (const char of step.text) {
           const nextText = currentText + char;
           tl.call(() => setText(nextText), undefined, `+=${CHAR_TYPE_SPEED}`);
           currentText = nextText;
         }
-
         if (step.deleteCount === 0) break;
-
-        // Pause after typing
-        if (step.pauseAfter > 0) {
-          tl.to({}, { duration: step.pauseAfter });
-        }
-
-        // Delete characters
+        if (step.pauseAfter > 0) tl.to({}, { duration: step.pauseAfter });
         const deleteCount =
           step.deleteCount === "all" ? currentText.length : step.deleteCount;
         for (let i = 0; i < deleteCount; i++) {
@@ -81,8 +85,13 @@ const WorkPage = () => {
           tl.call(() => setText(snapshot), undefined, `+=${CHAR_DELETE_SPEED}`);
         }
       }
+      return tl;
+    }
 
-      // Type "OPEN TO:" into offer text
+    // --- Offer typing builder ---
+    function buildOfferTyping() {
+      const tl = gsap.timeline();
+
       const offerTextEl = document.querySelector(".offer__text") as HTMLElement;
       let offerText = "";
       for (const char of "OPEN TO:") {
@@ -99,7 +108,6 @@ const WorkPage = () => {
 
       tl.to({}, { duration: 0.3 });
 
-      // Type "OFFERS" into offer value (before the blinker)
       const offerValueEl = document.querySelector(
         ".offer__value",
       ) as HTMLElement;
@@ -121,30 +129,30 @@ const WorkPage = () => {
         );
         offersText = next;
       }
-
       return tl;
     }
 
-    buildTypingTimeline();
+    // --- Master timeline ---
+    const master = gsap.timeline({ onComplete: setupScroll });
 
-    const containerHeight = document
-      .querySelector(".work-container")!
-      .getBoundingClientRect().height;
-    const listEl = document.querySelector(".work-list") as HTMLElement;
-    const fifthItem = document.querySelectorAll(".work-list__item")[4];
-    const fiveItemsHeight =
-      fifthItem.getBoundingClientRect().bottom -
-      listEl.getBoundingClientRect().top;
-    const targetTop = containerHeight - 64 - fiveItemsHeight;
+    // (1) Work-list: fade in + slide up + item text typing
 
-    const slideTl = gsap.timeline({ onComplete: setupScroll });
-
-    slideTl
-      .to(".work-list", {
-        top: targetTop,
-        duration: 1.8,
-        ease: "power3.out",
+    master
+      .to(".work-container", {
+        opacity: 1,
+        duration: 0.4,
+        ease: "power2.out",
       })
+      .to(
+        ".work-list",
+        {
+          top: targetTop,
+          opacity: 1,
+          duration: 1.8,
+          ease: "power3.out",
+        },
+        "<",
+      )
       .to(
         ".work-list__item-info .title",
         { text: "Title", duration: 0.4, ease: "none" },
@@ -152,11 +160,7 @@ const WorkPage = () => {
       )
       .to(
         ".work-list__item-info .description__text:first-child",
-        {
-          text: "Defi_Interface",
-          duration: 0.6,
-          ease: "none",
-        },
+        { text: "Defi_Interface", duration: 0.6, ease: "none" },
         "<",
       )
       .to(
@@ -169,6 +173,42 @@ const WorkPage = () => {
         { text: "2024", duration: 0.3, ease: "none" },
         "<",
       );
+
+    // (2) Title: fade in + typing animation
+    master
+      .to(".work-content__info-title", {
+        opacity: 1,
+        duration: 0.4,
+        ease: "power2.out",
+      })
+      .add(buildTitleTyping());
+
+    // (3) Avatar card: fade in
+    master.to(".avatar-card", {
+      opacity: 1,
+      duration: 0.6,
+      ease: "power2.out",
+    });
+
+    // (4) Tags: fade in + offer typing + progress bar
+    master
+      .to(".work-content__info-tags", {
+        opacity: 1,
+        duration: 0.4,
+        ease: "power2.out",
+      })
+      .add(buildOfferTyping())
+      .from(".progress", {
+        width: "0%",
+        minWidth: "0",
+        duration: 0.6,
+        ease: "power2.out",
+      })
+      .from(".progress__bar", {
+        width: "0%",
+        duration: 0.8,
+        ease: "power2.out",
+      });
 
     function setupScroll() {
       const container = document.querySelector(
@@ -194,7 +234,7 @@ const WorkPage = () => {
             start: "top top",
             end: `+=${scrollDistance}`,
             pin: true,
-            scrub: true,
+            scrub: 0.5,
           },
         });
       }

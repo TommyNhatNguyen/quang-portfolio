@@ -116,6 +116,14 @@
         font-size: var(--mono-heading3-desktop);
         color: var(--greyscale-900);
       }
+      .description {
+        position: absolute;
+        flex: 1;
+        right: 0;
+        min-width: 300px;
+        text-align: left;
+        text-wrap: nowrap;
+      }
     }
   }
 }

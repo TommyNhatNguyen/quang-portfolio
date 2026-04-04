@@ -137,12 +137,38 @@ const WorkPage = () => {
       listEl.getBoundingClientRect().top;
     const targetTop = containerHeight - 64 - fiveItemsHeight;
 
-    gsap.to(".work-list", {
-      top: targetTop,
-      duration: 1.8,
-      ease: "power3.out",
-      onComplete: setupScroll,
-    });
+    const slideTl = gsap.timeline({ onComplete: setupScroll });
+
+    slideTl
+      .to(".work-list", {
+        top: targetTop,
+        duration: 1.8,
+        ease: "power3.out",
+      })
+      .to(
+        ".work-list__item-info .title",
+        { text: "Title", duration: 0.4, ease: "none" },
+        0.6,
+      )
+      .to(
+        ".work-list__item-info .description__text:first-child",
+        {
+          text: "Defi_Interface",
+          duration: 0.6,
+          ease: "none",
+        },
+        "<",
+      )
+      .to(
+        ".work-list__item-info .description__separator",
+        { text: " | ", duration: 0.1, ease: "none" },
+        "<",
+      )
+      .to(
+        ".work-list__item-info .description__text:last-child",
+        { text: "2024", duration: 0.3, ease: "none" },
+        "<",
+      );
 
     function setupScroll() {
       const container = document.querySelector(
@@ -222,11 +248,11 @@ const WorkPage = () => {
                 height={130}
               />
               <div className="work-list__item-info">
-                <h2 className="title">Title</h2>
+                <h2 className="title"></h2>
                 <div className="description">
-                  <span className="description__text">Defi_Interface</span>
-                  <span className="description__separator"> | </span>
-                  <span className="description__text">2024</span>
+                  <span className="description__text"></span>
+                  <span className="description__separator"></span>
+                  <span className="description__text"></span>
                 </div>
               </div>
             </Link>

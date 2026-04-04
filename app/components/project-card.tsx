@@ -42,7 +42,7 @@ function ProjectCard(props: Props) {
         </div>
       </div>
       {/* Sticker */}
-      <div className="avatar-card__sticker">
+      <div className="project-card__sticker">
         <div className="blur"></div>
       </div>
     </div>

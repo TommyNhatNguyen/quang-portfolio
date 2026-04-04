@@ -8,6 +8,7 @@ import gsap from "gsap";
 import { TextPlugin } from "gsap/TextPlugin";
 import Image from "next/image";
 import Link from "next/link";
+import { Fragment } from "react/jsx-runtime";
 
 gsap.registerPlugin(TextPlugin);
 
@@ -200,31 +201,73 @@ const WorkPage = () => {
         ease: "power2.out",
       })
       .add(buildOfferTyping())
-      .from(".progress", {
+      .from(".work-content__info-tags .progress", {
         width: "0%",
         minWidth: "0",
         duration: 0.6,
         ease: "power2.out",
       })
-      .from(".progress__bar", {
+      .from(".work-content__info-tags .progress__bar", {
         width: "0%",
         duration: 0.8,
         ease: "power2.out",
       });
 
-    // --- Hover: fade description out, icon in (works during scroll too) ---
+    // --- Position project cards centered on their peer item ---
     const items = gsap.utils.toArray<HTMLElement>(".work-list__item");
+    const cards = gsap.utils.toArray<HTMLElement>(".project-card");
+    const listRect = listEl.getBoundingClientRect();
+
+    items.forEach((item, i) => {
+      const card = cards[i];
+      if (!card) return;
+      const itemRect = item.getBoundingClientRect();
+      const cardW = card.offsetWidth;
+      const cardH = card.offsetHeight;
+      // Center card on item, relative to .work-list
+      const top =
+        itemRect.top +
+        (itemRect.height + 50) -
+        listRect.top +
+        (itemRect.height - cardH) / 2;
+      const left = itemRect.left - listRect.left + (itemRect.width - cardW) / 2;
+      gsap.set(card, { top, left });
+    });
+
+    // --- Hover: fade description out, icon in (works during scroll too) ---
     items.forEach((item) => {
       const desc = item.querySelector(".description") as HTMLElement;
       const icon = item.querySelector(".icon") as HTMLElement;
-
+      const itemRect = item.getBoundingClientRect();
+      const card = item.nextElementSibling as HTMLElement;
+      const cardRect = card.getBoundingClientRect();
+      const cardH = cardRect.height;
+      const cardTop =
+        itemRect.top - 25 - listRect.top + (itemRect.height - cardH);
+      const cardInitialTop =
+        itemRect.top +
+        itemRect.height * 1.25 -
+        listRect.top +
+        (itemRect.height - cardH) / 2;
       item.addEventListener("mouseenter", () => {
+        gsap.to(card, {
+          top: cardTop,
+          rotateZ: 8,
+          duration: 0.3,
+          ease: "power2.out",
+        });
         gsap.to(item, { y: -6, duration: 0.3, ease: "power2.out" });
         gsap.to(desc, { opacity: 0, duration: 0.3, ease: "power2.out" });
         gsap.to(icon, { opacity: 1, duration: 0.3, ease: "power2.out" });
       });
 
       item.addEventListener("mouseleave", () => {
+        gsap.to(card, {
+          top: cardInitialTop,
+          rotateZ: 0,
+          duration: 0.3,
+          ease: "power2.out",
+        });
         gsap.to(item, { y: 0, duration: 0.3, ease: "power2.out" });
         gsap.to(desc, { opacity: 1, duration: 0.3, ease: "power2.out" });
         gsap.to(icon, { opacity: 0, duration: 0.3, ease: "power2.out" });
@@ -261,32 +304,34 @@ const WorkPage = () => {
     });
 
     function setupScroll() {
-      const container = document.querySelector(
-        ".work-container",
-      ) as HTMLElement;
-      const lastItem = document.querySelector(
-        ".work-list__item:last-child",
-      ) as HTMLElement;
+      const allItems = document.querySelectorAll(".work-list__item");
+      const firstItem = allItems[0] as HTMLElement;
+      const lastItem = allItems[allItems.length - 1] as HTMLElement;
+      const footerTop = document
+        .querySelector(".folder-footer")!
+        .getBoundingClientRect().top;
 
-      if (container && lastItem) {
-        const lastItemRect = lastItem.getBoundingClientRect();
-        const footerTop = document
-          .querySelector(".folder-footer")!
-          .getBoundingClientRect().top;
-        const scrollDistance = lastItemRect.bottom - footerTop - 10;
+      if (firstItem && lastItem) {
+        const totalHeight =
+          lastItem.getBoundingClientRect().bottom -
+          firstItem.getBoundingClientRect().top;
+        const visibleHeight = footerTop - firstItem.getBoundingClientRect().top;
+        const scrollDistance = totalHeight - visibleHeight;
 
-        gsap.to(".work-list", {
-          y: -scrollDistance,
-          ease: "none",
-          scrollTrigger: {
-            trigger: ".work-container",
-            scroller: ".folder-content",
-            start: "top top",
-            end: `+=${scrollDistance}`,
-            pin: true,
-            scrub: 0.5,
-          },
-        });
+        if (scrollDistance > 0) {
+          gsap.to(".work-list", {
+            y: -scrollDistance,
+            ease: "none",
+            scrollTrigger: {
+              trigger: ".work-container",
+              scroller: ".folder-content",
+              start: "top top",
+              end: `+=${scrollDistance}`,
+              pin: true,
+              scrub: 0.5,
+            },
+          });
+        }
       }
     }
   });
@@ -322,34 +367,39 @@ const WorkPage = () => {
       <div className="work-list">
         {Array.from({ length: 30 }).map((_, index) => {
           return (
-            <Link
-              key={index}
-              href={`/work/${index + 1}`}
-              className="work-list__item"
-              style={{
-                position: "relative",
-                top: index != 0 ? `-${index * 30}px` : 0,
-              }}
-            >
-              <Image
-                src={`/images/frame-${(index % 5) + 1}.png`}
-                alt="work-1"
-                width={1500}
-                height={130}
+            <Fragment key={index}>
+              <Link
+                href={`/work/${index + 1}`}
+                className="work-list__item"
+                style={{
+                  position: "relative",
+                  top: index != 0 ? `-${index * 30}px` : 0,
+                }}
+              >
+                <Image
+                  src={`/images/frame-${(index % 5) + 1}.png`}
+                  alt="work-1"
+                  width={1500}
+                  height={130}
+                />
+                <div className="work-list__item-info">
+                  <h2 className="title"></h2>
+                  <div className="description">
+                    <span className="description__text"></span>
+                    <span className="description__separator"></span>
+                    <span className="description__text"></span>
+                  </div>
+                  <div className="icon">
+                    <RiArrowRightUpLine size={24} />
+                  </div>
+                </div>
+              </Link>
+              <ProjectCard
+                style={{
+                  position: "absolute",
+                }}
               />
-              <div className="work-list__item-info">
-                <h2 className="title"></h2>
-                <div className="description">
-                  <span className="description__text"></span>
-                  <span className="description__separator"></span>
-                  <span className="description__text"></span>
-                </div>
-                <div className="icon">
-                  <RiArrowRightUpLine size={24} />
-                </div>
-              </div>
-              {index === 0 && <ProjectCard />}
-            </Link>
+            </Fragment>
           );
         })}
       </div>

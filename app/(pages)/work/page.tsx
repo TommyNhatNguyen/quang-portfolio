@@ -9,15 +9,84 @@ import Link from "next/link";
 
 gsap.registerPlugin(TextPlugin);
 
-const TITLE_TEXT =
-  "Translating complex protocols into functional interfaces. Focused on utility, structure, and user autonomy.";
+const TYPING_SEQUENCE: {
+  text: string;
+  pauseAfter: number;
+  deleteCount: number | "all";
+}[] = [
+  { text: "Hello", pauseAfter: 1, deleteCount: "all" },
+  {
+    text: "I am Quang Laam.",
+    pauseAfter: 0.5,
+    deleteCount: "am Quang Laam.".length,
+  },
+  {
+    text: "design functional systems.",
+    pauseAfter: 0.5,
+    deleteCount: " I design functional systems".length,
+  },
+  {
+    text: "Translating complex protocols into functional interfaces.",
+    pauseAfter: 0,
+    deleteCount: 0,
+  },
+];
 
-let hasAnimated = false;
+const CHAR_TYPE_SPEED = 0.04;
+const CHAR_DELETE_SPEED = 0.015;
 
 const WorkPage = () => {
   useGSAP(() => {
     gsap.set(".work-container", { visibility: "visible" });
     gsap.set(".work-list", { top: "100%" });
+
+    // Typing animation
+    const titleEl = document.querySelector(
+      ".work-content__info-title",
+    ) as HTMLElement;
+    const cursorEl = titleEl.querySelector(".cursor") as HTMLElement;
+
+    function buildTypingTimeline() {
+      const tl = gsap.timeline();
+      let currentText = "";
+      // Insert a text node before the cursor
+      const textNode = document.createTextNode("");
+      titleEl.insertBefore(textNode, cursorEl);
+
+      function setText(val: string) {
+        textNode.textContent = val;
+      }
+
+      for (const step of TYPING_SEQUENCE) {
+        // Type characters one by one
+        for (const char of step.text) {
+          const nextText = currentText + char;
+          tl.call(() => setText(nextText), undefined, `+=${CHAR_TYPE_SPEED}`);
+          currentText = nextText;
+        }
+
+        if (step.deleteCount === 0) break;
+
+        // Pause after typing
+        if (step.pauseAfter > 0) {
+          tl.to({}, { duration: step.pauseAfter });
+        }
+
+        // Delete characters
+        const deleteCount =
+          step.deleteCount === "all" ? currentText.length : step.deleteCount;
+        for (let i = 0; i < deleteCount; i++) {
+          currentText = currentText.slice(0, -1);
+          const snapshot = currentText;
+          tl.call(() => setText(snapshot), undefined, `+=${CHAR_DELETE_SPEED}`);
+        }
+      }
+
+
+      return tl;
+    }
+
+    buildTypingTimeline();
 
     const containerHeight = document
       .querySelector(".work-container")!
@@ -60,8 +129,7 @@ const WorkPage = () => {
             start: "top top",
             end: `+=${scrollDistance}`,
             pin: true,
-            scrub: 1.5,
-            markers: true,
+            scrub: true,
           },
         });
       }
@@ -80,10 +148,12 @@ const WorkPage = () => {
           height={1200}
         />
         <div className="work-content__info">
-          <h1 className="work-content__info-title">&nbsp;</h1>
+          <h1 className="work-content__info-title">
+            <span className="cursor">_</span>
+          </h1>
           <div className="work-content__info-tags">
             <div className="offer">
-              <span className="offer__text">OPEN TO:</span>
+              <span className="offer__text"></span>
               <span className="offer__value">
                 OFFERS<span className="offer__value-blinker">_</span>
               </span>

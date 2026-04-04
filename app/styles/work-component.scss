@@ -39,6 +39,10 @@
       font-weight: normal;
       font-size: var(--greyscale-900);
       max-width: 410px;
+      .cursor {
+        display: inline;
+        animation: blink 0.8s step-end infinite;
+      }
     }
     &-tags {
       .offer {

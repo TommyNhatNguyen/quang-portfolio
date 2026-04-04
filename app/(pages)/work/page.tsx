@@ -2,6 +2,7 @@
 
 import "@/app/styles/work-component.scss";
 import { useGSAP } from "@gsap/react";
+import { RiArrowRightUpLine } from "@remixicon/react";
 import gsap from "gsap";
 import { TextPlugin } from "gsap/TextPlugin";
 import Image from "next/image";
@@ -293,6 +294,9 @@ const WorkPage = () => {
                   <span className="description__text"></span>
                   <span className="description__separator"></span>
                   <span className="description__text"></span>
+                </div>
+                <div className="icon">
+                  <RiArrowRightUpLine />
                 </div>
               </div>
             </Link>

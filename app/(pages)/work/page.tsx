@@ -1,5 +1,6 @@
 "use client";
 
+import ProjectCard from "@/app/components/project-card";
 import "@/app/styles/work-component.scss";
 import { useGSAP } from "@gsap/react";
 import { RiArrowRightUpLine } from "@remixicon/react";
@@ -347,6 +348,7 @@ const WorkPage = () => {
                   <RiArrowRightUpLine size={24} />
                 </div>
               </div>
+              {index === 0 && <ProjectCard />}
             </Link>
           );
         })}

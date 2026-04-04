@@ -211,6 +211,52 @@ const WorkPage = () => {
         ease: "power2.out",
       });
 
+    // --- Hover: fade description out, icon in (works during scroll too) ---
+    const items = gsap.utils.toArray<HTMLElement>(".work-list__item");
+    items.forEach((item) => {
+      const desc = item.querySelector(".description") as HTMLElement;
+      const icon = item.querySelector(".icon") as HTMLElement;
+
+      item.addEventListener("mouseenter", () => {
+        gsap.to(desc, { opacity: 0, duration: 0.3, ease: "power2.out" });
+        gsap.to(icon, { opacity: 1, duration: 0.3, ease: "power2.out" });
+      });
+
+      item.addEventListener("mouseleave", () => {
+        gsap.to(desc, { opacity: 1, duration: 0.3, ease: "power2.out" });
+        gsap.to(icon, { opacity: 0, duration: 0.3, ease: "power2.out" });
+      });
+    });
+
+    // Track hover during scroll — when an item scrolls under the cursor
+    const scroller = document.querySelector(".folder-content") as HTMLElement;
+    let hoveredItem: HTMLElement | null = null;
+
+    scroller.addEventListener("scroll", () => {
+      const mouseX = (window as any).__mouseX ?? 0;
+      const mouseY = (window as any).__mouseY ?? 0;
+      const elUnderCursor = document.elementFromPoint(mouseX, mouseY);
+      console.log("🚀 ~ WorkPage ~ elUnderCursor:", elUnderCursor);
+      const itemUnderCursor = elUnderCursor?.closest(
+        ".work-list__item",
+      ) as HTMLElement | null;
+
+      if (itemUnderCursor !== hoveredItem) {
+        if (hoveredItem) {
+          hoveredItem.dispatchEvent(new MouseEvent("mouseleave"));
+        }
+        hoveredItem = itemUnderCursor;
+        if (hoveredItem) {
+          hoveredItem.dispatchEvent(new MouseEvent("mouseenter"));
+        }
+      }
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      (window as any).__mouseX = e.clientX;
+      (window as any).__mouseY = e.clientY;
+    });
+
     function setupScroll() {
       const container = document.querySelector(
         ".work-container",
@@ -296,7 +342,7 @@ const WorkPage = () => {
                   <span className="description__text"></span>
                 </div>
                 <div className="icon">
-                  <RiArrowRightUpLine />
+                  <RiArrowRightUpLine size={24} />
                 </div>
               </div>
             </Link>

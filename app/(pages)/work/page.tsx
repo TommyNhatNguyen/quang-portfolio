@@ -218,11 +218,13 @@ const WorkPage = () => {
       const icon = item.querySelector(".icon") as HTMLElement;
 
       item.addEventListener("mouseenter", () => {
+        gsap.to(item, { y: -6, duration: 0.3, ease: "power2.out" });
         gsap.to(desc, { opacity: 0, duration: 0.3, ease: "power2.out" });
         gsap.to(icon, { opacity: 1, duration: 0.3, ease: "power2.out" });
       });
 
       item.addEventListener("mouseleave", () => {
+        gsap.to(item, { y: 0, duration: 0.3, ease: "power2.out" });
         gsap.to(desc, { opacity: 1, duration: 0.3, ease: "power2.out" });
         gsap.to(icon, { opacity: 0, duration: 0.3, ease: "power2.out" });
       });

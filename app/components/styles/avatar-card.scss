@@ -1,10 +1,11 @@
+@use "@/app/styles/mixins" as *;
 .avatar-card {
   visibility: hidden;
   position: absolute;
   right: 0;
   z-index: 100;
-  width: 207px;
-  aspect-ratio: 207 / 310;
+  width: clamp(100px, 15vw, 207px);
+  aspect-ratio: clamp(100px, 15vw, 207px) / clamp(135px, 22vw, 310px);
   transform: rotateZ(5deg);
   box-shadow: 8px 12 8px -5px rgba(0, 0, 0, 0.15);
   -webkit-box-shadow: 8px 12 8px -5px rgba(0, 0, 0, 0.15);
@@ -20,6 +21,7 @@
       height: 100%;
       width: 100%;
       object-fit: cover;
+      object-position: center;
     }
   }
   &__content {
@@ -49,24 +51,24 @@
     }
     &-name {
       z-index: 1;
-      font-size: var(--body-s-medium);
+      font-size: clamp(0.9rem, 1vw, var(--mono-xxs-light));
       font-family: var(--ff-gs);
       font-weight: 500;
       line-height: normal;
     }
     &-title {
       z-index: 1;
-      font-size: var(--mono-xxs-light);
+      font-size: clamp(0.6rem, 1vw, var(--mono-xxs-light));
       font-weight: lighter;
       line-height: normal;
     }
   }
   &__sticker {
-    height: 30px;
-    width: 62px;
+    height: clamp(14px, 3vw, 30px);
+    width: clamp(28px, 6vw, 62px);
     position: absolute;
-    top: -14px;
-    right: -20px;
+    top: clamp(-8px, -1.5vw, -14px);
+    right: clamp(-12px, -2vw, -20px);
     background: linear-gradient(
       155deg,
       rgba(255, 255, 255, 0.4) 0%,
@@ -89,6 +91,17 @@
       background: rgba(255, 255, 255, 0.25);
       border: 2px solid rgba(255, 255, 255, 0.2);
       filter: blur(1.92);
+    }
+  }
+}
+
+@include mobile-breakpoint {
+  .avatar-card {
+    padding: 4px;
+    &__content {
+      &-bg {
+        background-position: center 3.3em;
+      }
     }
   }
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import Frame from "@/app/components/icons/frame";
 import ProjectCard from "@/app/components/project-card";
 import "@/app/styles/work-component.scss";
 import { useGSAP } from "@gsap/react";
@@ -41,9 +42,18 @@ const TYPING_SEQUENCE: {
 const CHAR_TYPE_SPEED = 0.04;
 const CHAR_DELETE_SPEED = 0.015;
 
+function getContrastColor(hex: string): string {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  // W3C relative luminance formula
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return luminance > 0.5 ? "#000000" : "#FFFFFF";
+}
+
 const WorkPage = () => {
   useGSAP(() => {
-    // --- Measurements ---
+    // --- Shared measurements & helpers ---
     const containerHeight = document
       .querySelector(".work-container")!
       .getBoundingClientRect().height;
@@ -54,22 +64,27 @@ const WorkPage = () => {
       listEl.getBoundingClientRect().top;
     const targetTop = containerHeight - 64 - fiveItemsHeight;
 
-    if (hasAnimated) {
-      // Skip animation, just restore final state
+    function restoreFinalState() {
       gsap.set(".work-container", { opacity: 1, visibility: "visible" });
       gsap.set(".work-list", { top: targetTop, opacity: 1 });
       gsap.set(".work-content__info-title", { opacity: 1 });
       gsap.set(".work-content__info-tags", { opacity: 1 });
 
-      // Restore final text content
       const titleEl = document.querySelector(
         ".work-content__info-title",
       ) as HTMLElement;
       const cursorEl = titleEl.querySelector(".cursor") as HTMLElement;
-      const textNode = document.createTextNode(
-        TYPING_SEQUENCE[TYPING_SEQUENCE.length - 1].text,
+      const hasTextNode = Array.from(titleEl.childNodes).some(
+        (n) => n.nodeType === Node.TEXT_NODE && n.textContent?.trim(),
       );
-      titleEl.insertBefore(textNode, cursorEl);
+      if (!hasTextNode) {
+        titleEl.insertBefore(
+          document.createTextNode(
+            TYPING_SEQUENCE[TYPING_SEQUENCE.length - 1].text,
+          ),
+          cursorEl,
+        );
+      }
 
       document
         .querySelectorAll(".work-list__item-info .title")
@@ -95,180 +110,208 @@ const WorkPage = () => {
         });
 
       const offerTextEl = document.querySelector(".offer__text") as HTMLElement;
-      offerTextEl.textContent = "OPEN TO:";
+      if (!offerTextEl.textContent) offerTextEl.textContent = "OPEN TO:";
       const offerValueEl = document.querySelector(
         ".offer__value",
       ) as HTMLElement;
       const offerBlinker = offerValueEl.querySelector(
         ".offer__value-blinker",
       ) as HTMLElement;
-      offerValueEl.insertBefore(
-        document.createTextNode("OFFERS"),
-        offerBlinker,
-      );
+      if (offerValueEl.childNodes.length <= 1) {
+        offerValueEl.insertBefore(
+          document.createTextNode("OFFERS"),
+          offerBlinker,
+        );
+      }
+    }
 
+    const mm = gsap.matchMedia();
+
+    // --- Mobile: no animation, show final state ---
+    mm.add("(max-width: 768px)", () => {
+      restoreFinalState();
+      // Hide cursor on mobile
+      const cursor = document.querySelector(
+        ".work-content__info-title .cursor",
+      ) as HTMLElement;
+      if (cursor) cursor.style.display = "none";
       setupScroll();
       setupHover(listEl);
-      return;
-    }
-    hasAnimated = true;
+    });
 
-    gsap.set(".work-container", { opacity: 0, visibility: "visible" });
-    gsap.set(".work-list", { top: "100%" });
-    gsap.set(".work-content__info-title", { opacity: 0 });
-    gsap.set(".work-content__info-tags", { opacity: 0 });
-
-    // --- Title typing builder ---
-    function buildTitleTyping() {
-      const titleEl = document.querySelector(
-        ".work-content__info-title",
-      ) as HTMLElement;
-      const cursorEl = titleEl.querySelector(".cursor") as HTMLElement;
-      const tl = gsap.timeline();
-      let currentText = "";
-      const textNode = document.createTextNode("");
-      titleEl.insertBefore(textNode, cursorEl);
-
-      function setText(val: string) {
-        textNode.textContent = val;
+    // --- Desktop: full animation ---
+    mm.add("(min-width: 769px)", () => {
+      if (hasAnimated) {
+        restoreFinalState();
+        setupScroll();
+        setupHover(listEl);
+        return;
       }
+      hasAnimated = true;
 
-      for (const step of TYPING_SEQUENCE) {
-        for (const char of step.text) {
-          const nextText = currentText + char;
-          tl.call(() => setText(nextText), undefined, `+=${CHAR_TYPE_SPEED}`);
-          currentText = nextText;
+      gsap.set(".work-container", { opacity: 0, visibility: "visible" });
+      gsap.set(".work-list", { top: "100%" });
+      gsap.set(".work-content__info-title", { opacity: 0 });
+      gsap.set(".work-content__info-tags", { opacity: 0 });
+
+      // --- Title typing builder ---
+      function buildTitleTyping() {
+        const titleEl = document.querySelector(
+          ".work-content__info-title",
+        ) as HTMLElement;
+        const cursorEl = titleEl.querySelector(".cursor") as HTMLElement;
+        const tl = gsap.timeline();
+        let currentText = "";
+        const textNode = document.createTextNode("");
+        titleEl.insertBefore(textNode, cursorEl);
+
+        function setText(val: string) {
+          textNode.textContent = val;
         }
-        if (step.deleteCount === 0) break;
-        if (step.pauseAfter > 0) tl.to({}, { duration: step.pauseAfter });
-        const deleteCount =
-          step.deleteCount === "all" ? currentText.length : step.deleteCount;
-        for (let i = 0; i < deleteCount; i++) {
-          currentText = currentText.slice(0, -1);
-          const snapshot = currentText;
-          tl.call(() => setText(snapshot), undefined, `+=${CHAR_DELETE_SPEED}`);
+
+        for (const step of TYPING_SEQUENCE) {
+          for (const char of step.text) {
+            const nextText = currentText + char;
+            tl.call(() => setText(nextText), undefined, `+=${CHAR_TYPE_SPEED}`);
+            currentText = nextText;
+          }
+          if (step.deleteCount === 0) break;
+          if (step.pauseAfter > 0) tl.to({}, { duration: step.pauseAfter });
+          const deleteCount =
+            step.deleteCount === "all" ? currentText.length : step.deleteCount;
+          for (let i = 0; i < deleteCount; i++) {
+            currentText = currentText.slice(0, -1);
+            const snapshot = currentText;
+            tl.call(
+              () => setText(snapshot),
+              undefined,
+              `+=${CHAR_DELETE_SPEED}`,
+            );
+          }
         }
-      }
-      return tl;
-    }
-
-    // --- Offer typing builder ---
-    function buildOfferTyping() {
-      const tl = gsap.timeline();
-
-      const offerTextEl = document.querySelector(".offer__text") as HTMLElement;
-      let offerText = "";
-      for (const char of "OPEN TO:") {
-        const next = offerText + char;
-        tl.call(
-          () => {
-            offerTextEl.textContent = next;
-          },
-          undefined,
-          `+=${CHAR_TYPE_SPEED}`,
-        );
-        offerText = next;
+        return tl;
       }
 
-      tl.to({}, { duration: 0.3 });
+      // --- Offer typing builder ---
+      function buildOfferTyping() {
+        const tl = gsap.timeline();
 
-      const offerValueEl = document.querySelector(
-        ".offer__value",
-      ) as HTMLElement;
-      const offerBlinker = offerValueEl.querySelector(
-        ".offer__value-blinker",
-      ) as HTMLElement;
-      const offerTextNode = document.createTextNode("");
-      offerValueEl.insertBefore(offerTextNode, offerBlinker);
+        const offerTextEl = document.querySelector(
+          ".offer__text",
+        ) as HTMLElement;
+        let offerText = "";
+        for (const char of "OPEN TO:") {
+          const next = offerText + char;
+          tl.call(
+            () => {
+              offerTextEl.textContent = next;
+            },
+            undefined,
+            `+=${CHAR_TYPE_SPEED}`,
+          );
+          offerText = next;
+        }
 
-      let offersText = "";
-      for (const char of "OFFERS") {
-        const next = offersText + char;
-        tl.call(
-          () => {
-            offerTextNode.textContent = next;
-          },
-          undefined,
-          `+=${CHAR_TYPE_SPEED}`,
-        );
-        offersText = next;
+        tl.to({}, { duration: 0.3 });
+
+        const offerValueEl = document.querySelector(
+          ".offer__value",
+        ) as HTMLElement;
+        const offerBlinker = offerValueEl.querySelector(
+          ".offer__value-blinker",
+        ) as HTMLElement;
+        const offerTextNode = document.createTextNode("");
+        offerValueEl.insertBefore(offerTextNode, offerBlinker);
+
+        let offersText = "";
+        for (const char of "OFFERS") {
+          const next = offersText + char;
+          tl.call(
+            () => {
+              offerTextNode.textContent = next;
+            },
+            undefined,
+            `+=${CHAR_TYPE_SPEED}`,
+          );
+          offersText = next;
+        }
+        return tl;
       }
-      return tl;
-    }
 
-    // --- Master timeline ---
-    const master = gsap.timeline();
+      // --- Master timeline ---
+      const master = gsap.timeline();
 
-    // (1) Work-list: fade in + slide up + item text typing
+      // (1) Work-list: fade in + slide up + item text typing
 
-    master
-      .to(".work-container", {
-        opacity: 1,
-        duration: 0.4,
-        ease: "power2.out",
-      })
-      .to(
-        ".work-list",
-        {
-          top: targetTop,
+      master
+        .to(".work-container", {
           opacity: 1,
-          duration: 1.8,
-          ease: "power3.out",
-          onComplete: setupScroll,
-        },
-        "<",
-      )
-      .to(
-        ".work-list__item-info .title",
-        { text: "Title", duration: 0.4, ease: "none" },
-        0.6,
-      )
-      .to(
-        ".work-list__item-info .description__text:first-child",
-        { text: "Defi_Interface", duration: 0.6, ease: "none" },
-        "<",
-      )
-      .to(
-        ".work-list__item-info .description__separator",
-        { text: " | ", duration: 0.1, ease: "none" },
-        "<",
-      )
-      .to(
-        ".work-list__item-info .description__text:last-child",
-        { text: "2024", duration: 0.3, ease: "none" },
-        "<",
-      );
+          duration: 0.4,
+          ease: "power2.out",
+        })
+        .to(
+          ".work-list",
+          {
+            top: targetTop,
+            opacity: 1,
+            duration: 1.8,
+            ease: "power3.out",
+            onComplete: setupScroll,
+          },
+          "<",
+        )
+        .to(
+          ".work-list__item-info .title",
+          { text: "Title", duration: 0.4, ease: "none" },
+          0.6,
+        )
+        .to(
+          ".work-list__item-info .description__text:first-child",
+          { text: "Defi_Interface", duration: 0.6, ease: "none" },
+          "<",
+        )
+        .to(
+          ".work-list__item-info .description__separator",
+          { text: " | ", duration: 0.1, ease: "none" },
+          "<",
+        )
+        .to(
+          ".work-list__item-info .description__text:last-child",
+          { text: "2024", duration: 0.3, ease: "none" },
+          "<",
+        );
 
-    // (2) Title: fade in + typing animation
-    master
-      .to(".work-content__info-title", {
-        opacity: 1,
-        duration: 0.4,
-        ease: "power2.out",
-      })
-      .add(buildTitleTyping());
+      // (2) Title: fade in + typing animation
+      master
+        .to(".work-content__info-title", {
+          opacity: 1,
+          duration: 0.4,
+          ease: "power2.out",
+        })
+        .add(buildTitleTyping());
 
-    // (3) Tags: fade in + offer typing + progress bar
-    master
-      .to(".work-content__info-tags", {
-        opacity: 1,
-        duration: 0.4,
-        ease: "power2.out",
-      })
-      .add(buildOfferTyping())
-      .from(".work-content__info-tags .progress", {
-        width: "0%",
-        minWidth: "0",
-        duration: 0.6,
-        ease: "power2.out",
-      })
-      .from(".work-content__info-tags .progress__bar", {
-        width: "0%",
-        duration: 0.8,
-        ease: "power2.out",
-      });
+      // (3) Tags: fade in + offer typing + progress bar
+      master
+        .to(".work-content__info-tags", {
+          opacity: 1,
+          duration: 0.4,
+          ease: "power2.out",
+        })
+        .add(buildOfferTyping())
+        .from(".work-content__info-tags .progress", {
+          width: "0%",
+          minWidth: "0",
+          duration: 0.6,
+          ease: "power2.out",
+        })
+        .from(".work-content__info-tags .progress__bar", {
+          width: "0%",
+          duration: 0.8,
+          ease: "power2.out",
+        });
 
-    setupHover(listEl);
+      setupHover(listEl);
+    }); // end desktop mm.add
 
     function setupHover(listEl: HTMLElement) {
       const items = gsap.utils.toArray<HTMLElement>(".work-list__item");
@@ -425,6 +468,10 @@ const WorkPage = () => {
       </div>
       <div className="work-list">
         {Array.from({ length: 5 }).map((_, index) => {
+          const bgColor = `#${Math.floor(Math.random() * 16777215)
+            .toString(16)
+            .padStart(6, "0")}`;
+          const textColor = getContrastColor(bgColor);
           return (
             <Fragment key={index}>
               <Link
@@ -435,21 +482,30 @@ const WorkPage = () => {
                   top: index != 0 ? `-${index * 30}px` : 0,
                 }}
               >
-                <Image
-                  src={`/images/frame-${(index % 5) + 1}.png`}
-                  alt="work-1"
-                  width={1500}
-                  height={130}
-                />
-                <div className="work-list__item-info">
-                  <h2 className="title"></h2>
+                <div className="frame">
+                  <Frame color={bgColor} />
+                </div>
+                <div
+                  className="work-list__item-info"
+                  style={{ color: textColor }}
+                >
+                  <h2 className="title" style={{ color: textColor }}></h2>
                   <div className="description">
-                    <span className="description__text"></span>
-                    <span className="description__separator"></span>
-                    <span className="description__text"></span>
+                    <span
+                      className="description__text"
+                      style={{ color: textColor }}
+                    ></span>
+                    <span
+                      className="description__separator"
+                      style={{ color: textColor }}
+                    ></span>
+                    <span
+                      className="description__text"
+                      style={{ color: textColor }}
+                    ></span>
                   </div>
                   <div className="icon">
-                    <RiArrowRightUpLine size={24} />
+                    <RiArrowRightUpLine size={48} color={textColor} />
                   </div>
                 </div>
               </Link>

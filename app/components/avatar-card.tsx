@@ -17,7 +17,25 @@ const AvatarCard = (props: Props) => {
     const updatePosition = () => {
       if (!cardRef.current) return;
 
-      // Restore saved position if available
+      const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+      if (isMobile) {
+        // Position next to offers, above work-list
+        const tagElement = document.querySelector(".work-content__info-tags");
+        if (!tagElement) return;
+        const tagRect = tagElement.getBoundingClientRect();
+        const container = document.querySelector(".folder-container");
+        const containerRect = container?.getBoundingClientRect();
+        if (!containerRect) return;
+        cardRef.current.style.left = "";
+        cardRef.current.style.right = "26px";
+        cardRef.current.style.top =
+          tagRect.bottom - containerRect.top - 50 + "px";
+        savedLeft = null;
+        return;
+      }
+
+      // Desktop: restore saved position if available
       if (savedLeft !== null) {
         cardRef.current.style.left = savedLeft;
         return;
@@ -30,24 +48,28 @@ const AvatarCard = (props: Props) => {
       const left =
         tagElement.getBoundingClientRect().left - cardWidth - 300 + "px";
       cardRef.current.style.left = left;
+      cardRef.current.style.right = "";
       savedLeft = left;
-      savedTop = cardRef.current.style.top;
     };
 
     updatePosition();
-    window.addEventListener("resize", () => {
+    const onResize = () => {
       savedLeft = null;
       updatePosition();
-    });
-    return () => window.removeEventListener("resize", updatePosition);
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
   }, []);
 
   useGSAP(() => {
     gsap.set(".avatar-card", { visibility: "visible", opacity: 1 });
-    Draggable.create(".avatar-card", {
-      type: "x,y",
-      inertia: true,
-      bounds: ".folder-content",
+    const mm = gsap.matchMedia();
+    mm.add("(min-width: 769px)", () => {
+      Draggable.create(".avatar-card", {
+        type: "x,y",
+        inertia: true,
+        bounds: ".folder-content",
+      });
     });
   });
 

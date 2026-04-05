@@ -97,13 +97,13 @@
     padding-right: 32px;
     padding-top: 4px;
     padding-bottom: 24px;
-    > img {
+    .frame {
       position: absolute;
       top: 0;
-      left: 0;
-      width: 100%;
+      left: 50%;
+      transform: translateX(-50%);
       height: 100%;
-      object-position: center;
+      width: auto;
     }
     &-info {
       height: 100%;
@@ -115,7 +115,11 @@
       position: relative;
       bottom: 26px;
       .title {
-        font-size: var(--mono-heading3-desktop);
+        font-size: clamp(
+          var(--mono-heading4-mobile),
+          3vw,
+          var(--mono-heading3-desktop)
+        );
         color: var(--greyscale-900);
       }
       .description {
@@ -155,6 +159,26 @@
   .work-content {
     &__info {
       gap: 24px;
+    }
+  }
+  .work-list {
+    &__item {
+      &-info {
+        .title {
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 1;
+          overflow: hidden;
+        }
+        .description {
+          display: none;
+        }
+        .icon {
+          position: relative;
+          opacity: 1;
+          top: 15px;
+        }
+      }
     }
   }
 }

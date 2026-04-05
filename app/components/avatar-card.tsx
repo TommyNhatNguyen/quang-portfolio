@@ -1,33 +1,53 @@
 import { LABEL_HEIGHT } from "@/app/constants/folder";
 import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 import { Draggable } from "gsap/all";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 import "./styles/avatar-card.scss";
 type Props = {};
 
+let savedLeft: string | null = null;
+let savedTop: string | null = null;
+
 const AvatarCard = (props: Props) => {
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const updatePosition = () => {
+      if (!cardRef.current) return;
+
+      // Restore saved position if available
+      if (savedLeft !== null) {
+        cardRef.current.style.left = savedLeft;
+        return;
+      }
+
+      // Calculate initial position from tags element
       const tagElement = document.querySelector(".work-content__info-tags");
-      if (!cardRef.current || !tagElement) return;
+      if (!tagElement) return;
       const cardWidth = cardRef.current.offsetWidth || 0;
-      cardRef.current.style.left =
+      const left =
         tagElement.getBoundingClientRect().left - cardWidth - 300 + "px";
+      cardRef.current.style.left = left;
+      savedLeft = left;
+      savedTop = cardRef.current.style.top;
     };
 
     updatePosition();
-    window.addEventListener("resize", updatePosition);
+    window.addEventListener("resize", () => {
+      savedLeft = null;
+      updatePosition();
+    });
     return () => window.removeEventListener("resize", updatePosition);
   }, []);
 
   useGSAP(() => {
+    gsap.set(".avatar-card", { visibility: "visible", opacity: 1 });
     Draggable.create(".avatar-card", {
       type: "x,y",
       inertia: true,
-      bounds: ".folder-container",
+      bounds: ".folder-content",
     });
   });
 

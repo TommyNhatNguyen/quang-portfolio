@@ -31,7 +31,11 @@
 .folder-button {
   position: relative;
   font-family: var(--ff-gc);
-  font-size: var(--fs-folder-button);
+  font-size: clamp(
+    var(--mono-s-medium),
+    calc(1.2rem + 1.2vw),
+    var(--fs-folder-button)
+  );
   line-height: var(--lh-folder-button);
   font-weight: normal;
   text-transform: uppercase;

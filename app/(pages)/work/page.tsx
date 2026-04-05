@@ -11,6 +11,9 @@ import Link from "next/link";
 import { Fragment } from "react/jsx-runtime";
 
 gsap.registerPlugin(TextPlugin);
+gsap.ticker.lagSmoothing(0);
+
+let hasAnimated = false;
 
 const TYPING_SEQUENCE: {
   text: string;
@@ -40,12 +43,6 @@ const CHAR_DELETE_SPEED = 0.015;
 
 const WorkPage = () => {
   useGSAP(() => {
-    gsap.set(".work-container", { opacity: 0, visibility: "visible" });
-    gsap.set(".work-list", { top: "100%" });
-    gsap.set(".work-content__info-title", { opacity: 0 });
-    gsap.set(".avatar-card", { visibility: "visible", opacity: 0 });
-    gsap.set(".work-content__info-tags", { opacity: 0 });
-
     // --- Measurements ---
     const containerHeight = document
       .querySelector(".work-container")!
@@ -56,6 +53,70 @@ const WorkPage = () => {
       fifthItem.getBoundingClientRect().bottom -
       listEl.getBoundingClientRect().top;
     const targetTop = containerHeight - 64 - fiveItemsHeight;
+
+    if (hasAnimated) {
+      // Skip animation, just restore final state
+      gsap.set(".work-container", { opacity: 1, visibility: "visible" });
+      gsap.set(".work-list", { top: targetTop, opacity: 1 });
+      gsap.set(".work-content__info-title", { opacity: 1 });
+      gsap.set(".work-content__info-tags", { opacity: 1 });
+
+      // Restore final text content
+      const titleEl = document.querySelector(
+        ".work-content__info-title",
+      ) as HTMLElement;
+      const cursorEl = titleEl.querySelector(".cursor") as HTMLElement;
+      const textNode = document.createTextNode(
+        TYPING_SEQUENCE[TYPING_SEQUENCE.length - 1].text,
+      );
+      titleEl.insertBefore(textNode, cursorEl);
+
+      document
+        .querySelectorAll(".work-list__item-info .title")
+        .forEach((el) => {
+          el.textContent = "Title";
+        });
+      document
+        .querySelectorAll(
+          ".work-list__item-info .description__text:first-child",
+        )
+        .forEach((el) => {
+          el.textContent = "Defi_Interface";
+        });
+      document
+        .querySelectorAll(".work-list__item-info .description__separator")
+        .forEach((el) => {
+          el.textContent = " | ";
+        });
+      document
+        .querySelectorAll(".work-list__item-info .description__text:last-child")
+        .forEach((el) => {
+          el.textContent = "2024";
+        });
+
+      const offerTextEl = document.querySelector(".offer__text") as HTMLElement;
+      offerTextEl.textContent = "OPEN TO:";
+      const offerValueEl = document.querySelector(
+        ".offer__value",
+      ) as HTMLElement;
+      const offerBlinker = offerValueEl.querySelector(
+        ".offer__value-blinker",
+      ) as HTMLElement;
+      offerValueEl.insertBefore(
+        document.createTextNode("OFFERS"),
+        offerBlinker,
+      );
+
+      setupScroll();
+      setupHover(listEl);
+      return;
+    }
+    hasAnimated = true;
+
+    gsap.set(".work-container", { opacity: 0, visibility: "visible" });
+    gsap.set(".work-list", { top: "100%" });
+    gsap.set(".work-content__info-title", { opacity: 0 });
+    gsap.set(".work-content__info-tags", { opacity: 0 });
 
     // --- Title typing builder ---
     function buildTitleTyping() {
@@ -136,7 +197,7 @@ const WorkPage = () => {
     }
 
     // --- Master timeline ---
-    const master = gsap.timeline({ onComplete: setupScroll });
+    const master = gsap.timeline();
 
     // (1) Work-list: fade in + slide up + item text typing
 
@@ -153,6 +214,7 @@ const WorkPage = () => {
           opacity: 1,
           duration: 1.8,
           ease: "power3.out",
+          onComplete: setupScroll,
         },
         "<",
       )
@@ -186,14 +248,7 @@ const WorkPage = () => {
       })
       .add(buildTitleTyping());
 
-    // (3) Avatar card: fade in
-    master.to(".avatar-card", {
-      opacity: 1,
-      duration: 0.6,
-      ease: "power2.out",
-    });
-
-    // (4) Tags: fade in + offer typing + progress bar
+    // (3) Tags: fade in + offer typing + progress bar
     master
       .to(".work-content__info-tags", {
         opacity: 1,
@@ -213,95 +268,99 @@ const WorkPage = () => {
         ease: "power2.out",
       });
 
-    // --- Position project cards centered on their peer item ---
-    const items = gsap.utils.toArray<HTMLElement>(".work-list__item");
-    const cards = gsap.utils.toArray<HTMLElement>(".project-card");
-    const listRect = listEl.getBoundingClientRect();
+    setupHover(listEl);
 
-    items.forEach((item, i) => {
-      const card = cards[i];
-      if (!card) return;
-      const itemRect = item.getBoundingClientRect();
-      const cardW = card.offsetWidth;
-      const cardH = card.offsetHeight;
-      // Center card on item, relative to .work-list
-      const top =
-        itemRect.top +
-        (itemRect.height + 50) -
-        listRect.top +
-        (itemRect.height - cardH) / 2;
-      const left = itemRect.left - listRect.left + (itemRect.width - cardW) / 2;
-      gsap.set(card, { top, left });
-    });
+    function setupHover(listEl: HTMLElement) {
+      const items = gsap.utils.toArray<HTMLElement>(".work-list__item");
+      const cards = gsap.utils.toArray<HTMLElement>(".project-card");
+      const listRect = listEl.getBoundingClientRect();
 
-    // --- Hover: fade description out, icon in (works during scroll too) ---
-    items.forEach((item) => {
-      const desc = item.querySelector(".description") as HTMLElement;
-      const icon = item.querySelector(".icon") as HTMLElement;
-      const itemRect = item.getBoundingClientRect();
-      const card = item.nextElementSibling as HTMLElement;
-      const cardRect = card.getBoundingClientRect();
-      const cardH = cardRect.height;
-      const cardTop =
-        itemRect.top - 25 - listRect.top + (itemRect.height - cardH);
-      const cardInitialTop =
-        itemRect.top +
-        itemRect.height * 1.25 -
-        listRect.top +
-        (itemRect.height - cardH) / 2;
-      item.addEventListener("mouseenter", () => {
-        gsap.to(card, {
-          top: cardTop,
-          rotateZ: 8,
-          duration: 0.3,
-          ease: "power2.out",
-        });
-        gsap.to(item, { y: -6, duration: 0.3, ease: "power2.out" });
-        gsap.to(desc, { opacity: 0, duration: 0.3, ease: "power2.out" });
-        gsap.to(icon, { opacity: 1, duration: 0.3, ease: "power2.out" });
+      // Position project cards centered on their peer item
+      items.forEach((item, i) => {
+        const card = cards[i];
+        if (!card) return;
+        const itemRect = item.getBoundingClientRect();
+        const cardW = card.offsetWidth;
+        const cardH = card.offsetHeight;
+        const top =
+          itemRect.top +
+          (itemRect.height + 50) -
+          listRect.top +
+          (itemRect.height - cardH) / 2;
+        const left =
+          itemRect.left - listRect.left + (itemRect.width - cardW) / 2;
+        gsap.set(card, { top, left });
       });
 
-      item.addEventListener("mouseleave", () => {
-        gsap.to(card, {
-          top: cardInitialTop,
-          rotateZ: 0,
-          duration: 0.3,
-          ease: "power2.out",
+      // Hover: fade description out, icon in, card slides up
+      items.forEach((item) => {
+        const desc = item.querySelector(".description") as HTMLElement;
+        const icon = item.querySelector(".icon") as HTMLElement;
+        const itemRect = item.getBoundingClientRect();
+        const card = item.nextElementSibling as HTMLElement;
+        const cardRect = card.getBoundingClientRect();
+        const cardH = cardRect.height;
+        const cardTop =
+          itemRect.top - 25 - listRect.top + (itemRect.height - cardH);
+        const cardInitialTop =
+          itemRect.top +
+          itemRect.height * 1.25 -
+          listRect.top +
+          (itemRect.height - cardH) / 2;
+
+        item.addEventListener("mouseenter", () => {
+          gsap.to(card, {
+            top: cardTop,
+            rotateZ: 8,
+            duration: 0.3,
+            ease: "power2.out",
+          });
+          gsap.to(item, { y: -6, duration: 0.3, ease: "power2.out" });
+          gsap.to(desc, { opacity: 0, duration: 0.3, ease: "power2.out" });
+          gsap.to(icon, { opacity: 1, duration: 0.3, ease: "power2.out" });
         });
-        gsap.to(item, { y: 0, duration: 0.3, ease: "power2.out" });
-        gsap.to(desc, { opacity: 1, duration: 0.3, ease: "power2.out" });
-        gsap.to(icon, { opacity: 0, duration: 0.3, ease: "power2.out" });
+
+        item.addEventListener("mouseleave", () => {
+          gsap.to(card, {
+            top: cardInitialTop,
+            rotateZ: 0,
+            duration: 0.3,
+            ease: "power2.out",
+          });
+          gsap.to(item, { y: 0, duration: 0.3, ease: "power2.out" });
+          gsap.to(desc, { opacity: 1, duration: 0.3, ease: "power2.out" });
+          gsap.to(icon, { opacity: 0, duration: 0.3, ease: "power2.out" });
+        });
       });
-    });
 
-    // Track hover during scroll — when an item scrolls under the cursor
-    const scroller = document.querySelector(".folder-content") as HTMLElement;
-    let hoveredItem: HTMLElement | null = null;
+      // Track hover during scroll
+      const scroller = document.querySelector(".folder-content") as HTMLElement;
+      let hoveredItem: HTMLElement | null = null;
 
-    scroller.addEventListener("scroll", () => {
-      const mouseX = (window as any).__mouseX ?? 0;
-      const mouseY = (window as any).__mouseY ?? 0;
-      const elUnderCursor = document.elementFromPoint(mouseX, mouseY);
-      console.log("🚀 ~ WorkPage ~ elUnderCursor:", elUnderCursor);
-      const itemUnderCursor = elUnderCursor?.closest(
-        ".work-list__item",
-      ) as HTMLElement | null;
+      scroller.addEventListener("scroll", () => {
+        const mouseX = (window as any).__mouseX ?? 0;
+        const mouseY = (window as any).__mouseY ?? 0;
+        const elUnderCursor = document.elementFromPoint(mouseX, mouseY);
+        const itemUnderCursor = elUnderCursor?.closest(
+          ".work-list__item",
+        ) as HTMLElement | null;
 
-      if (itemUnderCursor !== hoveredItem) {
-        if (hoveredItem) {
-          hoveredItem.dispatchEvent(new MouseEvent("mouseleave"));
+        if (itemUnderCursor !== hoveredItem) {
+          if (hoveredItem) {
+            hoveredItem.dispatchEvent(new MouseEvent("mouseleave"));
+          }
+          hoveredItem = itemUnderCursor;
+          if (hoveredItem) {
+            hoveredItem.dispatchEvent(new MouseEvent("mouseenter"));
+          }
         }
-        hoveredItem = itemUnderCursor;
-        if (hoveredItem) {
-          hoveredItem.dispatchEvent(new MouseEvent("mouseenter"));
-        }
-      }
-    });
+      });
 
-    document.addEventListener("mousemove", (e) => {
-      (window as any).__mouseX = e.clientX;
-      (window as any).__mouseY = e.clientY;
-    });
+      document.addEventListener("mousemove", (e) => {
+        (window as any).__mouseX = e.clientX;
+        (window as any).__mouseY = e.clientY;
+      });
+    }
 
     function setupScroll() {
       const allItems = document.querySelectorAll(".work-list__item");
@@ -365,7 +424,7 @@ const WorkPage = () => {
         </div>
       </div>
       <div className="work-list">
-        {Array.from({ length: 30 }).map((_, index) => {
+        {Array.from({ length: 5 }).map((_, index) => {
           return (
             <Fragment key={index}>
               <Link

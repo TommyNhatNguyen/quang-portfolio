@@ -9,7 +9,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { Draggable, InertiaPlugin, ScrollTrigger } from "gsap/all";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { Activity, useState } from "react";
 
 gsap.registerPlugin(useGSAP);
 gsap.registerPlugin(Draggable);
@@ -49,7 +49,9 @@ export default function PagesLayout({
         {children}
       </div>
       <FolderFooter />
-      {showAvatarCard && <AvatarCard />}
+      <Activity mode={showAvatarCard ? "visible" : "hidden"}>
+        <AvatarCard />
+      </Activity>
     </div>
   );
 }

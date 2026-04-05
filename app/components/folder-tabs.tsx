@@ -12,13 +12,19 @@ const FolderTabs = ({ onHoverChange }: FolderTabsProps) => {
   const [isMouseHover, setIsMouseHover] = useState(false);
   const [activeHoverTab, setActiveHoverTab] = useState<string>("");
 
+  const isMobile =
+    typeof window !== "undefined" &&
+    window.matchMedia("(max-width: 768px)").matches;
+
   const _onHover = (tabId: string) => {
+    if (isMobile) return;
     setIsMouseHover((prev) => !prev);
     setActiveHoverTab(tabId);
     onHoverChange?.(tabId);
   };
 
   const _onHoverEnd = (tabId: string) => {
+    if (isMobile) return;
     setIsMouseHover((prev) => !prev);
     setActiveHoverTab(tabId);
     onHoverChange?.(null);
@@ -34,7 +40,6 @@ const FolderTabs = ({ onHoverChange }: FolderTabsProps) => {
             style={{
               backgroundColor: folder.color,
               color: folder.textColor,
-              height: `${LABEL_HEIGHT}px`,
               transform:
                 activeHoverTab === folder.id && isMouseHover
                   ? "translateY(-10px)"

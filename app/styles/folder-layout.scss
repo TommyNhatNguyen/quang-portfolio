@@ -1,3 +1,5 @@
+@use "@/app/styles/mixins" as *;
+
 .folder-container {
   --margin-top: 16px;
   position: relative;
@@ -46,6 +48,7 @@
   left: 22px;
   bottom: -1px;
   width: 217px;
+  height: 64px;
   text-align: center;
   cursor: pointer;
   text-decoration: none;
@@ -60,9 +63,6 @@
   height: 100%;
   width: 100%;
   transition-duration: 150ms;
-  box-shadow: -4px 0px 4px 0px var(--color-drop-shadow);
-  -webkit-box-shadow: -4px 0px 4px 0px var(--color-drop-shadow);
-  -moz-box-shadow: -4px 0px 4px 0px var(--color-drop-shadow);
   overflow-y: auto;
   overscroll-behavior: none;
 }
@@ -85,4 +85,33 @@
     var(--fs-footer)
   );
   font-weight: 400;
+}
+
+@include mobile-breakpoint {
+  .folder-container {
+    > *:nth-child(2) {
+      margin-top: 0;
+    }
+  }
+  .folder-content {
+    border-radius: 0px;
+  }
+  .folder-button {
+    transform: none !important;
+  }
+  .folder-tabs {
+    width: 80vw;
+    left: -18px;
+  }
+  .folder-button {
+    flex: 1;
+    min-width: 96px;
+    width: auto;
+    height: 48px;
+    padding: 8px;
+    border-radius: 8px 8px 0 0;
+  }
+  .folder-body {
+    display: none;
+  }
 }

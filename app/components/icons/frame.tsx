@@ -28,8 +28,8 @@ const Frame = (props: Props) => {
           />
           <rect
             width="4096"
-            height="105"
-            transform="translate(8 36)"
+            height="107"
+            transform="translate(8 34)"
             fill={color}
           />
         </g>
@@ -74,7 +74,7 @@ const Frame = (props: Props) => {
           <rect
             width="4096"
             height="137"
-            fill="white"
+            fill="currentColor"
             transform="translate(8 4)"
           />
         </clipPath>

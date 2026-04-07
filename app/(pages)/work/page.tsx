@@ -129,14 +129,33 @@ const WorkPage = () => {
 
     // --- Mobile: no animation, show final state ---
     mm.add("(max-width: 768px)", () => {
+      const containerHeight = document
+        .querySelector(".work-container")!
+        .getBoundingClientRect().height;
+      const listEl = document.querySelector(".work-list") as HTMLElement;
+      const fifthItem = document.querySelectorAll(".work-list__item")[4];
+      const fiveItemsHeight =
+        fifthItem.getBoundingClientRect().bottom -
+        listEl.getBoundingClientRect().top;
+      const targetTop = containerHeight - 200 - fiveItemsHeight;
+
       restoreFinalState();
       // Hide cursor on mobile
       const cursor = document.querySelector(
         ".work-content__info-title .cursor",
       ) as HTMLElement;
       if (cursor) cursor.style.display = "none";
-      setupScroll();
-      setupHover(listEl);
+
+      gsap.set(".work-list", { top: targetTop });
+      gsap.utils
+        .toArray<HTMLElement>(".work-list__item")
+        .forEach((item, index) => {
+          gsap.set(item, {
+            top: index != 0 ? `-${index * 10}px` : 0,
+          });
+        });
+      // setupScroll();
+      // setupHover(listEl);
     });
 
     // --- Desktop: full animation ---
@@ -483,7 +502,7 @@ const WorkPage = () => {
                 }}
               >
                 <div className="frame">
-                  <Frame color={bgColor} />
+                  <Frame color={bgColor} id={`frame-${index}`} />
                 </div>
                 <div
                   className="work-list__item-info"

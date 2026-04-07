@@ -1,9 +1,12 @@
 type Props = {
   color?: string;
+  id: string;
 };
 
 const Frame = (props: Props) => {
-  const { color = "#9AAD93" } = props;
+  const { color = "#9AAD93", id, ...rest } = props;
+  const filterId = `filter_${id}`;
+  const clipId = `clip_${id}`;
   return (
     <svg
       width="4104"
@@ -11,9 +14,10 @@ const Frame = (props: Props) => {
       viewBox="0 0 4104 145"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      {...rest}
     >
-      <g filter="url(#filter0_d_649_3851)">
-        <g clip-path="url(#clip0_649_3851)">
+      <g filter={`url(#${filterId})`}>
+        <g clipPath={`url(#${clipId})`}>
           <path
             d="M1285.63 4C1287.85 12.626 1295.68 19 1305 19C1305.34 19 1305.67 18.9909 1306 18.9746V36H-194V18.7754C-193.021 18.9226 -192.02 19 -191 19C-181.681 19 -173.851 12.626 -171.631 4H-142.369C-140.149 12.626 -132.319 19 -123 19C-113.681 19 -105.851 12.626 -103.631 4H-74.3691C-72.1489 12.626 -64.3191 19 -55 19C-45.6809 19 -37.8511 12.626 -35.6309 4H-6.36914C-4.14886 12.626 3.68088 19 13 19C22.3191 19 30.1489 12.626 32.3691 4H61.6309C63.8511 12.626 71.6809 19 81 19C90.3191 19 98.1489 12.626 100.369 4H129.631C131.851 12.626 139.681 19 149 19C158.319 19 166.149 12.626 168.369 4H197.631C199.851 12.626 207.681 19 217 19C226.319 19 234.149 12.626 236.369 4H265.631C267.851 12.626 275.681 19 285 19C294.319 19 302.149 12.626 304.369 4H333.631C335.851 12.626 343.681 19 353 19C362.319 19 370.149 12.626 372.369 4H401.631C403.851 12.626 411.681 19 421 19C430.319 19 438.149 12.626 440.369 4H469.631C471.851 12.626 479.681 19 489 19C498.319 19 506.149 12.626 508.369 4H537.631C539.851 12.626 547.681 19 557 19C566.319 19 574.149 12.626 576.369 4H605.631C607.851 12.626 615.681 19 625 19C634.319 19 642.149 12.626 644.369 4H673.631C675.851 12.626 683.681 19 693 19C702.319 19 710.149 12.626 712.369 4H741.631C743.851 12.626 751.681 19 761 19C770.319 19 778.149 12.626 780.369 4H809.631C811.851 12.626 819.681 19 829 19C838.319 19 846.149 12.626 848.369 4H877.631C879.851 12.626 887.681 19 897 19C906.319 19 914.149 12.626 916.369 4H945.631C947.851 12.626 955.681 19 965 19C974.319 19 982.149 12.626 984.369 4H1013.63C1015.85 12.626 1023.68 19 1033 19C1042.32 19 1050.15 12.626 1052.37 4H1081.63C1083.85 12.626 1091.68 19 1101 19C1110.32 19 1118.15 12.626 1120.37 4H1149.63C1151.85 12.626 1159.68 19 1169 19C1178.32 19 1186.15 12.626 1188.37 4H1217.63C1219.85 12.626 1227.68 19 1237 19C1246.32 19 1254.15 12.626 1256.37 4H1285.63Z"
             fill={color}
@@ -36,15 +40,15 @@ const Frame = (props: Props) => {
       </g>
       <defs>
         <filter
-          id="filter0_d_649_3851"
+          id={filterId}
           x="0"
           y="0"
           width="4104"
           height="145"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -61,16 +65,16 @@ const Frame = (props: Props) => {
           <feBlend
             mode="normal"
             in2="BackgroundImageFix"
-            result="effect1_dropShadow_649_3851"
+            result="effect1_dropShadow"
           />
           <feBlend
             mode="normal"
             in="SourceGraphic"
-            in2="effect1_dropShadow_649_3851"
+            in2="effect1_dropShadow"
             result="shape"
           />
         </filter>
-        <clipPath id="clip0_649_3851">
+        <clipPath id={clipId}>
           <rect
             width="4096"
             height="137"

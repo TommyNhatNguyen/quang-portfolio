@@ -163,7 +163,9 @@
   }
   .work-list {
     &__item {
+      height: 87px;
       &-info {
+        bottom: 0px;
         .title {
           display: -webkit-box;
           -webkit-box-orient: vertical;

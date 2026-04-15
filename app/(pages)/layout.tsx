@@ -8,8 +8,9 @@ import "@/app/styles/folder-layout.scss";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { Draggable, InertiaPlugin, ScrollTrigger } from "gsap/all";
+import Lenis from "lenis";
 import { usePathname } from "next/navigation";
-import { Activity, useState } from "react";
+import { Activity, useEffect, useRef, useState } from "react";
 
 gsap.registerPlugin(useGSAP);
 gsap.registerPlugin(Draggable);
@@ -31,10 +32,44 @@ export default function PagesLayout({
   const showAvatarCard =
     pathname.startsWith("/work") || pathname.startsWith("/about");
 
+  const scrollerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const wrapper = scrollerRef.current;
+    if (!wrapper) return;
+
+    const lenis = new Lenis({
+      wrapper,
+      content: wrapper,
+      smoothWheel: true,
+    });
+
+    lenis.on("scroll", ScrollTrigger.update);
+
+    const tickerCallback = (time: number) => {
+      lenis.raf(time * 1000);
+    };
+    gsap.ticker.add(tickerCallback);
+    gsap.ticker.lagSmoothing(0);
+
+    // Recalculate Lenis when direct children change (e.g. ScrollTrigger pin spacer added)
+    const observer = new MutationObserver(() => {
+      lenis.resize();
+    });
+    observer.observe(wrapper, { childList: true });
+
+    return () => {
+      observer.disconnect();
+      gsap.ticker.remove(tickerCallback);
+      lenis.destroy();
+    };
+  }, []);
+
   return (
     <div className="folder-container">
       <FolderTabs onHoverChange={setHoveredTab} />
       <div
+        ref={scrollerRef}
         className="folder-content"
         style={{
           backgroundColor: activeColor,

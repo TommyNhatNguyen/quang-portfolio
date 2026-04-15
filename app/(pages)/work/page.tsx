@@ -366,7 +366,7 @@ const WorkPage = () => {
           itemRect.top - 25 - listRect.top + (itemRect.height - cardH);
         const cardInitialTop =
           itemRect.top +
-          itemRect.height * 1.25 -
+          itemRect.height * 1.5 -
           listRect.top +
           (itemRect.height - cardH) / 2;
 
@@ -437,7 +437,7 @@ const WorkPage = () => {
           lastItem.getBoundingClientRect().bottom -
           firstItem.getBoundingClientRect().top;
         const visibleHeight = footerTop - firstItem.getBoundingClientRect().top;
-        const scrollDistance = totalHeight - visibleHeight;
+        const scrollDistance = totalHeight - visibleHeight - 10;
 
         if (scrollDistance > 0) {
           gsap.to(".work-list", {

@@ -1,11 +1,11 @@
 "use client";
 
 import ArrowDownFilled from "@/app/components/icons/arrow-down-filled";
+import "@/app/styles/blog-component.scss";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
-import "@/app/styles/blog-component.scss";
 
 const FILTERS = [
   {
@@ -125,9 +125,7 @@ const BlogPageInner = () => {
                             }
                             router.push(
                               `${pathname}${
-                                params.toString()
-                                  ? `?${params.toString()}`
-                                  : ""
+                                params.toString() ? `?${params.toString()}` : ""
                               }`,
                             );
                           }}
@@ -196,6 +194,7 @@ const BlogPageInner = () => {
             })}
           </ul>
         </div>
+        <button className="btn btn-loadmore">Show more</button>
       </div>
     </div>
   );

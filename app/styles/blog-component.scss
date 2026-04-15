@@ -1,5 +1,4 @@
 .blog-container {
-  height: 100%;
   width: 100%;
   padding-top: 40px;
   padding-bottom: 104px;
@@ -7,16 +6,18 @@
   padding-right: min(calc((18.6vw / 2) - 16px), 140px);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  min-height: 100%;
 }
 
 .blog-scroll {
   overflow-x: hidden;
+  min-height: 100%;
   border-radius: 16px;
   flex: 1;
   overflow-y: auto;
   padding-left: 16px;
   padding-right: 16px;
+  padding-bottom: calc(var(--footer-height) + clamp(40px, 10vw, 80px));
   scrollbar-width: thin;
   scrollbar-color: var(--lab-item-bg) transparent;
 
@@ -156,6 +157,25 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 24px;
+  }
+}
+
+.btn-loadmore {
+  margin-top: clamp(24px, 8vw, 40px);
+  margin-left: auto;
+  margin-right: auto;
+  background-color: transparent;
+  border-radius: 999px;
+  padding: clamp(12px, 4vw, 24px) clamp(24px, 6vw, 40px);
+  border: 1px solid var(--greyscale-900);
+  color: var(--greyscale-900);
+  font-family: var(--ff-gm);
+  font-size: var(--mono-l-medium);
+  text-transform: uppercase;
+  transition-duration: 300ms;
+  &:hover {
+    background-color: var(--greyscale-900);
+    color: var(--greyscale-0);
   }
 }
 

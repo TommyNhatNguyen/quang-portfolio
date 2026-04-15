@@ -10,7 +10,7 @@ import gsap from "gsap";
 import { Draggable, InertiaPlugin, ScrollTrigger } from "gsap/all";
 import Lenis from "lenis";
 import { usePathname } from "next/navigation";
-import { Activity, useEffect, useRef, useState } from "react";
+import { Activity, useEffect, useLayoutEffect, useRef, useState } from "react";
 
 gsap.registerPlugin(useGSAP);
 gsap.registerPlugin(Draggable);
@@ -33,22 +33,51 @@ export default function PagesLayout({
     pathname.startsWith("/work") || pathname.startsWith("/about");
 
   const scrollerRef = useRef<HTMLDivElement>(null);
+  const lenisRef = useRef<Lenis | null>(null);
+  const tickerRef = useRef<((time: number) => void) | null>(null);
+
+  // Kill Lenis and clean up all artifacts before paint on route change
+  useLayoutEffect(() => {
+    if (tickerRef.current) {
+      gsap.ticker.remove(tickerRef.current);
+      tickerRef.current = null;
+    }
+    if (lenisRef.current) {
+      lenisRef.current.destroy();
+      lenisRef.current = null;
+    }
+    const wrapper = scrollerRef.current;
+    if (wrapper) {
+      wrapper.classList.remove(
+        "lenis",
+        "lenis-smooth",
+        "lenis-scrolling",
+        "lenis-stopped",
+      );
+      wrapper.style.transform = "";
+      wrapper.scrollTop = 0;
+    }
+  }, [pathname]);
 
   useEffect(() => {
     const wrapper = scrollerRef.current;
     if (!wrapper) return;
+
+    wrapper.scrollTop = 0;
 
     const lenis = new Lenis({
       wrapper,
       content: wrapper,
       smoothWheel: true,
     });
+    lenisRef.current = lenis;
 
     lenis.on("scroll", ScrollTrigger.update);
 
     const tickerCallback = (time: number) => {
       lenis.raf(time * 1000);
     };
+    tickerRef.current = tickerCallback;
     gsap.ticker.add(tickerCallback);
     gsap.ticker.lagSmoothing(0);
 
@@ -60,10 +89,16 @@ export default function PagesLayout({
 
     return () => {
       observer.disconnect();
-      gsap.ticker.remove(tickerCallback);
-      lenis.destroy();
+      if (tickerRef.current === tickerCallback) {
+        gsap.ticker.remove(tickerCallback);
+        tickerRef.current = null;
+      }
+      if (lenisRef.current === lenis) {
+        lenisRef.current = null;
+        lenis.destroy();
+      }
     };
-  }, []);
+  }, [pathname]);
 
   return (
     <div className="folder-container">

@@ -1,3 +1,4 @@
+@use "@/app/styles/mixins" as *;
 .lab-container {
   width: 100%;
   min-height: 100%;
@@ -23,7 +24,7 @@
 
 .lab-scroll {
   padding-top: 40px;
-  padding-bottom: calc(var(--footer-height) * 2 + 40px);
+  padding-bottom: calc(var(--footer-height) * 2 + clamp(40px, 10vw, 80px));
   overflow-x: hidden;
   border-radius: 16px;
   min-height: 100%;
@@ -40,9 +41,9 @@
   grid-template-rows: auto;
   gap: 24px;
   &__item {
-    height: 500px;
+    height: clamp(250px, 50vw, 500px);
     width: 100%;
-    aspect-ratio: 638 / 500;
+    aspect-ratio: clamp(360px, 50vw, 638px) / clamp(250px, 50vw, 500px);
     border-radius: 4px;
     margin: auto;
     position: relative;
@@ -153,6 +154,14 @@
         border-radius: 100%;
         background-color: var(--greyscale-0);
       }
+    }
+  }
+}
+
+@include mobile-breakpoint {
+  .lab-content {
+    &__item {
+      grid-column: span 2;
     }
   }
 }

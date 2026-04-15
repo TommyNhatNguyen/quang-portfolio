@@ -16,21 +16,16 @@ const AvatarCard = (props: Props) => {
   useEffect(() => {
     const updatePosition = () => {
       if (!cardRef.current) return;
+      const container = document.querySelector(".folder-container");
+      const containerRect = container?.getBoundingClientRect();
 
       const isMobile = window.matchMedia("(max-width: 768px)").matches;
-
       if (isMobile) {
-        // Position next to offers, above work-list
-        const tagElement = document.querySelector(".work-content__info-tags");
-        if (!tagElement) return;
-        const tagRect = tagElement.getBoundingClientRect();
-        const container = document.querySelector(".folder-container");
-        const containerRect = container?.getBoundingClientRect();
         if (!containerRect) return;
         cardRef.current.style.left = "";
         cardRef.current.style.right = "26px";
         cardRef.current.style.top =
-          tagRect.bottom - containerRect.top - 50 + "px";
+          (containerRect?.height ?? 0) * 0.3 - containerRect.top - 50 + "px";
         savedLeft = null;
         return;
       }
@@ -42,14 +37,11 @@ const AvatarCard = (props: Props) => {
       }
 
       // Calculate initial position from tags element
-      const tagElement = document.querySelector(".work-content__info-tags");
-      if (!tagElement) return;
       const cardWidth = cardRef.current.offsetWidth || 0;
-      const left =
-        tagElement.getBoundingClientRect().left - cardWidth - 300 + "px";
-      cardRef.current.style.left = left;
+      cardRef.current.style.left =
+        (containerRect?.width ?? 0) * 0.796 - cardWidth + "px";
       cardRef.current.style.right = "";
-      savedLeft = left;
+      savedLeft = (containerRect?.width ?? 0) * 0.7 - cardWidth + "px";
     };
 
     updatePosition();

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Google_Sans_Code } from "next/font/google";
+import Loader from "./components/loader";
 import ToastProvider from "./components/toast-provider";
 import "./styles/index.scss";
 
@@ -39,6 +40,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${googleSansCode.variable}`}
       >
         <ToastProvider>
+          <Loader />
           <main>{children}</main>
         </ToastProvider>
       </body>

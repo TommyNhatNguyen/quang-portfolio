@@ -1,0 +1,42 @@
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-color: var(--greyscale-900);
+  overflow: hidden;
+}
+
+.loader__scene {
+  position: absolute;
+  inset: 32px 16px 0;
+  perspective: 2000px;
+}
+
+.loader__flap {
+  position: absolute;
+  top: 64px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 16px 16px 0 0;
+  transform-origin: bottom center;
+}
+
+.loader__flap-tab {
+  position: absolute;
+  bottom: 100%;
+  width: 217px;
+  height: 64px;
+  border-radius: 24px 24px 0 0;
+}
+
+.loader__percent {
+  position: absolute;
+  bottom: clamp(40px, 8vw, 100px);
+  right: clamp(40px, 6vw, 80px);
+  font-family: var(--ff-gc);
+  font-size: clamp(6rem, 12vw, 12rem);
+  font-weight: 400;
+  color: var(--greyscale-900);
+  line-height: 1;
+}

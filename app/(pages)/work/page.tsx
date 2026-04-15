@@ -440,7 +440,7 @@ const WorkPage = () => {
           lastItem.getBoundingClientRect().bottom -
           firstItem.getBoundingClientRect().top;
         const visibleHeight = footerTop - firstItem.getBoundingClientRect().top;
-        const scrollDistance = totalHeight - visibleHeight - 10;
+        const scrollDistance = (totalHeight - visibleHeight) * 0.6;
 
         if (scrollDistance > 0) {
           gsap.to(".work-list", {

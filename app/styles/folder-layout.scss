@@ -63,12 +63,12 @@
   height: 100%;
   width: 100%;
   transition-duration: 150ms;
-  overflow-y: auto;
-  overscroll-behavior: none;
+  overflow: hidden;
+  position: fixed;
 }
 
 .folder-footer {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   z-index: 100;
   background-color: var(--color-red-100);

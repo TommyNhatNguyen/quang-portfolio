@@ -117,7 +117,10 @@ const WorkPage = () => {
       const offerBlinker = offerValueEl.querySelector(
         ".offer__value-blinker",
       ) as HTMLElement;
-      if (offerValueEl.childNodes.length <= 1) {
+      const hasOffersText = Array.from(offerValueEl.childNodes).some(
+        (n) => n.nodeType === Node.TEXT_NODE && n.textContent?.trim(),
+      );
+      if (!hasOffersText) {
         offerValueEl.insertBefore(
           document.createTextNode("OFFERS"),
           offerBlinker,

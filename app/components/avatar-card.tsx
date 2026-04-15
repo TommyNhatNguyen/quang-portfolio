@@ -8,7 +8,6 @@ import "./styles/avatar-card.scss";
 type Props = {};
 
 let savedLeft: string | null = null;
-let savedTop: string | null = null;
 
 const AvatarCard = (props: Props) => {
   const cardRef = useRef<HTMLDivElement>(null);

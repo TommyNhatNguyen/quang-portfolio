@@ -13,7 +13,41 @@ const DiscPlayerComponent = () => {
   const timeline = useRef<gsap.core.Timeline | null>(null);
   const spinTween = useRef<gsap.core.Tween | null>(null);
 
+  const containerRef = useRef<HTMLDivElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const isHidden = useRef(false);
+  const touchStartX = useRef(0);
+
+  // Mobile swipe to hide/show
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    if (!isMobile) return;
+
+    const onTouchStart = (e: TouchEvent) => {
+      touchStartX.current = e.touches[0].clientX;
+    };
+
+    const onTouchEnd = (e: TouchEvent) => {
+      const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+      if (deltaX > 50 && !isHidden.current) {
+        gsap.to(el, { x: "110%", duration: 0.3, ease: "power2.out" });
+        isHidden.current = true;
+      } else if (deltaX < -50 && isHidden.current) {
+        gsap.to(el, { x: 0, duration: 0.3, ease: "power2.out" });
+        isHidden.current = false;
+      }
+    };
+
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchend", onTouchEnd, { passive: true });
+
+    return () => {
+      el.removeEventListener("touchstart", onTouchStart);
+      el.removeEventListener("touchend", onTouchEnd);
+    };
+  }, []);
 
   useEffect(() => {
     if (!discRef.current || !needleRef.current) return;
@@ -63,7 +97,7 @@ const DiscPlayerComponent = () => {
   };
 
   return (
-    <div className="disc-container" onClick={togglePlay}>
+    <div className="disc-container" ref={containerRef} onClick={togglePlay}>
       <div className="disc-wood">
         <Image
           src="images/disc-wood.svg"

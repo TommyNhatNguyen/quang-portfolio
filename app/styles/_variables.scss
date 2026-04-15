@@ -1,4 +1,6 @@
 :root {
+  --footer-height: clamp(59px, 6vw, 64px);
+  
   --lab-item-bg: rgba(237, 236, 232, 1);
   /* Color styles */
   --greyscale-0: rgba(255, 255, 255, 1);

@@ -73,7 +73,7 @@
   z-index: 100;
   background-color: var(--color-red-100);
   width: 100%;
-  height: clamp(59px, 6vw, 64px);
+  height: var(--footer-height);
   display: flex;
   align-items: center;
   justify-content: space-between;

@@ -1,8 +1,8 @@
 import ButtonComponent from "@/app/components/button";
 import DiscPlayerComponent from "@/app/components/disc-player";
 import DownLoad2Line from "@/app/components/icons/download-2-line";
-import Image from "next/image";
 import "@/app/styles/about-component.scss";
+import Image from "next/image";
 
 const AboutPage = () => {
   return (

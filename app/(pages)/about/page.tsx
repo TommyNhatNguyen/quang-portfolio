@@ -24,7 +24,7 @@ const AboutPage = () => {
               <h2 className="content__title">
                 As a responsible Product Designer, I focus on user-centric
                 experiences, balancing compelling design with business outcomes.
-                I'm eager to join a collaborative team fostering growth and
+                I&apos;m eager to join a collaborative team fostering growth and
                 impactful results.
               </h2>
               <ButtonComponent className="content__download-btn">

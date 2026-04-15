@@ -20,28 +20,46 @@
 .disc-container {
   position: relative;
   cursor: pointer;
+  width: clamp(180px, 28vw, 400px);
+
+  .disc-wood {
+    width: 100%;
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
   .disc-needle {
     z-index: 1;
     position: absolute;
     top: 0%;
     right: 0;
+    width: 55%;
+    img {
+      width: 100%;
+      height: auto;
+    }
   }
+
   .disc {
     position: absolute;
     top: 45%;
     left: 15%;
-
-    width: 500px;
-    height: 500px;
-
+    width: 125%;
+    aspect-ratio: 1;
     transform: translate(-50%, -50%);
+    img {
+      width: 100%;
+      height: auto;
+    }
 
     &__name {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      font-size: var(--body-xxs-regular);
+      font-size: clamp(10px, 1.2vw, var(--body-xxs-regular));
       font-weight: 400;
       font-family: var(--ff-gm);
       color: var(--greyscale-0);

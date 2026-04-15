@@ -5,7 +5,7 @@
   padding-left: clamp(16px, 1vw, 250px);
   padding-right: clamp(16px, 1vw, 250px);
   position: relative;
-  height: 100%;
+  min-height: 100%;
   display: flex;
   align-items: start;
   flex-direction: column;
@@ -13,7 +13,7 @@
 
 .disc-player {
   position: absolute;
-  bottom: calc(64px + 116px);
+  bottom: calc(var(--footer-height) + clamp(80px, 10vw, 120px));
   right: 0;
 }
 
@@ -42,7 +42,7 @@
     width: 100%;
     .content {
       width: 78.2%;
-      margin: 72px 80px;
+      margin: clamp(24px, 5vw, 72px) clamp(24px, 6vw, 80px);
       .wrapper {
         width: 100%;
         display: flex;

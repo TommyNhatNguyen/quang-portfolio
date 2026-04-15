@@ -116,6 +116,8 @@
       font-weight: 500;
       font-size: var(--mono-xxs-medium);
       line-height: normal;
+      z-index: 1;
+      position: relative;
       &.--left {
         text-align: left;
       }

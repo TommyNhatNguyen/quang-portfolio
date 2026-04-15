@@ -1,6 +1,6 @@
 "use client";
 
-import { FOLDER_TABS, LABEL_HEIGHT } from "@/app/constants/folder";
+import { FOLDER_TABS } from "@/app/constants/folder";
 import Link from "next/link";
 import { useState } from "react";
 

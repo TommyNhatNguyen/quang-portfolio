@@ -3,7 +3,7 @@
 import { FOLDER_TABS } from "@/app/constants/folder";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./styles/loader.scss";
 
 let hasLoaded = false;
@@ -11,14 +11,28 @@ let hasLoaded = false;
 // Render order: Blog(back) → Lab → About → Work(front)
 const FLAPS = [...FOLDER_TABS].reverse();
 
+const MOBILE_BP = 768;
+
 const Loader = () => {
   const overlayRef = useRef<HTMLDivElement>(null);
+  const sceneRef = useRef<HTMLDivElement>(null);
   const percentRef = useRef<HTMLSpanElement>(null);
   const flapsRef = useRef<HTMLDivElement[]>([]);
   const [visible, setVisible] = useState(!hasLoaded);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${MOBILE_BP}px)`);
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
 
   useGSAP(() => {
     if (hasLoaded || !overlayRef.current || !percentRef.current) return;
+
+    gsap.set(sceneRef.current, { visibility: "visible" });
 
     const flaps = flapsRef.current;
     const count = flaps.length;
@@ -76,7 +90,7 @@ const Loader = () => {
 
   return (
     <div className="loader" ref={overlayRef}>
-      <div className="loader__scene">
+      <div className="loader__scene" ref={sceneRef}>
         {FLAPS.map((folder, i) => {
           const isFront = i === FLAPS.length - 1;
           const origIdx = FLAPS.length - 1 - i;
@@ -94,7 +108,9 @@ const Loader = () => {
                 style={{
                   backgroundColor: folder.color,
                   color: folder.textColor,
-                  left: 62 + origIdx * 217,
+                  left: isMobile
+                    ? `calc(${origIdx} * (80vw / 4))`
+                    : 62 + origIdx * 217,
                 }}
               />
               {isFront && (

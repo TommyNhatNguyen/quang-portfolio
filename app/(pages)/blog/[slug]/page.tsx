@@ -76,14 +76,18 @@ const BlogDetailPage = () => {
 
         <div className="header-actions">
           <div className="article">
-            <div className="article__time">
-              <p className="article__time-value">
-                {article?.read_time?.read_time ?? 0}
-              </p>
-            </div>
-            <div className="article__category">
-              <span>{article?.intel_level?.intel_level ?? ""}</span>
-            </div>
+            {article?.read_time?.read_time && (
+              <div className="article__time">
+                <p className="article__time-value">
+                  {article?.read_time?.read_time ?? 0}
+                </p>
+              </div>
+            )}
+            {article?.intel_level?.intel_level && (
+              <div className="article__category">
+                <span>{article?.intel_level?.intel_level ?? ""}</span>
+              </div>
+            )}
           </div>
           <nav className="article-actions" aria-label="Article actions">
             <button className="btn-action" type="button" onClick={handleShare}>

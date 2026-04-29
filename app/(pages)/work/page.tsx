@@ -530,7 +530,7 @@ const WorkPage = () => {
           return (
             <Fragment key={index}>
               <Link
-                href={`/work/${index + 1}`}
+                href={item.link ?? "#"}
                 className="work-list__item"
                 style={{
                   position: "relative",

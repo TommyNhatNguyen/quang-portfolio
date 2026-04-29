@@ -3,30 +3,16 @@
 import Breadcrumbs from "@/app/components/breadcrumbs";
 import FileCopyLine from "@/app/components/icons/file-copy-line";
 import StackShare from "@/app/components/icons/stackshare";
-import { Article } from "@/app/interfaces/article.interface";
-import { articlesService } from "@/app/services/articles-service";
+import { useArticle } from "@/app/lib/hooks/use-article";
 import "@/app/styles/blog-page-detail.scss";
 import { BlocksRenderer } from "@strapi/blocks-react-renderer";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-
-const fetchArticleBySlug = async (slug: string) => {
-  const response = await articlesService.getArticleBySlug(slug);
-  return response.data;
-};
 
 const BlogDetailPage = () => {
   const params = useParams();
   const slug = params.slug as string;
-  const [article, setArticle] = useState<Article | null>(null);
-  console.log("🚀 ~ BlogDetailPage ~ article:", article);
-  useEffect(() => {
-    (async () => {
-      const article = await fetchArticleBySlug(slug);
-      setArticle(article[0]);
-    })();
-  }, [slug]);
+  const { article } = useArticle(slug);
   const articleTitle = article?.title;
 
   const handleShare = async () => {

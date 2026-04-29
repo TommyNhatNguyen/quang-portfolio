@@ -2,37 +2,15 @@
 import ButtonComponent from "@/app/components/button";
 import DiscPlayerComponent from "@/app/components/disc-player";
 import DownLoad2Line from "@/app/components/icons/download-2-line";
-import { AboutPage } from "@/app/interfaces/about-page.interface";
-import { Resume } from "@/app/interfaces/resume-interface";
-import { aboutPageService } from "@/app/services/about-page-service";
-import { resumeService } from "@/app/services/resume-service";
+import { useAboutPage } from "@/app/lib/hooks/use-about-page";
+import { useResume } from "@/app/lib/hooks/use-resume";
 import "@/app/styles/about-component.scss";
 import { BlocksRenderer } from "@strapi/blocks-react-renderer";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-
-const fetchAboutPage = async () => {
-  const response = await aboutPageService.getAboutPage();
-  return response.data;
-};
-
-const fetchResume = async () => {
-  const response = await resumeService.getResume();
-  return response.data;
-};
 
 const AboutPage = () => {
-  const [aboutPage, setAboutPage] = useState<AboutPage | null>(null);
-  const [resume, setResume] = useState<Resume | null>(null);
-  useEffect(() => {
-    (async () => {
-      const response = await fetchAboutPage();
-      console.log("🚀 ~ AboutPage ~ response:", response);
-      setAboutPage(response);
-      const resumeResponse = await fetchResume();
-      setResume(resumeResponse);
-    })();
-  }, []);
+  const { aboutPage } = useAboutPage();
+  const { resume } = useResume();
   return (
     <div className="about-container">
       <div className="content-wrapper">

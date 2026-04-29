@@ -2,11 +2,8 @@
 
 import Frame from "@/app/components/icons/frame";
 import ProjectCard from "@/app/components/project-card";
-import { Header } from "@/app/interfaces/header.interface";
-import { WorkPage } from "@/app/interfaces/work-page.interface";
 import { loaderEvents } from "@/app/lib/loader-events";
-import { headerService } from "@/app/services/header-service";
-import { workPageService } from "@/app/services/work-page-service";
+import { useWorkPage } from "@/app/lib/hooks/use-work-page";
 import "@/app/styles/work-component.scss";
 import { useGSAP } from "@gsap/react";
 import { RiArrowRightUpLine } from "@remixicon/react";
@@ -34,28 +31,8 @@ function getContrastColor(hex: string): string {
   return luminance > 0.5 ? "#000000" : "#FFFFFF";
 }
 
-const fetchWorkPage = async () => {
-  const res = await workPageService.getWorkPage();
-  return res.data;
-};
-
-const fetchHeader = async () => {
-  const res = await headerService.getHeader();
-  return res.data;
-};
-
 const WorkPage = () => {
-  const [header, setHeader] = useState<Header | undefined>();
-  const [workPage, setWorkPage] = useState<WorkPage | undefined>();
-  console.log("🚀 ~ WorkPage ~ workPage:", workPage);
-  useEffect(() => {
-    (async () => {
-      const dataHeader = await fetchHeader();
-      const dataWorkPage = await fetchWorkPage();
-      setHeader(dataHeader);
-      setWorkPage(dataWorkPage);
-    })();
-  }, []);
+  const { workPage } = useWorkPage();
 
   const [animationReady, setAnimationReady] = useState(() =>
     loaderEvents.isDone(),

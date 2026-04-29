@@ -1,120 +1,34 @@
 "use client";
 
 import ArrowDownFilled from "@/app/components/icons/arrow-down-filled";
-import { Article, Category } from "@/app/interfaces/article.interface";
-import { IntelLevel } from "@/app/interfaces/intel-level.interface";
-import { ReadTime } from "@/app/interfaces/read-me.interface";
-import { articlesService } from "@/app/services/articles-service";
-import { categoryService } from "@/app/services/category-service";
-import { intelLevelService } from "@/app/services/intel-level-service";
-import { readTimeService } from "@/app/services/read-time-service";
+import { useBlogArticles } from "@/app/lib/hooks/use-blog-articles";
+import { useBlogFilters } from "@/app/lib/hooks/use-blog-filters";
 import "@/app/styles/blog-component.scss";
 import { getImage } from "@/app/utils/getImage";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useMemo, useState } from "react";
-
-const PAGE_SIZE = 9;
-
-const fetchCategories = async () => {
-  const response = await categoryService.getCategories({
-    filters: {
-      type: {
-        $eq: "blog",
-      },
-    },
-  });
-  return response.data;
-};
-
-const fetchIntelLevels = async () => {
-  const response = await intelLevelService.getIntelLevel();
-  return response.data;
-};
-
-const fetchReadTimes = async () => {
-  const response = await readTimeService.getReadTime();
-  return response.data;
-};
-
-const fetchArticles = async (params: {
-  category?: string | null;
-  intel_level?: string | null;
-  read_time?: string | null;
-  page?: number;
-}) => {
-  return articlesService.getArticles({
-    populate: "*",
-    pagination: { page: params.page ?? 1, pageSize: PAGE_SIZE },
-    filters: {
-      categories: {
-        type: { $eq: "blog" },
-        ...(params.category ? { slug: { $eq: params.category } } : {}),
-      },
-      ...(params.intel_level
-        ? { intel_level: { slug: { $eq: params.intel_level } } }
-        : {}),
-      ...(params.read_time
-        ? { read_time: { slug: { $eq: params.read_time } } }
-        : {}),
-    },
-  });
-};
+import { Suspense, useMemo, useState } from "react";
 
 const BlogPageInner = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [intelLevels, setIntelLevels] = useState<IntelLevel[]>([]);
-  const [readTimes, setReadTimes] = useState<ReadTime[]>([]);
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [pageCount, setPageCount] = useState(1);
-  const [page, setPage] = useState(1);
+  const { categories, intelLevels, readTimes } = useBlogFilters();
 
-  useEffect(() => {
-    (async () => {
-      const [categories, intelLevels, readTimes] = await Promise.all([
-        fetchCategories(),
-        fetchIntelLevels(),
-        fetchReadTimes(),
-      ]);
-      setCategories(categories);
-      setIntelLevels(intelLevels);
-      setReadTimes(readTimes);
-    })();
-  }, []);
-
-  useEffect(() => {
-    (async () => {
-      const { data, meta } = await fetchArticles({
-        category: searchParams.get("category"),
-        intel_level: searchParams.get("intel_level"),
-        read_time: searchParams.get("read_time"),
-        page: 1,
-      });
-      setPage(1);
-      setArticles(data);
-      setPageCount(meta.pagination.pageCount);
-    })();
-  }, [searchParams]);
-
-  const handleShowMore = async () => {
-    const nextPage = page + 1;
-    const { data, meta } = await fetchArticles({
+  const activeFilters = useMemo(
+    () => ({
       category: searchParams.get("category"),
       intel_level: searchParams.get("intel_level"),
       read_time: searchParams.get("read_time"),
-      page: nextPage,
-    });
-    setPage(nextPage);
-    setArticles((prev) => [...prev, ...data]);
-    setPageCount(meta.pagination.pageCount);
-  };
+    }),
+    [searchParams],
+  );
 
-  const filters = useMemo(
+  const { articles, hasMore, loadMore } = useBlogArticles(activeFilters);
+
+  const filterOptions = useMemo(
     () => [
       {
         id: "category",
@@ -143,20 +57,20 @@ const BlogPageInner = () => {
 
   const [filterToggle, setFilterToggle] = useState<Record<string, boolean>>({});
 
-  const hasActiveFilter = filters.some(
+  const hasActiveFilter = filterOptions.some(
     (filter) => searchParams.get(filter.id) !== null,
   );
 
   const handleClearAll = () => {
     const params = new URLSearchParams(searchParams.toString());
-    filters.forEach((filter) => {
+    filterOptions.forEach((filter) => {
       params.delete(filter.id);
     });
     router.push(
       `${pathname}${params.toString() ? `?${params.toString()}` : ""}`,
     );
     setFilterToggle(
-      filters.reduce(
+      filterOptions.reduce(
         (acc, filter) => ({ ...acc, [filter.id]: false }),
         {} as Record<string, boolean>,
       ),
@@ -181,7 +95,7 @@ const BlogPageInner = () => {
               )}
             </div>
             <ul className="blog-content__filter-options">
-              {filters.map((filter) => (
+              {filterOptions.map((filter) => (
                 <li
                   key={filter.id}
                   className={`option ${
@@ -344,8 +258,8 @@ const BlogPageInner = () => {
             })}
           </ul>
         </div>
-        {page < pageCount && (
-          <button className="btn btn-loadmore" onClick={handleShowMore}>
+        {hasMore && (
+          <button className="btn btn-loadmore" onClick={loadMore}>
             Show more
           </button>
         )}

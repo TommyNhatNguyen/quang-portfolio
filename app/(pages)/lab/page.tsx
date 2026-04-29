@@ -1,30 +1,12 @@
 "use client";
-import { Article } from "@/app/interfaces/article.interface";
-import { articlesService } from "@/app/services/articles-service";
+import { useLabArticles } from "@/app/lib/hooks/use-lab-articles";
 import "@/app/styles/lab-component.scss";
 import { getImage } from "@/app/utils/getImage";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 const LabPage = () => {
-  const [articles, setArticles] = useState<Article[]>([]);
-  console.log("🚀 ~ LabPage ~ articles:", articles);
-  useEffect(() => {
-    (async () => {
-      const response = await articlesService.getArticles({
-        filters: {
-          categories: {
-            type: {
-              $eq: "work",
-            },
-          },
-        },
-        populate: "*",
-      });
-      setArticles(response.data);
-    })();
-  }, []);
+  const { articles } = useLabArticles();
   return (
     <div className="lab-container">
       <div className="lab-scroll">

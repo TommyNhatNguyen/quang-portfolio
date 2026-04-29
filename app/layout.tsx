@@ -25,8 +25,8 @@ const googleSansCode = Google_Sans_Code({
 });
 
 export const metadata: Metadata = {
-  title: "Quang Portfolio",
-  description: "Quang Portfolio",
+  title: "Quang Laam Portfolio",
+  description: "Quang Laam Portfolio",
 };
 
 export default function RootLayout({

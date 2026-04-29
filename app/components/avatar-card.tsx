@@ -3,30 +3,17 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { Draggable } from "gsap/all";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
-import { Avatar } from "../interfaces/avatar.interface";
-import { avatarService } from "../services/avatar-service";
+import { useEffect, useRef } from "react";
+import { useAvatar } from "@/app/lib/hooks/use-avatar";
 import { getImage } from "../utils/getImage";
 import "./styles/avatar-card.scss";
 type Props = {};
 
 let savedLeft: string | null = null;
 
-const fetchAvatar = async () => {
-  const response = await avatarService.getAvatar();
-  return response.data;
-};
-
 const AvatarCard = (props: Props) => {
-  const [avatar, setAvatar] = useState<Avatar | null>(null);
+  const { avatar } = useAvatar();
   const cardRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    (async () => {
-      const data = await fetchAvatar();
-      setAvatar(data);
-    })();
-  }, []);
 
   useEffect(() => {
     const updatePosition = () => {

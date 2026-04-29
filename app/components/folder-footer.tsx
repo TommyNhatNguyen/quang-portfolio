@@ -1,31 +1,11 @@
 import ButtonComponent from "@/app/components/button";
 import DownLoad2Line from "@/app/components/icons/download-2-line";
-import { useEffect, useState } from "react";
-import { Resume } from "../interfaces/resume-interface";
-import { footerService } from "../services/footer-service";
-import { resumeService } from "../services/resume-service";
-
-const fetchResume = async () => {
-  const response = await resumeService.getResume();
-  return response.data;
-};
-
-const fetchFooter = async () => {
-  const response = await footerService.getFooter();
-  return response.data;
-};
+import { useFooter } from "@/app/lib/hooks/use-footer";
+import { useResume } from "@/app/lib/hooks/use-resume";
 
 const FolderFooter = () => {
-  const [resume, setResume] = useState<Resume | null>(null);
-  const [footer, setFooter] = useState<{ content_by: string } | null>(null);
-  useEffect(() => {
-    (async () => {
-      const response = await fetchResume();
-      setResume(response);
-      const footerResponse = await fetchFooter();
-      setFooter(footerResponse);
-    })();
-  }, []);
+  const { resume } = useResume();
+  const { footer } = useFooter();
   return (
     <div className="folder-footer">
       <p className="folder-footer__text">{footer?.content_by ?? "Untitled"}</p>

@@ -4,6 +4,8 @@ import AvatarCard from "@/app/components/avatar-card";
 import FolderFooter from "@/app/components/folder-footer";
 import FolderTabs from "@/app/components/folder-tabs";
 import { FOLDER_TABS, LABEL_HEIGHT } from "@/app/constants/folder";
+import { swrFetcher } from "@/app/lib/swr-fetcher";
+import { SWR_KEYS } from "@/app/lib/swr-keys";
 import "@/app/styles/folder-layout.scss";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -11,6 +13,7 @@ import { Draggable, InertiaPlugin, ScrollTrigger } from "gsap/all";
 import Lenis from "lenis";
 import { usePathname } from "next/navigation";
 import { Activity, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { preload, SWRConfig } from "swr";
 
 gsap.registerPlugin(useGSAP);
 gsap.registerPlugin(Draggable);
@@ -100,7 +103,21 @@ export default function PagesLayout({
     };
   }, [pathname]);
 
+  useEffect(() => {
+    preload(SWR_KEYS.avatar, swrFetcher);
+    preload(SWR_KEYS.workPage, swrFetcher);
+    preload(SWR_KEYS.header, swrFetcher);
+    preload(SWR_KEYS.aboutPage, swrFetcher);
+    preload(SWR_KEYS.resume, swrFetcher);
+    preload(SWR_KEYS.footer, swrFetcher);
+    preload(SWR_KEYS.labArticles, swrFetcher);
+    preload(SWR_KEYS.blogCategories, swrFetcher);
+    preload(SWR_KEYS.blogIntelLevels, swrFetcher);
+    preload(SWR_KEYS.blogReadTimes, swrFetcher);
+  }, []);
+
   return (
+    <SWRConfig value={{ revalidateOnFocus: false, revalidateOnReconnect: false, dedupingInterval: 60_000 }}>
     <div className="folder-container">
       <FolderTabs onHoverChange={setHoveredTab} />
       <div
@@ -120,5 +137,6 @@ export default function PagesLayout({
         <AvatarCard />
       </Activity>
     </div>
+    </SWRConfig>
   );
 }

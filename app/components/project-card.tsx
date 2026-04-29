@@ -1,9 +1,13 @@
 import { RiAttachment2 } from "@remixicon/react";
 import Image from "next/image";
 import { HTMLAttributes } from "react";
+import { WorkCard } from "../interfaces/work-page.interface";
+import { getImage } from "../utils/getImage";
 import "./styles/project-card.scss";
 
-type Props = {} & HTMLAttributes<HTMLDivElement>;
+type Props = {
+  workCard?: WorkCard;
+} & HTMLAttributes<HTMLDivElement>;
 
 function ProjectCard(props: Props) {
   const { className, ...rest } = props;
@@ -12,7 +16,7 @@ function ProjectCard(props: Props) {
       {/* Background */}
       <div className="project-card__bg">
         <Image
-          src="/images/bg-paper.jpg"
+          src={"/images/bg-paper.jpg"}
           alt="project-card-bg"
           width={200}
           height={180}
@@ -21,7 +25,7 @@ function ProjectCard(props: Props) {
       {/* Image */}
       <div className="project-card__image">
         <Image
-          src="/images/avatar.jpg"
+          src={getImage(props.workCard?.thumbnail?.url ?? "")}
           alt="project-card-image"
           width={200}
           height={180}
@@ -31,9 +35,14 @@ function ProjectCard(props: Props) {
       <div className="project-card__content">
         {/* Content */}
         <div className="content">
-          <p className="content__title">PRO: 01</p>
+          <p className="content__title">
+            {props.workCard?.title ?? "Untitled"}
+          </p>
           <div className="content__progress">
-            <div className="content__progress__bar"></div>
+            <div
+              className="content__progress__bar"
+              style={{ width: `${props.workCard?.progress ?? 70}%` }}
+            ></div>
           </div>
         </div>
         {/* Cipboard Icon */}

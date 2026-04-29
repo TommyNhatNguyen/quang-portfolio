@@ -1,6 +1,7 @@
 "use client";
 
 import { FOLDER_TABS } from "@/app/constants/folder";
+import { loaderEvents } from "@/app/lib/loader-events";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useEffect, useRef, useState } from "react";
@@ -40,6 +41,7 @@ const Loader = () => {
     const tl = gsap.timeline({
       onComplete: () => {
         hasLoaded = true;
+        loaderEvents.complete();
         setVisible(false);
       },
     });

@@ -3,9 +3,18 @@
 import gsap from "gsap";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { Media } from "../interfaces/base.dto";
+import { getImage } from "../utils/getImage";
 import "./styles/disc-player.scss";
 
-const DiscPlayerComponent = () => {
+type Props = {
+  songName: string;
+  songRpm: string;
+  songAudioFile: Media | null;
+};
+
+const DiscPlayerComponent = (props: Props) => {
+  const { songName, songRpm, songAudioFile } = props;
   const discRef = useRef<HTMLDivElement>(null);
   const needleRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -53,7 +62,9 @@ const DiscPlayerComponent = () => {
     if (!discRef.current || !needleRef.current) return;
 
     // 🎧 Create audio ONCE
-    audioRef.current = new Audio("/audio/music.mp3");
+    audioRef.current = new Audio(
+      songAudioFile?.url ? getImage(songAudioFile.url) : "/audio/music.mp3",
+    );
     audioRef.current.loop = true;
 
     // 💿 Disc spin (paused)
@@ -80,7 +91,7 @@ const DiscPlayerComponent = () => {
       spinTween.current?.play();
       audioRef.current?.play();
     });
-  }, []);
+  }, [songAudioFile]);
 
   const togglePlay = () => {
     if (!timeline.current || !spinTween.current || !audioRef.current) return;
@@ -119,7 +130,9 @@ const DiscPlayerComponent = () => {
       <div className="disc-center">
         <div className="disc" ref={discRef}>
           <Image src="images/disc.svg" alt="disc" width={500} height={500} />
-          <span className="disc__name">Side A ABOUT_ME 33 RPM</span>
+          <span className="disc__name">
+            Side A {songName} {songRpm}
+          </span>
         </div>
       </div>
     </div>

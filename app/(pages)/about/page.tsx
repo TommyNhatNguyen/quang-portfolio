@@ -1,10 +1,38 @@
+"use client";
 import ButtonComponent from "@/app/components/button";
 import DiscPlayerComponent from "@/app/components/disc-player";
 import DownLoad2Line from "@/app/components/icons/download-2-line";
+import { AboutPage } from "@/app/interfaces/about-page.interface";
+import { Resume } from "@/app/interfaces/resume-interface";
+import { aboutPageService } from "@/app/services/about-page-service";
+import { resumeService } from "@/app/services/resume-service";
 import "@/app/styles/about-component.scss";
+import { BlocksRenderer } from "@strapi/blocks-react-renderer";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+
+const fetchAboutPage = async () => {
+  const response = await aboutPageService.getAboutPage();
+  return response.data;
+};
+
+const fetchResume = async () => {
+  const response = await resumeService.getResume();
+  return response.data;
+};
 
 const AboutPage = () => {
+  const [aboutPage, setAboutPage] = useState<AboutPage | null>(null);
+  const [resume, setResume] = useState<Resume | null>(null);
+  useEffect(() => {
+    (async () => {
+      const response = await fetchAboutPage();
+      console.log("🚀 ~ AboutPage ~ response:", response);
+      setAboutPage(response);
+      const resumeResponse = await fetchResume();
+      setResume(resumeResponse);
+    })();
+  }, []);
   return (
     <div className="about-container">
       <div className="content-wrapper">
@@ -22,158 +50,78 @@ const AboutPage = () => {
           <div className="content">
             <div className="wrapper">
               <h2 className="content__title">
-                As a responsible Product Designer, I focus on user-centric
-                experiences, balancing compelling design with business outcomes.
-                I&apos;m eager to join a collaborative team fostering growth and
-                impactful results.
+                {aboutPage?.introduction_text ?? "Untitled"}
               </h2>
-              <ButtonComponent className="content__download-btn">
-                <span className="content__download-btn-text">DOWNLOAD CV</span>
+              <ButtonComponent
+                className="content__download-btn"
+                onClick={() => {
+                  window.open(resume?.link, "_blank");
+                }}
+              >
+                <span className="content__download-btn-text">
+                  {resume?.label}
+                </span>
                 <DownLoad2Line className="content__download-btn-icon btn-icon" />
               </ButtonComponent>
-              <div className="content__group">
-                <div className="content__group-titlewrapper">
-                  <h3 className="title">Work experience</h3>
-                  <div className="line"></div>
-                </div>
-                <ul className="content__group-infogroup-list">
-                  <li className="infogroup">
-                    <div className="infogroup__titlegroup">
-                      <div className="infogroup__titlegroup-title">
-                        07/2025 - Present
-                      </div>
-                      <div className="infogroup__titlegroup-line"></div>
+              {aboutPage?.sections?.map((section) => {
+                return (
+                  <div key={section.id} className="content__group">
+                    <div className="content__group-titlewrapper">
+                      <h3 className="title">{section.section_title}</h3>
+                      <div className="line"></div>
                     </div>
-                    <ul className="infogroup__descgrouplist">
-                      <li className="infogroup__descgrouplist-item">
-                        <div className="desc">Finviet</div>
-                        <div className="line">|</div>
-                        <div className="desc">Product Designer</div>
-                      </li>
+                    <ul className="content__group-infogroup-list">
+                      {section?.section_items?.map((item) => {
+                        return (
+                          <li key={item.id} className="infogroup">
+                            <div className="infogroup__titlegroup">
+                              <div className="infogroup__titlegroup-title">
+                                {item.time}
+                              </div>
+                              <div className="infogroup__titlegroup-line"></div>
+                            </div>
+                            <ul className="infogroup__descgrouplist">
+                              <BlocksRenderer
+                                content={item.content}
+                                blocks={{
+                                  paragraph: ({ children }) => (
+                                    <li className="infogroup__descgrouplist-item">
+                                      <p className="desc">{children}</p>
+                                    </li>
+                                  ),
+                                  list: ({ children }) => (
+                                    <li className="infogroup__descgrouplist-item">
+                                      <ul
+                                        className="desc"
+                                        style={{
+                                          listStyleType: "disc",
+                                          paddingLeft: "20px",
+                                        }}
+                                      >
+                                        {children}
+                                      </ul>
+                                    </li>
+                                  ),
+                                }}
+                              />
+                            </ul>
+                          </li>
+                        );
+                      })}
                     </ul>
-                  </li>
-                  <li className="infogroup">
-                    <div className="infogroup__titlegroup">
-                      <div className="infogroup__titlegroup-title">
-                        06/2024 - 06/2025
-                      </div>
-                      <div className="infogroup__titlegroup-line"></div>
-                    </div>
-                    <ul className="infogroup__descgrouplist">
-                      <li className="infogroup__descgrouplist-item">
-                        <div className="desc">Pi Group</div>
-                        <div className="line">|</div>
-                        <div className="desc">Senior UX/UI Designer</div>
-                      </li>
-                    </ul>
-                  </li>
-                  <li className="infogroup">
-                    <div className="infogroup__titlegroup">
-                      <div className="infogroup__titlegroup-title">
-                        06/2022 – 06/2024
-                      </div>
-                      <div className="infogroup__titlegroup-line"></div>
-                    </div>
-                    <ul className="infogroup__descgrouplist">
-                      <li className="infogroup__descgrouplist-item">
-                        <div className="desc">MWG</div>
-                        <div className="line">|</div>
-                        <div className="desc">Senior UX/UI Designer</div>
-                      </li>
-                    </ul>
-                  </li>
-                  <li className="infogroup">
-                    <div className="infogroup__titlegroup">
-                      <div className="infogroup__titlegroup-title">
-                        2021 – 03/2022
-                      </div>
-                      <div className="infogroup__titlegroup-line"></div>
-                    </div>
-                    <ul className="infogroup__descgrouplist">
-                      <li className="infogroup__descgrouplist-item">
-                        <div className="desc">Unicloud</div>
-                        <div className="line">|</div>
-                        <div className="desc">
-                          Senior Graphic & UX/UI designer
-                        </div>
-                      </li>
-                    </ul>
-                  </li>
-                  <li className="infogroup">
-                    <div className="infogroup__titlegroup">
-                      <div className="infogroup__titlegroup-title">
-                        2014 - 2021
-                      </div>
-                      <div className="infogroup__titlegroup-line"></div>
-                    </div>
-                    <ul className="infogroup__descgrouplist">
-                      <li className="infogroup__descgrouplist-item">
-                        <div className="desc">Graphic Designer</div>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
-              </div>
-              <div className="content__group">
-                <div className="content__group-titlewrapper">
-                  <h3 className="title">Qualification</h3>
-                  <div className="line"></div>
-                </div>
-                <ul className="content__group-infogroup-list">
-                  <li className="infogroup">
-                    <div className="infogroup__titlegroup">
-                      <div className="infogroup__titlegroup-title">2025</div>
-                      <div className="infogroup__titlegroup-line"></div>
-                    </div>
-                    <ul className="infogroup__descgrouplist --dot">
-                      <li className="infogroup__descgrouplist-item">
-                        <div className="desc">Growth/Product Design</div>
-                        <div className="line">|</div>
-                        <div className="desc">Growth Design Program</div>
-                      </li>
-                      <li className="infogroup__descgrouplist-item">
-                        <div className="desc">Credential ID PDF2502 - 01</div>
-                      </li>
-                    </ul>
-                  </li>
-                  <li className="infogroup">
-                    <div className="infogroup__titlegroup">
-                      <div className="infogroup__titlegroup-title">2020</div>
-                      <div className="infogroup__titlegroup-line"></div>
-                    </div>
-                    <ul className="infogroup__descgrouplist">
-                      <li className="infogroup__descgrouplist-item">
-                        <div className="desc">Telos Academy</div>
-                        <div className="line">|</div>
-                        <div className="desc">
-                          Figma Basic - Advanced course
-                        </div>
-                      </li>
-                    </ul>
-                  </li>
-                  <li className="infogroup">
-                    <div className="infogroup__titlegroup">
-                      <div className="infogroup__titlegroup-title">
-                        2009 - 2013
-                      </div>
-                      <div className="infogroup__titlegroup-line"></div>
-                    </div>
-                    <ul className="infogroup__descgrouplist">
-                      <li className="infogroup__descgrouplist-item">
-                        <div className="desc">Van Lang University</div>
-                        <div className="line">|</div>
-                        <div className="desc">Public Relations</div>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
-              </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
       </div>
       <div className="disc-player">
-        <DiscPlayerComponent />
+        <DiscPlayerComponent
+          songName={aboutPage?.song_name ?? "Untitled"}
+          songRpm={aboutPage?.song_rpm ?? "0"}
+          songAudioFile={aboutPage?.song_audio_file ?? null}
+        />
       </div>
     </div>
   );

@@ -25,14 +25,6 @@ let hasAnimated = false;
 const CHAR_TYPE_SPEED = 0.04;
 const CHAR_DELETE_SPEED = 0.015;
 
-const WORK_ITEM_COLORS = [
-  "#2572d4",
-  "#68173b",
-  "#40c199",
-  "#e5b74e",
-  "#250842",
-];
-
 function getContrastColor(hex: string): string {
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);

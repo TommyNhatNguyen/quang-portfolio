@@ -79,6 +79,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     &__time {
+      text-align: center;
       padding: 12px;
       font-weight: 500;
       line-height: normal;
@@ -97,6 +98,9 @@
       }
     }
     &__category {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       padding: 12px;
       border: 1px solid var(--greyscale-900);
       font-weight: 500;

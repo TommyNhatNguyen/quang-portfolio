@@ -237,6 +237,7 @@
           justify-content: center;
           border-bottom: 1px solid var(--greyscale-900);
           &-value {
+            text-align: center;
             font-size: var(--mono-heading5-desktop);
           }
           &-unit {

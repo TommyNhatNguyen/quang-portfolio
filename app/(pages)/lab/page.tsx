@@ -10,7 +10,16 @@ const LabPage = () => {
   const [articles, setArticles] = useState<Article[]>([]);
   useEffect(() => {
     (async () => {
-      const response = await articlesService.getArticles();
+      const response = await articlesService.getArticles({
+        filters: {
+          categories: {
+            type: {
+              $eq: "work",
+            },
+          },
+        },
+        populate: "*",
+      });
       setArticles(response.data);
     })();
   }, []);

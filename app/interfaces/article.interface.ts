@@ -1,4 +1,6 @@
 import { BlocksContent } from "@strapi/blocks-react-renderer";
+import { IntelLevel } from "./intel-level.interface";
+import { ReadTime } from "./read-me.interface";
 import { Media } from "./base.dto";
 
 export interface Category {
@@ -23,8 +25,8 @@ export interface Article {
   link: string | null;
   thumbnail: Media;
   categories: Category[];
-  read_time: string | null;
-  intel_level: string | null;
+  read_time: ReadTime | null;
+  intel_level: IntelLevel | null;
   createdAt: string;
   updatedAt: string;
   publishedAt: string;

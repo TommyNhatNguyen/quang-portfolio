@@ -1,171 +1,75 @@
-import Image from "next/image";
-import { Fragment } from "react/jsx-runtime";
+"use client";
+import { Article } from "@/app/interfaces/article.interface";
+import { articlesService } from "@/app/services/articles-service";
 import "@/app/styles/lab-component.scss";
+import { getImage } from "@/app/utils/getImage";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
 const LabPage = () => {
+  const [articles, setArticles] = useState<Article[]>([]);
+  useEffect(() => {
+    (async () => {
+      const response = await articlesService.getArticles();
+      setArticles(response.data);
+    })();
+  }, []);
   return (
     <div className="lab-container">
       <div className="lab-scroll">
         <div className="lab-content">
-          {Array.from({ length: 2 }).map((_, index) => {
+          {articles.map((article, index) => {
+            const mod = index % 5;
+            const isSpan = mod === 2;
+            const dotsClass =
+              mod === 2
+                ? "--top-between"
+                : mod === 0 || mod === 3
+                  ? "--right"
+                  : "--left";
+            const contentClass = mod === 0 || mod === 3 ? "--left" : "--right";
+
             return (
-              <Fragment key={index}>
-                <div className="lab-content__item">
-                  <div className="lab-content__item-bg">
-                    <Image
-                      className="img"
-                      src={"/images/bg-paper.jpg"}
-                      alt="work-1"
-                      quality={100}
-                      width={1200}
-                      height={1200}
-                    />
-                  </div>
-                  <div className="lab-content__item-project">
-                    <Image
-                      className="img"
-                      src={"/images/lab-1.png"}
-                      alt="lab-1"
-                      quality={100}
-                      width={1200}
-                      height={1200}
-                    />
-                  </div>
-                  <div className="lab-content__item-dots --right">
-                    <div className="dot"></div>
-                    <div className="dot"></div>
-                    <div className="dot"></div>
-                  </div>
-                  <div className="lab-content__item-content --left">
-                    <p>Agence Vincent Dubuc</p>
-                    <p>Branding / Web</p>
-                  </div>
+              <div
+                key={article.id}
+                className={`lab-content__item${isSpan ? " --span" : ""}`}
+              >
+                <div className="lab-content__item-bg">
+                  <Image
+                    className="img"
+                    src={"/images/bg-paper.jpg"}
+                    alt=""
+                    quality={100}
+                    width={1200}
+                    height={1200}
+                  />
                 </div>
-                <div className="lab-content__item">
-                  <div className="lab-content__item-bg">
-                    <Image
-                      className="img"
-                      src={"/images/bg-paper.jpg"}
-                      alt="work-1"
-                      quality={100}
-                      width={1200}
-                      height={1200}
-                    />
-                  </div>
-                  <div className="lab-content__item-project">
-                    <Image
-                      className="img"
-                      src={"/images/lab-1.png"}
-                      alt="lab-1"
-                      quality={100}
-                      width={1200}
-                      height={1200}
-                    />
-                  </div>
-                  <div className="lab-content__item-dots --left">
-                    <div className="dot"></div>
-                    <div className="dot"></div>
-                    <div className="dot"></div>
-                  </div>
-                  <div className="lab-content__item-content --right">
-                    <p>Agence Vincent Dubuc</p>
-                    <p>Branding / Web</p>
-                  </div>
+                <div className="lab-content__item-project">
+                  <Image
+                    className="img"
+                    src={getImage(article.thumbnail.url)}
+                    alt={article.title}
+                    quality={100}
+                    width={1200}
+                    height={1200}
+                  />
                 </div>
-                <div className="lab-content__item --span">
-                  <div className="lab-content__item-bg">
-                    <Image
-                      className="img"
-                      src={"/images/bg-paper.jpg"}
-                      alt="work-1"
-                      quality={100}
-                      width={1200}
-                      height={1200}
-                    />
-                  </div>
-                  <div className="lab-content__item-project">
-                    <Image
-                      className="img"
-                      src={"/images/lab-1.png"}
-                      alt="lab-1"
-                      quality={100}
-                      width={1200}
-                      height={1200}
-                    />
-                  </div>
-                  <div className="lab-content__item-dots --top-between">
-                    <div className="dot"></div>
-                    <div className="dot"></div>
-                    <div className="dot"></div>
-                  </div>
-                  <div className="lab-content__item-content --right">
-                    <p>Agence Vincent Dubuc</p>
-                    <p>Branding / Web</p>
-                  </div>
+                <div className={`lab-content__item-dots ${dotsClass}`}>
+                  <div className="dot"></div>
+                  <div className="dot"></div>
+                  <div className="dot"></div>
                 </div>
-                <div className="lab-content__item">
-                  <div className="lab-content__item-bg">
-                    <Image
-                      className="img"
-                      src={"/images/bg-paper.jpg"}
-                      alt="work-1"
-                      quality={100}
-                      width={1200}
-                      height={1200}
-                    />
-                  </div>
-                  <div className="lab-content__item-project">
-                    <Image
-                      className="img"
-                      src={"/images/lab-1.png"}
-                      alt="lab-1"
-                      quality={100}
-                      width={1200}
-                      height={1200}
-                    />
-                  </div>
-                  <div className="lab-content__item-dots --right">
-                    <div className="dot"></div>
-                    <div className="dot"></div>
-                    <div className="dot"></div>
-                  </div>
-                  <div className="lab-content__item-content --left">
-                    <p>Agence Vincent Dubuc</p>
-                    <p>Branding / Web</p>
-                  </div>
+                <div className={`lab-content__item-content ${contentClass}`}>
+                  <p>{article.title}</p>
+                  <p
+                    style={{
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    {article.categories.map((c) => c.category_name).join(" / ")}
+                  </p>
                 </div>
-                <div className="lab-content__item">
-                  <div className="lab-content__item-bg">
-                    <Image
-                      className="img"
-                      src={"/images/bg-paper.jpg"}
-                      alt="work-1"
-                      quality={100}
-                      width={1200}
-                      height={1200}
-                    />
-                  </div>
-                  <div className="lab-content__item-project">
-                    <Image
-                      className="img"
-                      src={"/images/lab-1.png"}
-                      alt="lab-1"
-                      quality={100}
-                      width={1200}
-                      height={1200}
-                    />
-                  </div>
-                  <div className="lab-content__item-dots --left">
-                    <div className="dot"></div>
-                    <div className="dot"></div>
-                    <div className="dot"></div>
-                  </div>
-                  <div className="lab-content__item-content --right">
-                    <p>Agence Vincent Dubuc</p>
-                    <p>Branding / Web</p>
-                  </div>
-                </div>
-              </Fragment>
+              </div>
             );
           })}
         </div>

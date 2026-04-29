@@ -43,7 +43,7 @@
   &__item {
     height: clamp(250px, 50vw, 500px);
     width: 100%;
-    aspect-ratio: clamp(360px, 50vw, 638px) / clamp(250px, 50vw, 500px);
+    aspect-ratio: 638 / 500;
     border-radius: 4px;
     margin: auto;
     position: relative;
@@ -54,11 +54,11 @@
     cursor: pointer;
     transition-duration: 300ms;
     &:hover {
-      .lab-content__item-bg {
-        .img {
-          opacity: 1;
-        }
-      }
+      // .lab-content__item-bg {
+      //   .img {
+      //     opacity: 1;
+      //   }
+      // }
       .lab-content__item-project {
         .img {
           transform: scale(1.05);
@@ -100,7 +100,8 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: min(80%, 638px);
+      width: min(100%, 638px);
+      height: 100%;
       z-index: 1;
       .img {
         transition-duration: 300ms;

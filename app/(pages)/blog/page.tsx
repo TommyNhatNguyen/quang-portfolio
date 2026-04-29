@@ -119,12 +119,18 @@ const BlogPageInner = () => {
       {
         id: "category",
         label: "Category",
-        options: categories.map((c) => ({ label: c.category_name, value: c.slug })),
+        options: categories.map((c) => ({
+          label: c.category_name,
+          value: c.slug,
+        })),
       },
       {
         id: "intel_level",
         label: "Intel Level",
-        options: intelLevels.map((i) => ({ label: i.intel_level, value: i.slug })),
+        options: intelLevels.map((i) => ({
+          label: i.intel_level,
+          value: i.slug,
+        })),
       },
       {
         id: "read_time",
@@ -236,6 +242,60 @@ const BlogPageInner = () => {
             {articles.map((article) => {
               const readTime = article.read_time;
               const intelLevel = article.intel_level;
+
+              if (article.is_link) {
+                return (
+                  <li key={article.id} className="blog-content__list-item">
+                    <Link
+                      href={article.link ?? "#"}
+                      className="card"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <div className="card__header">
+                        <span className="card__header-title">
+                          {article.categories
+                            .map((c) => c.category_name)
+                            .join(" / ")}
+                        </span>
+                      </div>
+                      <div className="card__body">
+                        <div className="card__body-title">
+                          <h3>{article.title}</h3>
+                        </div>
+                        <div className="card__body-content">
+                          <div className="thumbnail">
+                            <Image
+                              src={getImage(article.thumbnail.url)}
+                              alt={article.title}
+                              width={370}
+                              height={300}
+                            />
+                          </div>
+                          <div className="reader">
+                            {readTime && (
+                              <div className="reader__time">
+                                <p className="reader__time-value">
+                                  {readTime.read_time}
+                                </p>
+                              </div>
+                            )}
+                            {intelLevel && (
+                              <div className="reader__category">
+                                <span>{intelLevel.intel_level}</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        <div className="card__body-desc">
+                          <p>{article.short_description}</p>
+                        </div>
+                      </div>
+                    </Link>
+                  </li>
+                );
+              }
+
               return (
                 <li key={article.id} className="blog-content__list-item">
                   <Link href={`/blog/${article.slug}`} className="card">

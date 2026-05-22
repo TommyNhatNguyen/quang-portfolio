@@ -161,7 +161,7 @@
   &__list {
     margin-top: 40px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(390px, 1fr));
     gap: 24px;
   }
 }
@@ -202,7 +202,7 @@
   &__body {
     &-title {
       padding: 12px;
-      height: 160px;
+      max-height: fit-content;
       h3 {
         font-family: var(--ff-gm);
         font-size: var(--mono-heading6-desktop);
@@ -210,7 +210,7 @@
         line-height: normal;
         overflow: hidden;
         display: -webkit-box;
-        -webkit-line-clamp: 4;
+        -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
         text-overflow: ellipsis;
       }
@@ -219,6 +219,7 @@
       border-top: 1px solid var(--greyscale-900);
       border-bottom: 1px solid var(--greyscale-900);
       display: flex;
+      aspect-ratio: 270 / 200;
       .thumbnail {
         flex: 2.25;
         border-right: 1px solid var(--greyscale-900);

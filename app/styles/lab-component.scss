@@ -54,16 +54,7 @@
     cursor: pointer;
     transition-duration: 300ms;
     &:hover {
-      // .lab-content__item-bg {
-      //   .img {
-      //     opacity: 1;
-      //   }
-      // }
-      .lab-content__item-project {
-        .img {
-          transform: scale(1.05);
-        }
-      }
+      opacity: 0.8;
     }
     &-bg {
       position: absolute;
@@ -135,6 +126,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 8px;
+      z-index: 2;
       &.--right {
         right: 16px;
       }

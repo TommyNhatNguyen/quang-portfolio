@@ -11,6 +11,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { Draggable, InertiaPlugin, ScrollTrigger } from "gsap/all";
 import Lenis from "lenis";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Activity, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { preload, SWRConfig } from "swr";
@@ -117,26 +118,55 @@ export default function PagesLayout({
   }, []);
 
   return (
-    <SWRConfig value={{ revalidateOnFocus: false, revalidateOnReconnect: false, dedupingInterval: 60_000 }}>
-    <div className="folder-container">
-      <FolderTabs onHoverChange={setHoveredTab} />
-      <div
-        ref={scrollerRef}
-        className="folder-content"
-        style={{
-          backgroundColor: activeColor,
-          transform: `translateY(${hoveredTab === activeId ? -15 : 0}px)`,
-          zIndex: 6,
-          top: LABEL_HEIGHT + 13,
-        }}
-      >
-        {children}
+    <SWRConfig
+      value={{
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+        dedupingInterval: 60_000,
+      }}
+    >
+      <div className="folder-container">
+        <FolderTabs onHoverChange={setHoveredTab} />
+        <div className="folder-container__socials">
+          <Link
+            href="https://www.behance.net/quanglaam"
+            target="_blank"
+            className="folder-container__socials-item"
+          >
+            Behance
+          </Link>
+          <Link
+            href="https://www.linkedin.com/in/quanglaam"
+            target="_blank"
+            className="folder-container__socials-item"
+          >
+            LinkedIn
+          </Link>
+          <Link
+            href="https://www.instagram.com/quanglaam"
+            target="_blank"
+            className="folder-container__socials-item"
+          >
+            Instagram
+          </Link>
+        </div>
+        <div
+          ref={scrollerRef}
+          className="folder-content"
+          style={{
+            backgroundColor: activeColor,
+            transform: `translateY(${hoveredTab === activeId ? -15 : 0}px)`,
+            zIndex: 6,
+            top: LABEL_HEIGHT + 13,
+          }}
+        >
+          {children}
+        </div>
+        <FolderFooter />
+        <Activity mode={showAvatarCard ? "visible" : "hidden"}>
+          <AvatarCard />
+        </Activity>
       </div>
-      <FolderFooter />
-      <Activity mode={showAvatarCard ? "visible" : "hidden"}>
-        <AvatarCard />
-      </Activity>
-    </div>
     </SWRConfig>
   );
 }

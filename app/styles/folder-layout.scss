@@ -8,8 +8,32 @@
   width: 100%;
   overflow: hidden;
   padding-top: var(--margin-top);
-  > *:nth-child(2) {
+  > *:nth-child(3) {
     margin-top: var(--margin-top);
+  }
+  &__socials {
+    position: fixed;
+    top: calc(var(--margin-top) * 2);
+    right: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    &-item {
+      font-size: clamp(
+        var(--mono-m-medium),
+        calc(1.2rem + 0.8vw),
+        var(--mono-m-medium)
+      );
+      font-weight: 500;
+      color: var(--greyscale-0);
+      transition-duration: 300ms;
+      padding: 15px 18px;
+      gap: 4px;
+      &:hover {
+        opacity: 0.8;
+      }
+    }
   }
 }
 
@@ -90,7 +114,7 @@
 
 @include mobile-breakpoint {
   .folder-container {
-    > *:nth-child(2) {
+    > *:nth-child(3) {
       margin-top: 0;
     }
   }

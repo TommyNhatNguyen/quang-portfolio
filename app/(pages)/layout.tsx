@@ -11,7 +11,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { Draggable, InertiaPlugin, ScrollTrigger } from "gsap/all";
 import Lenis from "lenis";
-import Link from "next/link";
+import SocialMenu from "@/app/components/social-menu";
 import { usePathname } from "next/navigation";
 import { Activity, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { preload, SWRConfig } from "swr";
@@ -85,14 +85,27 @@ export default function PagesLayout({
     gsap.ticker.add(tickerCallback);
     gsap.ticker.lagSmoothing(0);
 
-    // Recalculate Lenis when direct children change (e.g. ScrollTrigger pin spacer added)
-    const observer = new MutationObserver(() => {
+    // Recalculate Lenis when content grows (e.g. SWR data loads into nested children)
+    const resizeObserver = new ResizeObserver(() => {
       lenis.resize();
     });
-    observer.observe(wrapper, { childList: true });
+    const observeChildren = () => {
+      Array.from(wrapper.children).forEach((child) =>
+        resizeObserver.observe(child),
+      );
+    };
+    observeChildren();
+
+    // Also watch for direct child additions (e.g. ScrollTrigger pin spacer)
+    const mutationObserver = new MutationObserver(() => {
+      lenis.resize();
+      observeChildren();
+    });
+    mutationObserver.observe(wrapper, { childList: true });
 
     return () => {
-      observer.disconnect();
+      resizeObserver.disconnect();
+      mutationObserver.disconnect();
       if (tickerRef.current === tickerCallback) {
         gsap.ticker.remove(tickerCallback);
         tickerRef.current = null;
@@ -127,29 +140,7 @@ export default function PagesLayout({
     >
       <div className="folder-container">
         <FolderTabs onHoverChange={setHoveredTab} />
-        <div className="folder-container__socials">
-          <Link
-            href="https://www.behance.net/quanglaam"
-            target="_blank"
-            className="folder-container__socials-item"
-          >
-            Behance
-          </Link>
-          <Link
-            href="https://www.linkedin.com/in/quanglaam"
-            target="_blank"
-            className="folder-container__socials-item"
-          >
-            LinkedIn
-          </Link>
-          <Link
-            href="https://www.instagram.com/quanglaam"
-            target="_blank"
-            className="folder-container__socials-item"
-          >
-            Instagram
-          </Link>
-        </div>
+        <SocialMenu />
         <div
           ref={scrollerRef}
           className="folder-content"

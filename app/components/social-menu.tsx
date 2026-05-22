@@ -1,24 +1,21 @@
 "use client";
+import { useHeader } from "@/app/lib/hooks/use-header";
 import Link from "next/link";
 import { useState } from "react";
 import "./styles/social-menu.scss";
 
-const SOCIALS = [
-  { label: "Behance", href: "https://www.behance.net/quanglaam" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/quanglaam" },
-  { label: "Instagram", href: "https://www.instagram.com/quanglaam" },
-];
-
 export default function SocialMenu() {
   const [open, setOpen] = useState(false);
+  const { header } = useHeader();
+  const socials = header?.socials ?? [];
 
   return (
     <>
       <div className="social-menu__desktop">
-        {SOCIALS.map((s) => (
+        {socials.map((s) => (
           <Link
-            key={s.label}
-            href={s.href}
+            key={s.id}
+            href={s.link}
             target="_blank"
             rel="noopener noreferrer"
             className="social-menu__desktop-item"
@@ -43,10 +40,10 @@ export default function SocialMenu() {
         aria-hidden={!open}
       >
         <nav className="social-menu__links">
-          {SOCIALS.map((s) => (
+          {socials.map((s) => (
             <Link
-              key={s.label}
-              href={s.href}
+              key={s.id}
+              href={s.link}
               target="_blank"
               rel="noopener noreferrer"
               className="social-menu__link"

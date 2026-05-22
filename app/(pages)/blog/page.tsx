@@ -116,7 +116,9 @@ const BlogPageInner = () => {
                       <ArrowDownFilled className="svg" />
                     </div>
                   </div>
-                  <ul className="option__list">
+                  <ul
+                    className={`option__list ${filterToggle[filter.id] ? "--active" : ""}`}
+                  >
                     {filter.options.map((option) => {
                       const currentValue = searchParams.get(filter.id);
                       const isActive = currentValue === option.value;

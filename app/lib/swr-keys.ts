@@ -23,7 +23,11 @@ export const SWR_KEYS = {
   footer: ["/footer"],
   labArticles: [
     "/articles",
-    { filters: { categories: { type: { $eq: "work" } } }, populate: "*" },
+    {
+      filters: { categories: { type: { $eq: "work" } } },
+      populate: "*",
+      pagination: { pageSize: 1000 },
+    },
   ],
   blogCategories: ["/categories", { filters: { type: { $eq: "blog" } } }],
   blogIntelLevels: ["/intel-levels"],

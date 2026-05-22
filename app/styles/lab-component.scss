@@ -94,12 +94,14 @@
       width: min(100%, 638px);
       height: 100%;
       z-index: 1;
+      padding: 50px 63.8px;
       .img {
         transition-duration: 300ms;
         object-fit: contain;
         object-position: center;
         height: 100%;
         width: 100%;
+        aspect-ratio: 16/ 10;
       }
     }
     &-content {

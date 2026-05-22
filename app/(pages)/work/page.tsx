@@ -63,7 +63,7 @@ const WorkPage = () => {
       const fiveItemsHeight =
         fifthItem.getBoundingClientRect().bottom -
         listEl.getBoundingClientRect().top;
-      const targetTop = containerHeight - 51 - fiveItemsHeight;
+      const targetTop = containerHeight - 65 - fiveItemsHeight;
 
       function restoreFinalState() {
         gsap.set(".work-container", { opacity: 1, visibility: "visible" });
@@ -266,10 +266,9 @@ const WorkPage = () => {
         }
 
         // --- Master timeline ---
-        const master = gsap.timeline();
+        const master = gsap.timeline({ onComplete: restoreFinalState });
 
         // (1) Work-list: fade in + slide up + item text typing
-
         master
           .to(".work-container", {
             opacity: 1,
@@ -286,27 +285,61 @@ const WorkPage = () => {
               onComplete: setupScroll,
             },
             "<",
-          )
-          .to(
-            ".work-list__item-info .title",
-            { text: "Title", duration: 0.4, ease: "none" },
-            0.6,
-          )
-          .to(
-            ".work-list__item-info .description__text:first-child",
-            { text: "Defi_Interface", duration: 0.6, ease: "none" },
-            "<",
-          )
-          .to(
-            ".work-list__item-info .description__separator",
-            { text: " | ", duration: 0.1, ease: "none" },
-            "<",
-          )
-          .to(
-            ".work-list__item-info .description__text:last-child",
-            { text: "2024", duration: 0.3, ease: "none" },
-            "<",
           );
+        const itemInfoEls = document.querySelectorAll(".work-list__item-info");
+
+        // Clear all item texts — React pre-populates them, so TextPlugin would see no diff
+        itemInfoEls.forEach((infoEl) => {
+          (
+            [
+              ".title",
+              ".description__text:first-child",
+              ".description__separator",
+              ".description__text:last-child",
+            ] as const
+          ).forEach((sel) => {
+            const el = infoEl.querySelector(sel);
+            if (el) el.textContent = "";
+          });
+        });
+
+        const allItemsTl = gsap.timeline();
+        workPage?.work_items.forEach((item, i) => {
+          const infoEl = itemInfoEls[i];
+          if (!infoEl) return;
+          const titleEl = infoEl.querySelector(".title");
+          const descFirstEl = infoEl.querySelector(
+            ".description__text:first-child",
+          );
+          const descSepEl = infoEl.querySelector(".description__separator");
+          const descLastEl = infoEl.querySelector(
+            ".description__text:last-child",
+          );
+
+          const itemTl = gsap.timeline();
+
+          itemTl
+            .to(titleEl, { text: item.title, duration: 0.6, ease: "none" })
+            .to(
+              descFirstEl,
+              { text: item.description, duration: 0.6, ease: "none" },
+              "<0.12",
+            )
+            .to(
+              descSepEl,
+              { text: " | ", duration: 0.3, ease: "none" },
+              "<0.12",
+            )
+            .to(
+              descLastEl,
+              { text: item.year, duration: 0.4, ease: "none" },
+              "<0.12",
+            );
+
+          // Position 0 so all items start simultaneously within allItemsTl
+          allItemsTl.add(itemTl, 0);
+        });
+        master.add(allItemsTl, "<");
 
         // (2) Title: fade in + typing animation
         master

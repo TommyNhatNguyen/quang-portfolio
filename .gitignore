@@ -13,6 +13,10 @@
 # testing
 /coverage
 
+.build/
+build.zip
+quang_portfolio
+
 # next.js
 /.next/
 /out/

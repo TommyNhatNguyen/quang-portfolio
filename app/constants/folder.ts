@@ -1,5 +1,5 @@
-export const LABEL_HEIGHT = 64;
-export const LABEL_MAX_WIDTH = 217;
+export const LABEL_HEIGHT = 51;
+export const LABEL_MAX_WIDTH = 174;
 
 export const FOLDER_TABS = [
   {

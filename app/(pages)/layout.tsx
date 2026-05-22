@@ -146,9 +146,9 @@ export default function PagesLayout({
           className="folder-content"
           style={{
             backgroundColor: activeColor,
-            transform: `translateY(${hoveredTab === activeId ? -15 : 0}px)`,
+            transform: `translateY(${hoveredTab === activeId ? -12 : 0}px)`,
             zIndex: 6,
-            top: LABEL_HEIGHT + 13,
+            top: LABEL_HEIGHT + 10,
           }}
         >
           {children}

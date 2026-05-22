@@ -1,9 +1,9 @@
 @use "@/app/styles/mixins" as *;
 .about-container {
   width: 100%;
-  padding-top: clamp(16px, 4vw, 40px);
-  padding-left: clamp(16px, 1vw, 250px);
-  padding-right: clamp(16px, 1vw, 250px);
+  padding-top: clamp(13px, 4vw, 32px);
+  padding-left: clamp(13px, 1vw, 200px);
+  padding-right: clamp(13px, 1vw, 200px);
   position: relative;
   min-height: 100%;
   display: flex;
@@ -13,7 +13,7 @@
 
 .disc-player {
   position: absolute;
-  bottom: calc(var(--footer-height) + clamp(80px, 10vw, 120px));
+  bottom: calc(var(--footer-height) + clamp(64px, 10vw, 96px));
   right: 0;
 }
 
@@ -21,8 +21,8 @@
   margin: auto;
   width: 100%;
   position: relative;
-  max-width: 1000px;
-  padding-bottom: calc(var(--footer-height) + 80px);
+  max-width: 800px;
+  padding-bottom: calc(var(--footer-height) + 64px);
   &__bg {
     position: absolute;
     top: 0;
@@ -42,12 +42,12 @@
     width: 100%;
     .content {
       width: 78.2%;
-      margin: clamp(24px, 5vw, 72px) clamp(24px, 6vw, 80px);
+      margin: clamp(19px, 5vw, 58px) clamp(19px, 6vw, 64px);
       .wrapper {
         width: 100%;
         display: flex;
         align-items: flex-start;
-        gap: 32px;
+        gap: 26px;
         flex-direction: column;
       }
       &__title {
@@ -57,7 +57,7 @@
         color: var(--color-body);
       }
       &__download-btn {
-        gap: 8px;
+        gap: 6px;
         & > * {
           color: var(--greyscale-0);
           font-size: var(--mono-m-medium);
@@ -67,7 +67,7 @@
       }
       .content__group {
         width: 100%;
-        max-width: 600px;
+        max-width: 480px;
         &-titlewrapper {
           .title {
             font-size: var(--mono-heading6-desktop);
@@ -75,8 +75,8 @@
             font-family: var(--ff-gm);
           }
           .line {
-            margin-top: 12px;
-            margin-bottom: 24px;
+            margin-top: 10px;
+            margin-bottom: 19px;
             height: 2px;
             width: 100%;
             background-color: var(--greyscale-900);
@@ -86,13 +86,13 @@
           display: flex;
           flex-direction: column;
           align-items: flex-start;
-          gap: 24px;
+          gap: 19px;
           .infogroup {
             width: 100%;
             &__titlegroup {
               display: flex;
               align-items: center;
-              gap: 16px;
+              gap: 13px;
               width: 100%;
               &-title {
                 text-wrap: nowrap;
@@ -101,8 +101,8 @@
                 font-family: var(--ff-gm);
                 background-color: var(--greyscale-900);
                 color: var(--greyscale-0);
-                padding-left: 6px;
-                padding-right: 6px;
+                padding-left: 5px;
+                padding-right: 5px;
               }
               &-line {
                 height: 0.5px;
@@ -116,20 +116,20 @@
                 li {
                   &::before {
                     content: "";
-                    width: 5px;
-                    height: 5px;
+                    width: 4px;
+                    height: 4px;
                     background-color: var(--greyscale-900);
                     border-radius: 100%;
-                    margin-left: 12px;
+                    margin-left: 10px;
                   }
                 }
               }
               &-item {
-                margin-top: 12px;
+                margin-top: 10px;
                 display: flex;
                 align-items: center;
                 flex-wrap: wrap;
-                gap: 16px;
+                gap: 13px;
                 .desc {
                   font-size: var(--body-m-medium);
                   font-weight: 500;

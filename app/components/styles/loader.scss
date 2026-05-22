@@ -8,22 +8,22 @@
 
 .loader__scene {
   position: absolute;
-  inset: 32px 16px 0;
-  perspective: 2000px;
+  inset: 26px 13px 0;
+  perspective: 1600px;
   visibility: hidden;
 }
 
 .loader__flap {
   position: absolute;
-  top: 64px;
+  top: 51px;
   left: 0;
   right: 0;
   bottom: 0px;
-  border-radius: 16px 16px 0 0;
+  border-radius: 13px 13px 0 0;
   transform-origin: bottom center;
 
   @media (max-width: 768px) {
-    top: 48px;
+    top: 38px;
     border-radius: 0;
   }
 }
@@ -31,21 +31,21 @@
 .loader__flap-tab {
   position: absolute;
   bottom: calc(100% - 2px);
-  width: 217px;
-  height: 64px;
-  border-radius: 24px 24px 0 0;
+  width: 174px;
+  height: 51px;
+  border-radius: 19px 19px 0 0;
 
   @media (max-width: 768px) {
     width: calc((80vw) / 4);
-    height: 48px;
-    border-radius: 8px 8px 0 0;
+    height: 38px;
+    border-radius: 6px 6px 0 0;
   }
 }
 
 .loader__percent {
   position: absolute;
-  bottom: clamp(40px, 8vw, 100px);
-  right: clamp(40px, 6vw, 80px);
+  bottom: clamp(32px, 8vw, 80px);
+  right: clamp(32px, 6vw, 64px);
   font-family: var(--ff-gc);
   font-size: clamp(6rem, 12vw, 12rem);
   font-weight: 400;

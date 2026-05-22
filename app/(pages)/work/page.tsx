@@ -2,8 +2,8 @@
 
 import Frame from "@/app/components/icons/frame";
 import ProjectCard from "@/app/components/project-card";
-import { loaderEvents } from "@/app/lib/loader-events";
 import { useWorkPage } from "@/app/lib/hooks/use-work-page";
+import { loaderEvents } from "@/app/lib/loader-events";
 import "@/app/styles/work-component.scss";
 import { useGSAP } from "@gsap/react";
 import { RiArrowRightUpLine } from "@remixicon/react";
@@ -33,6 +33,7 @@ function getContrastColor(hex: string): string {
 
 const WorkPage = () => {
   const { workPage } = useWorkPage();
+  console.log("🚀 ~ WorkPage ~ workPage:", workPage);
 
   const [animationReady, setAnimationReady] = useState(() =>
     loaderEvents.isDone(),
@@ -62,7 +63,7 @@ const WorkPage = () => {
       const fiveItemsHeight =
         fifthItem.getBoundingClientRect().bottom -
         listEl.getBoundingClientRect().top;
-      const targetTop = containerHeight - 64 - fiveItemsHeight;
+      const targetTop = containerHeight - 51 - fiveItemsHeight;
 
       function restoreFinalState() {
         gsap.set(".work-container", { opacity: 1, visibility: "visible" });
@@ -89,7 +90,7 @@ const WorkPage = () => {
         document
           .querySelectorAll(".work-list__item-info")
           .forEach((itemEl, i) => {
-            const workItem = workPage.work_items[i];
+            const workItem = workPage?.work_items[i];
             if (!workItem) return;
             const title = itemEl.querySelector(".title");
             const descFirst = itemEl.querySelector(
@@ -138,7 +139,7 @@ const WorkPage = () => {
         const fiveItemsHeight =
           fifthItem.getBoundingClientRect().bottom -
           listEl.getBoundingClientRect().top;
-        const targetTop = containerHeight - 200 - fiveItemsHeight;
+        const targetTop = containerHeight - 160 - fiveItemsHeight;
 
         restoreFinalState();
         // Hide cursor on mobile
@@ -152,7 +153,7 @@ const WorkPage = () => {
           .toArray<HTMLElement>(".work-list__item")
           .forEach((item, index) => {
             gsap.set(item, {
-              top: index != 0 ? `-${index * 10}px` : 0,
+              top: index != 0 ? `-${index * 8}px` : 0,
             });
           });
         // setupScroll();
@@ -511,7 +512,7 @@ const WorkPage = () => {
                 className="work-list__item"
                 style={{
                   position: "relative",
-                  top: index != 0 ? `-${index * 30}px` : 0,
+                  top: index != 0 ? `-${index * 24}px` : 0,
                 }}
               >
                 <div className="frame">
@@ -545,7 +546,7 @@ const WorkPage = () => {
                     </span>
                   </div>
                   <div className="icon">
-                    <RiArrowRightUpLine size={48} color={textColor} />
+                    <RiArrowRightUpLine size={38} color={textColor} />
                   </div>
                 </div>
               </Link>

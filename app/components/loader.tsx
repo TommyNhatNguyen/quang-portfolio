@@ -112,7 +112,7 @@ const Loader = () => {
                   color: folder.textColor,
                   left: isMobile
                     ? `calc(${origIdx} * (80vw / 4))`
-                    : 62 + origIdx * 217,
+                    : 50 + origIdx * 174,
                 }}
               />
               {isFront && (

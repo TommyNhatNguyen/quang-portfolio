@@ -42,7 +42,7 @@ const FolderTabs = ({ onHoverChange }: FolderTabsProps) => {
               color: folder.textColor,
               transform:
                 activeHoverTab === folder.id && isMouseHover
-                  ? "translateY(-10px)"
+                  ? "translateY(-8px)"
                   : "translateY(0px)",
               zIndex: index,
             }}
@@ -57,7 +57,7 @@ const FolderTabs = ({ onHoverChange }: FolderTabsProps) => {
               backgroundColor: folder.color,
               transform:
                 activeHoverTab === folder.id && isMouseHover
-                  ? "translateY(-12px)"
+                  ? "translateY(-10px)"
                   : "translateY(0px)",
               zIndex: index,
             }}

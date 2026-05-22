@@ -2,9 +2,9 @@
 .project-card {
   position: absolute;
   pointer-events: none;
-  width: 200px;
+  width: 160px;
   aspect-ratio: 200 / 180;
-  padding: 8px;
+  padding: 6px;
   box-shadow: 8px 8px 12px -5px rgba(0, 0, 0, 0.1);
   -webkit-box-shadow: 8px 8px 12px -5px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 8px 8px 12px -5px rgba(0, 0, 0, 0.1);
@@ -38,7 +38,7 @@
     }
   }
   &__content {
-    margin-top: 16px;
+    margin-top: 13px;
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
@@ -53,9 +53,9 @@
         color: var(--greyscale-10);
       }
       &__progress {
-        margin-top: 4px;
+        margin-top: 3px;
         width: 100%;
-        height: 4px;
+        height: 3px;
         background-color: rgba(0, 0, 0, 0.1);
         &__bar {
           height: 100%;
@@ -69,11 +69,11 @@
     }
   }
   &__sticker {
-    height: 30px;
-    width: 62px;
+    height: 24px;
+    width: 50px;
     position: absolute;
-    top: -14px;
-    right: -20px;
+    top: -11px;
+    right: -16px;
     background: linear-gradient(
       155deg,
       rgba(255, 255, 255, 0.4) 0%,

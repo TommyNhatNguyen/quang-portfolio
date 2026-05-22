@@ -25,9 +25,9 @@ const AvatarCard = (props: Props) => {
       if (isMobile) {
         if (!containerRect) return;
         cardRef.current.style.left = "";
-        cardRef.current.style.right = "26px";
+        cardRef.current.style.right = "21px";
         cardRef.current.style.top =
-          (containerRect?.height ?? 0) * 0.3 - containerRect.top - 50 + "px";
+          (containerRect?.height ?? 0) * 0.3 - containerRect.top - 40 + "px";
         savedLeft = null;
         return;
       }
@@ -72,7 +72,7 @@ const AvatarCard = (props: Props) => {
       ref={cardRef}
       className="avatar-card"
       style={{
-        top: `${LABEL_HEIGHT + 14}px`,
+        top: `${LABEL_HEIGHT + 11}px`,
       }}
     >
       {/* Image */}

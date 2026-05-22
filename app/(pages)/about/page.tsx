@@ -73,7 +73,7 @@ const AboutPage = () => {
                                         className="desc"
                                         style={{
                                           listStyleType: "disc",
-                                          paddingLeft: "20px",
+                                          paddingLeft: "16px",
                                         }}
                                       >
                                         {children}

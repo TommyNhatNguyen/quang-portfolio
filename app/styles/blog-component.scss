@@ -1,10 +1,10 @@
 @use "@/app/styles/mixins" as *;
 .blog-container {
   width: 100%;
-  padding-top: 40px;
-  padding-bottom: 104px;
-  padding-left: min(calc((18.6vw / 2) - 16px), 140px);
-  padding-right: min(calc((18.6vw / 2) - 16px), 140px);
+  padding-top: 32px;
+  padding-bottom: 83px;
+  padding-left: min(calc((18.6vw / 2) - 13px), 112px);
+  padding-right: min(calc((18.6vw / 2) - 13px), 112px);
   display: flex;
   flex-direction: column;
   min-height: 100%;
@@ -13,12 +13,12 @@
 .blog-scroll {
   overflow-x: hidden;
   min-height: 100%;
-  border-radius: 16px;
+  border-radius: 13px;
   flex: 1;
   overflow-y: auto;
-  padding-left: 16px;
-  padding-right: 16px;
-  padding-bottom: calc(var(--footer-height) + clamp(40px, 10vw, 80px));
+  padding-left: 13px;
+  padding-right: 13px;
+  padding-bottom: calc(var(--footer-height) + clamp(32px, 10vw, 64px));
   scrollbar-width: thin;
   scrollbar-color: var(--lab-item-bg) transparent;
 
@@ -47,21 +47,21 @@
     line-height: normal;
   }
   &__filter {
-    margin-top: 16px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    padding-left: 24px;
-    padding-right: 24px;
+    margin-top: 13px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 19px;
+    padding-right: 19px;
     border-top: 2px solid var(--greyscale-900);
     border-bottom: 2px solid var(--greyscale-900);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
+    gap: 6px;
     &-header {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 13px;
     }
     &-title {
       text-transform: uppercase;
@@ -74,7 +74,7 @@
     &-clear {
       border: none;
       background: none;
-      padding: 4px 8px;
+      padding: 3px 6px;
       text-transform: uppercase;
       font-family: var(--ff-gm);
       font-size: var(--mono-xs-medium);
@@ -86,7 +86,7 @@
     &-options {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       .option {
         height: 100%;
         width: 100%;
@@ -100,20 +100,20 @@
             transform: rotateZ(180deg);
           }
           .option__list {
-            top: calc(100% + 8px);
+            top: calc(100% + 6px);
             overflow: initial;
             grid-template-rows: 1fr;
             &-item {
-              padding: 12px 24px;
+              padding: 10px 19px;
             }
           }
         }
         &__wrapper {
           display: flex;
           align-items: center;
-          gap: 8px;
+          gap: 6px;
           background-color: var(--greyscale-0);
-          padding: 18px 24px;
+          padding: 14px 19px;
           position: relative;
           z-index: 2;
           &-title {
@@ -123,8 +123,8 @@
           &-icon {
             flex-shrink: 0;
             aspect-ratio: 1 / 1;
-            width: 28px;
-            height: 28px;
+            width: 22px;
+            height: 22px;
             transition-duration: 300ms;
             .svg {
               height: 100%;
@@ -148,7 +148,7 @@
           &-item {
             transition: all 1s cubic-bezier(0.23, 1, 0.32, 1);
             transform-origin: bottom;
-            padding: 0px 24px;
+            padding: 0px 19px;
             &.--active {
               background-color: var(--greyscale-900);
               color: var(--greyscale-0);
@@ -159,20 +159,20 @@
     }
   }
   &__list {
-    margin-top: 40px;
+    margin-top: 32px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(390px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(312px, 1fr));
+    gap: 19px;
   }
 }
 
 .btn-loadmore {
-  margin-top: clamp(24px, 8vw, 40px);
+  margin-top: clamp(19px, 8vw, 32px);
   margin-left: auto;
   margin-right: auto;
   background-color: transparent;
   border-radius: 999px;
-  padding: clamp(12px, 4vw, 24px) clamp(24px, 6vw, 40px);
+  padding: clamp(10px, 4vw, 19px) clamp(19px, 6vw, 32px);
   border: 1px solid var(--greyscale-900);
   color: var(--greyscale-900);
   font-family: var(--ff-gm);
@@ -189,7 +189,7 @@
   border: 1px solid var(--greyscale-900);
   cursor: pointer;
   &__header {
-    padding: 12px;
+    padding: 10px;
     border-bottom: 1px solid var(--greyscale-900);
     text-transform: uppercase;
     &-title {
@@ -201,7 +201,7 @@
   }
   &__body {
     &-title {
-      padding: 12px;
+      padding: 10px;
       max-height: fit-content;
       h3 {
         font-family: var(--ff-gm);
@@ -234,7 +234,7 @@
         display: grid;
         grid-template-rows: 1fr 1fr;
         &__time {
-          padding: 14px;
+          padding: 11px;
           font-weight: 500;
           line-height: normal;
           display: flex;
@@ -261,7 +261,7 @@
       }
     }
     &-desc {
-      padding: 12px;
+      padding: 10px;
       p {
         font-size: var(--body-s-regular);
         font-family: var(--ff-gs);
@@ -284,11 +284,11 @@
       flex-direction: column;
       align-items: stretch;
       gap: 0;
-      padding: 12px 16px;
+      padding: 10px 13px;
       border-bottom-width: 1px;
 
       &-header {
-        padding-bottom: 8px;
+        padding-bottom: 6px;
       }
 
       &-options {
@@ -314,7 +314,7 @@
     }
 
     &__wrapper {
-      padding: 10px 0;
+      padding: 8px 0;
       z-index: auto;
     }
 
@@ -329,7 +329,7 @@
       transition: max-height 0.4s cubic-bezier(0.23, 1, 0.32, 1);
       &.--active {
         z-index: 100;
-        max-height: 400px;
+        max-height: 320px;
       }
     }
   }

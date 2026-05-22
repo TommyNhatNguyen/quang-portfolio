@@ -1,5 +1,5 @@
 :root {
-  --footer-height: clamp(59px, 6vw, 64px);
+  --footer-height: clamp(47px, 6vw, 51px);
   
   --lab-item-bg: rgba(237, 236, 232, 1);
   /* Color styles */
@@ -44,7 +44,7 @@
   --yellow-25: rgba(250, 237, 204, 1);
   --yellow-10: rgba(242, 240, 233, 1);
 
-  --gap: 8px;
+  --gap: 6px;
   /* Text-size styles */
   --font-google-sans-code: var(--font-google-sans-code);
   --font-geist-sans: var(--font-geist-sans);

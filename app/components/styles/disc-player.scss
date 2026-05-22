@@ -20,7 +20,7 @@
 .disc-container {
   position: relative;
   cursor: pointer;
-  width: clamp(180px, 28vw, 400px);
+  width: clamp(144px, 28vw, 320px);
 
   .disc-wood {
     width: 100%;
@@ -64,7 +64,7 @@
       font-family: var(--ff-gm);
       color: var(--greyscale-0);
       line-height: normal;
-      max-width: 73px;
+      max-width: 58px;
       text-wrap: wrap;
       text-align: center;
     }

@@ -4,9 +4,9 @@
   width: 100%;
 }
 .work-container {
-  padding-top: clamp(16px, 4vw, 40px);
-  padding-left: clamp(16px, 6vw, 120px);
-  padding-right: clamp(16px, 6vw, 120px);
+  padding-top: clamp(13px, 4vw, 32px);
+  padding-left: clamp(13px, 6vw, 96px);
+  padding-right: clamp(13px, 6vw, 96px);
   width: 100%;
   height: 100%;
   visibility: hidden;
@@ -31,9 +31,9 @@
   &__info {
     position: relative;
     z-index: 1;
-    padding-top: clamp(32px, 4vw, 72px);
-    padding-left: clamp(32px, 6vw, 80px);
-    padding-right: clamp(32px, 6vw, 80px);
+    padding-top: clamp(26px, 4vw, 58px);
+    padding-left: clamp(26px, 6vw, 64px);
+    padding-right: clamp(26px, 6vw, 64px);
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
@@ -44,7 +44,7 @@
       line-height: var(--lh-l-regular);
       font-weight: normal;
       font-size: var(--greyscale-900);
-      max-width: 410px;
+      max-width: 328px;
       .cursor {
         display: inline;
         animation: blink 0.8s step-end infinite;
@@ -59,19 +59,19 @@
         &__value {
           color: var(--greyscale-0);
           background-color: var(--greyscale-900);
-          padding-left: 6px;
-          padding-right: 6px;
+          padding-left: 5px;
+          padding-right: 5px;
           &-blinker {
             animation: blink 1s step-end infinite;
           }
         }
       }
       .progress {
-        margin-top: 8px;
+        margin-top: 6px;
         width: 100%;
-        height: 8px;
+        height: 6px;
         background-color: rgba(10, 10, 10, 0.2);
-        min-width: 192px;
+        min-width: 154px;
         &__bar {
           height: 100%;
           width: 70%;
@@ -94,13 +94,13 @@
   justify-items: flex-end;
   &__item {
     flex-shrink: 0;
-    height: 137px;
+    height: 110px;
     width: 100%;
     position: relative;
-    padding-left: 32px;
-    padding-right: 32px;
-    padding-top: 4px;
-    padding-bottom: 24px;
+    padding-left: 26px;
+    padding-right: 26px;
+    padding-top: 3px;
+    padding-bottom: 19px;
     .frame {
       position: absolute;
       top: 0;
@@ -117,7 +117,7 @@
       gap: var(--gap);
       z-index: 1;
       position: relative;
-      bottom: 26px;
+      bottom: 21px;
       .title {
         font-size: clamp(
           var(--mono-heading4-mobile),
@@ -130,7 +130,7 @@
         position: absolute;
         flex: 1;
         right: 0;
-        min-width: 300px;
+        min-width: 240px;
         text-align: left;
         text-wrap: nowrap;
       }
@@ -156,18 +156,18 @@
 
 @include mobile-breakpoint {
   .work-container {
-    padding-top: 16px;
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-top: 13px;
+    padding-left: 13px;
+    padding-right: 13px;
   }
   .work-content {
     &__info {
-      gap: 24px;
+      gap: 19px;
     }
   }
   .work-list {
     &__item {
-      height: 76px;
+      height: 61px;
       &-info {
         bottom: 0px;
         .title {
@@ -182,7 +182,7 @@
         .icon {
           position: relative;
           opacity: 1;
-          top: 15px;
+          top: 12px;
         }
       }
     }
